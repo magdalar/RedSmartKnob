@@ -18,6 +18,21 @@ I fully intend to blend further, as my goal is to provide a local media control 
 
 The `red-smartknob.yaml` supports two modes: running as a local sendspin player, or controlling a remote HomeAssistant media player. The UI is identical for both, achieved by way of using scripts to abstract the entity interactions.
 
+## How to use this
+
+1. Edit `red-smartknob.yaml` to set your device names, home assistant entities, and local vs remote mediplayer choice.
+1. Copy `secrets.yaml.example` to `secrets.yaml` and edit it as appropriate for your setup.
+1. Download the materialdesign font:
+
+```
+curl --create-dirs -o fonts/materialdesignicons-webfont.ttf http://materialdesignicons.com/cdn/7.4.47/fonts/materialdesignicons-webfont.ttf
+```
+1. Compile and flash your device: `esphome run red-smartknob.yaml`
+1. Add the device in Home Assistant
+1. If using sendspin, then you should already see your device in Music Assistant too. Play some music!
+
+NOTE: If using TTS announcements, remember to use the Music Assistant `media_player` entity within Home Assistant, rather than the device directly. MA will handle the audio stream format mismatches much more gracefully.
+
 ## Device Notes
 
 This device (`JC3636K518C`) has two chips, an ESP32 and an ESP32-S3. The ESP32
