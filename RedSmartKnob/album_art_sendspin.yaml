@@ -1,0 +1,34 @@
+# Album Art: sendspin source.
+# Calls handle_media_album_art_decoded or handle_media_album_art_failed
+# Script handle_media_album_url exists, but is unexpected.
+
+external_components:
+  # From https://github.com/RealDeco/xiaozhi-esphome/blob/main/devices/Under_Development/Modular/HW/sendspin-external_components.yaml
+  - source: github://pr#16057
+    components: [generic_image, sendspin, psram]
+    refresh: 1d
+
+script:
+  - id: handle_media_album_url
+    parameters:
+      url: std::string
+    then:
+      - lambda: |-
+          ESP_LOGI("album_art_sendspin", "Unexpected call: sendspin handle_media_album_url: %s", url);
+
+generic_image:
+  - platform: sendspin
+    id: sendspin_album_art
+    format: jpeg
+    type: RGB565
+    resize: ${imageheight}x${imageheight}
+    source: ALBUM
+    on_image_display:
+      - script.execute:
+          id: handle_media_album_art_decoded
+          art_source: sendspin_album_art
+    on_image_error:
+      - script.execute:
+          id: handle_media_album_art_failed
+
+# vim: set tabstop=2 shiftwidth=2 expandtab:

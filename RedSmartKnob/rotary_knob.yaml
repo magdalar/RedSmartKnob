@@ -1,0 +1,63 @@
+external_components:
+  - source:
+      type: git
+      url: https://github.com/KrX3D/WaveShare-Knob-Esp32S3
+      ref: main  # or a specific commit SHA
+    components: [rotary_encoder_custom]
+    refresh: 1d
+
+globals:
+  - id: rotary_encoder_diff
+    type: int
+    restore_value: false
+    initial_value: '0'
+
+sensor:
+  - platform: rotary_encoder_custom
+    name: "Rotary Encoder"
+    id: rotary_counter
+    pin_a: 8
+    pin_b: 7
+    min_value: 0
+    max_value: 100
+    #publish_initial_value: true
+    restore_mode: RESTORE_DEFAULT_ZERO
+    on_value:
+      then:
+        - lambda: |-
+            static int last = 0;
+            int diff = x - last;
+            last = x;
+            if (!diff) return;
+            id(rotary_encoder_diff) = diff;
+        - if:
+            condition:
+              lambda: 'return id(rotary_encoder_diff) > 0;'
+            then:
+              - lvgl.page.next:
+                  animation: MOVE_LEFT
+                  time: 200ms
+            else:
+              - lvgl.page.previous:
+                  animation: MOVE_RIGHT
+                  time: 200ms
+        - drv2605.play_effect:
+            id: haptic_driver
+            effect: 7
+        - script.execute: screentime
+        # Original behavior: seek within song.
+        #- lambda: |-
+        #    static int last = 0;
+        #    int diff = x - last;
+        #    last = x;
+        #    if (!diff) return;
+        #    const float step = 5.0f;
+        #    float base = id(media_position).state;
+        #    id(seek_pos) = base + diff * step;
+        #    if (id(seek_pos) < 0) id(seek_pos) = 0;
+        ## wait 200ms before actually calling, so rapid turns batch
+        #- drv2605.play_effect:
+        #    id: haptic_driver
+        #    effect: 7  # Soft Bump
+        #- delay: 200ms
+        #- script.execute: do_seek

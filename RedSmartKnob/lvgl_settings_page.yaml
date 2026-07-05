@@ -1,0 +1,8 @@
+# This is an lvgl page directly.
+# Script references should be primarily in actions_settings.yaml
+
+id: settings_page
+widgets:
+  - label:
+      text: "Settings"
+      align: CENTER

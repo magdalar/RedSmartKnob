@@ -1,0 +1,258 @@
+globals:
+  # api_ready gates actions outward, to prevent desynchronization. Though it only works at startup, so utility is questionable...
+  - id: api_ready
+    type: bool
+    initial_value: 'false'
+
+  - id: local_track_position
+    type: float
+    initial_value: '0.0'
+
+  - id: local_track_duration
+    type: float
+    initial_value: '0.0'
+
+# Add API connection event to initialize everything when HA is connected
+api:
+  on_client_disconnected:
+    - if:
+        condition:
+          not:
+            api.connected:
+              state_subscription_only: true
+        then:
+          - logger.log: "CRITICAL: Home Assistant is no longer in the room!"
+          - lambda: |-
+              id(api_ready) = false;
+    - logger.log:
+        format: "Client %s disconnected (IP: %s)"
+        args: [ "client_info.c_str()", "client_address.c_str()" ]
+  on_client_connected:
+    - if:
+        condition:
+          api.connected:
+            state_subscription_only: true
+        then:
+          - delay: 1s  # Give sensors time to get initial values
+          - lambda: |-
+              ESP_LOGI("media", "Home Assistant connected, initializing media player...");
+              id(api_ready) = true;
+          # Request an explicit update from the source.
+          # This will push updates through the normal sensors.
+          - homeassistant.service:
+              service: homeassistant.update_entity
+              data:
+                entity_id: $mediaplayer
+
+text_sensor:
+  - platform: homeassistant
+    id: music_state
+    entity_id: $mediaplayer
+    internal: true
+    on_value:
+      - lambda: |-
+          ESP_LOGD("media", "Music state changed to: %s", x.c_str());
+      - if:
+          condition:
+            lambda: 'return x == "playing";'
+          then:
+            - script.execute: handle_media_playing
+      - if:
+          condition:
+            lambda: 'return x == "paused";'
+          then:
+            - script.execute: handle_media_paused
+      - if:
+          condition:
+            lambda: 'return x == "idle" || x == "off" || x == "unknown";'
+          then:
+            - script.execute: handle_media_stopped
+
+  - platform: homeassistant
+    id: track_name
+    entity_id: $mediaplayer
+    attribute: media_title
+    on_value:
+      - script.execute:
+          id: handle_media_track_changed
+          track_name: !lambda 'return x;'
+
+  - platform: homeassistant
+    id: track_artist
+    entity_id: $mediaplayer
+    attribute: media_artist
+    internal: true
+    on_value:
+      - script.execute:
+          id: handle_media_artist_changed
+          artist_name: !lambda 'return x;'
+
+  - platform: homeassistant
+    id: track_album
+    entity_id: $mediaplayer
+    attribute: media_album_name
+    internal: true
+    on_value:
+      - script.execute:
+          id: handle_media_album_changed
+          album_name: !lambda 'return x;'
+
+  - platform: homeassistant
+    id: media_thumbnail
+    entity_id: $mediaplayer
+    attribute: entity_picture
+    internal: true
+    on_value:
+      - if:
+          condition:
+            lambda: 'return !x.empty();'
+          then:
+            - script.execute:
+                id: handle_media_album_url
+                url: !lambda 'return x;'
+
+binary_sensor:
+  - platform: homeassistant
+    id: media_is_muted
+    entity_id: $mediaplayer
+    attribute: is_volume_muted
+    internal: true
+    on_state:
+      - lambda: |-
+          if (x) {
+            id(handle_media_volume_muted)->execute();
+          } else {
+            id(handle_media_volume_unmuted)->execute();
+          }
+
+sensor:
+  - platform: homeassistant
+    id: media_player_volume
+    entity_id: $mediaplayer
+    attribute: volume_level
+    internal: true
+    filters:
+      - throttle: 100ms  # Prevent rapid updates
+    on_value:
+      - if:
+          condition:
+            lambda: 'return !isnan(x) && x >= 0.0 && x <= 1.0;'
+          then:
+            - lambda: |-
+                id(handle_media_volume_changed)->execute(x);
+
+  # media_position will only get updated on track start, seek or pause.
+  - platform: homeassistant
+    id: media_position
+    entity_id: $mediaplayer
+    attribute: media_position
+    internal: true
+    on_value:
+      - lambda: |-
+          ESP_LOGD("media", "Position sync: %.1f", x);
+          id(local_track_position) = x;
+
+  # Add media duration sensor for better seeking
+  - platform: homeassistant
+    id: media_duration
+    entity_id: $mediaplayer
+    attribute: media_duration
+    internal: true
+    on_value:
+      - lambda: |-
+          ESP_LOGD("media", "Track duration updated: %.1f", x);
+          id(local_track_duration) = x;
+
+script:
+  - id: set_media_volume
+    parameters:
+        new_vol: float
+    then:
+      - if:
+          condition:
+            lambda: 'return id(api_ready);'
+          then:
+            - homeassistant.action:
+                action: media_player.volume_set
+                data:
+                  entity_id: $mediaplayer
+                  volume_level: !lambda |-
+                    if (new_vol < 0.0) new_vol = 0.0;
+                    if (new_vol > 100.0) new_vol = 100.0;
+                    return new_vol;
+
+  - id: set_media_volume_mute
+    then:
+      - if:
+          condition:
+            lambda: 'return id(api_ready);'
+          then:
+            - homeassistant.action:
+                action: media_player.volume_mute
+                data:
+                  entity_id: $mediaplayer
+                  is_volume_muted: true
+
+  - id: set_media_volume_unmute
+    then:
+      - if:
+          condition:
+            lambda: 'return id(api_ready);'
+          then:
+            - homeassistant.action:
+                action: media_player.volume_mute
+                data:
+                  entity_id: $mediaplayer
+                  is_volume_muted: false
+
+  - id: set_media_play_pause
+    then:
+      - if:
+          condition:
+            lambda: 'return id(api_ready);'
+          then:
+            - homeassistant.action:
+                action: media_player.media_play_pause
+                data:
+                  entity_id: $mediaplayer
+
+  - id: set_media_next
+    then:
+      - if:
+          condition:
+            lambda: 'return id(api_ready);'
+          then:
+            - homeassistant.action:
+                action: media_player.media_next_track
+                data:
+                  entity_id: $mediaplayer
+
+  - id: set_media_previous
+    then:
+      - if:
+          condition:
+            lambda: 'return id(api_ready);'
+          then:
+            - homeassistant.action:
+                action: media_player.media_previous_track
+                data:
+                  entity_id: $mediaplayer
+
+# Provide real-time playback position (dead reckoning)
+interval:
+  - interval: 1s
+    then:
+      - lambda: |-
+          if (id(music_state).state == "playing") {
+            id(local_track_position) += 1.0;
+
+            if (id(local_track_duration) > 0) {
+              float progress_percent =
+                (id(local_track_position) / id(local_track_duration)) * 100.0;
+              id(handle_media_progress)->execute(
+                id(local_track_position), id(local_track_duration),
+                progress_percent);
+            }
+          }
+
+# vim: set tabstop=2 shiftwidth=2 expandtab:

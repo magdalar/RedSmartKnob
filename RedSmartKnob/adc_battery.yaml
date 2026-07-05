@@ -1,0 +1,63 @@
+﻿sensor:
+  - platform: adc
+    pin: GPIO1                     # ADC1_CH0 (maps to ADC_CHANNEL_0 in Arduino example)
+    name: "Battery Voltage"
+    id: battery_voltage
+    attenuation: 12db               # matches ADC_ATTEN_DB_12
+    update_interval: 1s #30s
+    unit_of_measurement: "V"
+    icon: mdi:battery-medium
+    accuracy_decimals: 2
+    filters:
+      - multiply: 2.0
+      - median:
+          window_size: 7
+          send_every: 7
+          send_first_at: 7
+      - throttle: 1min
+    on_value:
+      then:
+        - component.update: battery_percentage
+            
+  - platform: template
+    id: battery_percentage
+    name: "Battery Percentage"
+    accuracy_decimals: 0
+    unit_of_measurement: "%"
+    update_interval: 60s
+    icon: mdi:battery-medium
+    lambda: |-
+      float v = id(battery_voltage).state;
+      // guard against NaN/Inf and obviously impossible voltages
+      if (std::isnan(v) || std::isinf(v)) return 0.0;
+      if (v < 2.5) return 0.0;      // below expected battery range -> 0%
+      if (v > 4.5) return 4.5;      // clamp extremely high voltages
+      return v;
+    filters:
+      - calibrate_linear:
+         method: exact
+         datapoints:
+          - 3.00 -> 0.0
+          - 3.30 -> 5.0
+          - 3.50 -> 10.0
+          - 3.60 -> 20.0
+          - 3.65 -> 30.0
+          - 3.70 -> 40.0
+          - 3.75 -> 50.0
+          - 3.80 -> 60.0
+          - 3.90 -> 70.0
+          - 4.00 -> 80.0
+          - 4.10 -> 90.0
+          - 4.15 -> 95.0
+          - 4.20 -> 100.0
+      - lambda: |-
+          if (x > 100) return 100;
+          if (x < 0) return 0;
+          return x;
+    on_value:
+      then:
+        - script.execute:
+            id: handle_battery_update
+            new_battery_level: !lambda 'return x;'
+
+# vim: set tabstop=2 shiftwidth=2 expandtab:

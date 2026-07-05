@@ -1,0 +1,148 @@
+# This unit connects the UI and the media player.
+# It does not directly reference the media player entity, as both a local
+# sendspin player and a remote HA media player are supported. Instead, scripts
+# are used to abstract the API.
+# The `handle_media_*` scripts are used to provide data _to_ the UI.
+# The `set_media_*` scripts are used to send commands to the media player.
+
+globals:
+  - id: is_playing
+    type: bool
+    initial_value: 'false'
+
+  - id: current_volume
+    type: float
+    initial_value: '0.5'  # Default fallback volume
+
+script:
+  - id: handle_media_album_art_failed
+    then:
+      - lvgl.image.update:
+          id: album_cover_image
+          src: album_placeholder
+      - lambda: |-
+          ESP_LOGI("actions_media", "Album art download failed!");
+
+  - id: handle_media_album_art_decoded
+    parameters:
+      art_source: esphome::image::Image*
+    then:
+      - lvgl.image.update:
+          id: album_cover_image
+          src: !lambda "return art_source;"
+      - lambda: |-
+          ESP_LOGD("actions_media", "Album art downloaded!");
+
+  - id: handle_media_progress
+    parameters:
+      position_secs: float
+      duration_secs: float
+      pct: float
+    then:
+      - lambda: |-
+          lv_bar_set_value(id(track_progress_bar), pct, LV_ANIM_OFF);
+
+          // --- FORMAT AND UPDATE THE TEXT LABEL ---
+          // Break down position into minutes and seconds
+          int pos_min = (int)position_secs / 60;
+          int pos_sec = (int)position_secs % 60;
+
+          // Break down duration into minutes and seconds
+          int dur_min = (int)duration_secs / 60;
+          int dur_sec = (int)duration_secs % 60;
+
+          if (pos_sec % 10 == 0) {
+            ESP_LOGD("actions_media", "Position: %.1f/%.1f (%.1f%%)",
+              position_secs, duration_secs, pct);
+          }
+
+          // Create a temporary buffer to hold the formatted text.
+          char buffer[32];
+          snprintf(buffer, sizeof(buffer), "%02d:%02d / %02d:%02d",
+                   pos_min, pos_sec, dur_min, dur_sec);
+
+          // Push the formatted string to the LVGL label
+          lv_label_set_text(id(track_time_label), buffer);
+
+  - id: handle_media_playing
+    then:
+      - lambda: 'ESP_LOGI("actions_media", "Media started playing.");'
+      #- lvgl.page.show: media_player_page
+
+  - id: handle_media_announcement
+    then:
+      - lambda: 'ESP_LOGI("actions_media", "An announcement is playing.");'
+
+  - id: handle_media_paused
+    then:
+      - lambda: 'ESP_LOGI("actions_media", "Media paused playing.");'
+
+  - id: handle_media_stopped
+    then:
+      - lambda: 'ESP_LOGI("actions_media", "Media stopped playing.");'
+
+  - id: handle_media_volume_muted
+    then:
+      - lambda: |-
+          ESP_LOGI("actions_media", "Muted.");
+      - lvgl.arc.update:
+          id: volume_control_widget
+          value: 0
+      - lvgl.label.update:
+          id: volume_text
+          text: "Mute"
+
+  - id: handle_media_volume_unmuted
+    then:
+      - lambda: |-
+          ESP_LOGI("actions_media", "Unmuted.");
+          id(handle_media_volume_changed)->execute(id(current_volume));
+
+  - id: handle_media_volume_changed
+    parameters:
+      volume: float
+    then:
+      - lambda: |-
+          ESP_LOGI("actions_media", "Current volume: %.1f%%", volume * 100.0);
+          id(current_volume) = volume;
+      - lvgl.arc.update:
+          id: volume_control_widget
+          value: !lambda 'return (volume * 100);'
+      - lvgl.label.update:
+          id: volume_text
+          text:
+            format: "Vol: %.0f%%"
+            args: [ "volume * 100" ]
+
+  - id: handle_media_track_changed
+    parameters:
+      track_name: std::string
+    then:
+      - lvgl.label.update:
+          id: track_name_widget
+          text: !lambda |-
+            std::string s = track_name;
+            // Remove non-ASCII characters
+            s.erase(std::remove_if(s.begin(), s.end(), [](unsigned char c){
+              return c > 127;
+            }), s.end());
+            ESP_LOGD("actions_media", "Music track: %s", s.c_str());
+            return s.empty() ? "Unknown Track" : s;
+
+  - id: handle_media_artist_changed
+    parameters:
+      artist_name: std::string
+    then:
+      - lvgl.label.update:
+          id: track_artist_widget
+          text: !lambda 'return artist_name.empty() ? "Unknown Artist" : artist_name;'
+
+  - id: handle_media_album_changed
+    parameters:
+      album_name: std::string
+    then:
+      - lvgl.label.update:
+          id: track_album_widget
+          text: !lambda 'return album_name.empty() ? "Unknown Album" : album_name;'
+
+# vim: set tabstop=2 shiftwidth=2 expandtab:

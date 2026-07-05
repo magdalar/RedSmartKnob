@@ -1,0 +1,38 @@
+substitutions:
+  font: gfonts://Roboto
+  mdi: fonts/materialdesignicons-webfont.ttf 
+  # http://materialdesignicons.com/cdn/7.4.47/ 
+  icon_clock: "\U000F00F0"
+  icon_battery: "\U000F0079"
+  icon_wifi: "\U000F05A9"
+  icon_thermo_outside: "\U000F18D7"
+  icon_thermo_inside: "\U000F0F55"
+
+# Font definition
+font:
+  - file: ${mdi}
+    id: mdi_icons
+    size: 24
+    glyphs: [
+      "${icon_clock}",
+      "${icon_wifi}",
+      "${icon_thermo_inside}",
+      "${icon_thermo_outside}",
+      "${icon_battery}" ]
+  - file: "gfonts://Roboto"
+    id: roboto_small
+    size: 14
+  - file: "gfonts://Roboto"
+    id: roboto
+    size: 20
+  - file: "gfonts://Roboto"
+    id: roboto_28
+    size: 28
+  #- file: "gfonts://Roboto"
+  #  id: roboto_36
+  #  size: 36
+  #- file: "gfonts://Roboto"
+  #  id: roboto_48
+  #  size: 48
+
+# vim: set tabstop=2 shiftwidth=2 expandtab:

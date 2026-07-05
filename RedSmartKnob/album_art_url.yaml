@@ -1,0 +1,32 @@
+# Album Art: URL (non-sendspin) version.
+# Calls handle_media_album_art_decoded or handle_media_album_art_failed
+# Trigger it by hooking up to script handle_media_album_url
+
+online_image:
+  - url: "${homeassistant_base_uri}/static/icons/favicon-192x192.png"
+    format: jpeg
+    id: online_image_album_art
+    type: RGB565
+    resize: ${imageheight}x${imageheight}
+    on_download_finished:
+      - script.execute:
+          id: handle_media_album_art_decoded
+          art_source: online_image_album_art
+    on_error:
+      - script.execute:
+          id: handle_media_album_art_failed
+
+#http_request:
+#  timeout: 10s
+#  verify_ssl: false
+
+script:
+  - id: handle_media_album_url
+    parameters:
+      url: std::string
+    then:
+      - lambda: |-
+          ESP_LOGD("uri_album_art", "New album cover URL: %s", url);
+      - online_image.set_url:
+          id: online_image_album_art
+          url: !lambda 'return "${homeassistant_base_uri}" + url;'

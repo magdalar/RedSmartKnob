@@ -1,0 +1,118 @@
+esphome:
+    on_boot:
+        - priority: -100
+          then:
+            - delay: 2s        # optional, wait for init/network
+            - light.turn_on:
+                id: back_light
+                brightness: 50%
+            - script.execute: screentime
+
+display:
+  - platform: mipi_spi
+    id: main_display
+    model: JC3636W518V2
+    data_rate: 80MHz
+    color_order: rgb
+    rotation: 0
+    cs_pin: 14
+    reset_pin: 21
+    invert_colors: true
+    auto_clear_enabled: false
+    update_interval: never
+    dimensions:
+        height: 360
+        width: 360
+
+binary_sensor:
+  - platform: template
+    name: "Touch Button"
+    id: touch_input
+
+# Touchscreen (CST816S)
+touchscreen:
+  - platform: cst816  # This may need to be implemented as custom component
+    id: my_touchscreen
+    display: main_display
+    interrupt_pin: GPIO9 # TOUCH_PIN_NUM_INT
+    reset_pin: GPIO10 # TOUCH_PIN_NUM_RST
+    transform:
+      mirror_x: false
+      mirror_y: false
+      swap_xy: false
+    #on_update:
+    #  - script.execute: screentime
+    #  - lambda: |-
+    #        for (auto touch: touches)  {
+    #            if (touch.state <= 2) {
+    #              ESP_LOGI("Touch points:", "id=%d x=%d, y=%d", touch.id, touch.x, touch.y);
+    #            }
+    #        }
+    on_touch:
+      then:
+        - logger.log:
+            format: "Touch at (%d, %d)"
+            args: [touch.x, touch.y]
+        - binary_sensor.template.publish:
+            id: touch_input
+            state: ON
+        - script.execute: screentime
+    on_release:
+      then:
+        - binary_sensor.template.publish:
+            id: touch_input
+            state: OFF
+
+# SPI configuration for the display
+spi:
+  id: display_qspi
+  type: quad
+  clk_pin: 13
+  data_pins: [15, 16, 17, 18]   # TFT_SDA0..3
+  
+# I2C for touch controller
+i2c:
+  sda: 11  # TOUCH_PIN_NUM_I2C_SDA
+  scl: 12  # TOUCH_PIN_NUM_I2C_SCL
+  scan: true
+  id: ic_bus
+
+output:
+  - platform: ledc
+    pin: GPIO47      # backlight GPIO
+    id: backlight_pwm
+
+light:
+  - platform: monochromatic
+    output: backlight_pwm
+    name: "Display Backlight"
+    icon: "mdi:television"
+    entity_category: config
+    id: back_light
+    restore_mode: ALWAYS_ON
+    default_transition_length:
+      milliseconds: 30
+    initial_state:
+      brightness: 50%
+    on_turn_off: 
+      then:
+        - lvgl.pause:
+            show_snow: true
+    on_turn_on: 
+      then:
+        - lvgl.resume:
+
+script:    
+  - id: screentime
+    mode: restart
+    then:
+      - light.turn_on: back_light
+      - delay: $screensaver
+      - light.turn_off: back_light
+      
+  - id: screenoff
+    then:
+      - script.stop: screentime
+      - light.turn_off: back_light
+
+# vim: set tabstop=2 shiftwidth=2 expandtab:

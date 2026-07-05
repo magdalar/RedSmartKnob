@@ -1,0 +1,87 @@
+# This unit provides the logic for the `time` page.
+
+globals:
+  - id: batt_percent
+    type: int
+    initial_value: '0'
+  - id: time_str
+    type: std::string
+    initial_value: ""
+
+sensor:
+  - platform: homeassistant
+    id: outdoor_temperature
+    attribute: temperature
+    entity_id: $weather
+    on_value: 
+      then:
+        - lvgl.label.update:
+            id: outdoor_temp_label
+            # TODO: The C should come from HA too.
+            text: !lambda 'char b[16]; snprintf(b, sizeof(b), "%.1f°C", x); return std::string(b);'
+
+  - platform: homeassistant
+    id: indoor_temperature
+    #attribute: temperature
+    entity_id: $indoor_temp_entity
+    on_value: 
+      then:
+        - lvgl.label.update:
+            id: indoor_temp_label
+            # TODO: The C should come from HA too.
+            text: !lambda 'char b[16]; snprintf(b, sizeof(b), "%.1f°C", x); return std::string(b);'
+
+script:
+  - id: handle_battery_update
+    parameters:
+        new_battery_level: float
+    then:
+      - lambda: |-
+          // guard against NaN/Inf from filters or template
+          if (std::isnan(new_battery_level) || std::isinf(new_battery_level)) {
+            id(batt_percent) = 0;
+            return;
+          }
+          // round and clamp to 0..100
+          int pct = (int)round(new_battery_level);
+          if (pct < 0) pct = 0;
+          if (pct > 100) pct = 100;
+          id(batt_percent) = pct;
+      - if:
+          condition:
+            lambda: 'return id(batt_percent) < 20.0;'
+          then:
+            - logger.log: "Warning: Battery is low!"
+      # update the arc value and color
+      - lvgl.arc.update:
+          id: batt_arc
+          value: !lambda 'return id(batt_percent);'
+          arc_color: !lambda |-
+            int pct = id(batt_percent);
+            if (pct > 50) return lv_color_hex(0x00FF00);
+            else if (pct > 20) return lv_color_hex(0xFFA500);
+            else return lv_color_hex(0xFF0000);
+      # update percentage text
+      - lvgl.label.update:
+          id: batt_text
+          text: !lambda 'return std::to_string(id(batt_percent)) + "%";'
+
+  - id: update_time_labels
+    then:
+      - lambda: |-
+          auto t = id(time_comp).now();
+          static const char* days[]   = {"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
+          static const char* months[] = {"Jan","Feb","Mar","Apr","May","Jun",
+                                         "Jul","Aug","Sep","Oct","Nov","Dec"};
+          char buf[64];
+          snprintf(buf, sizeof(buf), "%s %02u %s\n%02u:%02u:%02u",
+                   days[t.day_of_week - 1],
+                   t.day_of_month,
+                   months[t.month - 1],
+                   t.hour, t.minute, t.second);
+          id(time_str) = std::string(buf);
+      - lvgl.label.update:
+          id: date_time_widget
+          text: !lambda 'return id(time_str);'
+
+# vim: set tabstop=2 shiftwidth=2 expandtab:
