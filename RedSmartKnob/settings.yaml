@@ -1,0 +1,37 @@
+number:
+  - platform: template
+    id: screen_timeout_seconds
+    name: Screen timeout delay
+    unit_of_measurement: "s"
+    icon: "mdi:timer-outline"
+    entity_category: config
+    optimistic: true
+    restore_value: true
+    mode: box
+    min_value: 15
+    max_value: 3600
+    step: 5
+    initial_value: 60
+    set_action:
+      - script.execute: standby_screen_activity
+
+text:
+  # This seems nice, but gets confusing since it can drift from $mediaplayer
+  #- platform: template
+  #  name: "Target MA Media Player Entity"
+  #  id: target_media_player
+  #  optimistic: true
+  #  entity_category: config
+  #  mode: text
+  #  initial_value: "${mediaplayer}"
+  #  restore_value: true
+
+  - platform: template
+    name: "Favorite Playlist 1"
+    id: fav_playlist_1
+    optimistic: true
+    entity_category: config
+    icon: "mdi:playlist-music"
+    mode: text
+    initial_value: "My Awesome Playlist"
+    restore_value: true

@@ -159,4 +159,23 @@ script:
             ESP_LOGD("actions_media", "Music album: %s", s.c_str());
             return s.empty() ? "Unknown Album" : s;
 
+  - id: play_playlist
+    parameters:
+      uri: std::string
+    then:
+      - if:
+          condition:
+            lambda: 'return !uri.empty();'
+          then:
+            - homeassistant.service:
+                service: music_assistant.play_media
+                data:
+                  entity_id: "${mediaplayer}"
+                  media_type: playlist
+                  enqueue: replace
+                data_template:
+                  media_id: "{{ media_url }}"
+                variables:
+                  media_url: return uri.c_str();
+
 # vim: set tabstop=2 shiftwidth=2 expandtab:

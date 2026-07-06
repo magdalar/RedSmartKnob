@@ -23,27 +23,19 @@ widgets:
       height: 100%
       
   # Album cover container
-  - obj:
-      id: album_container
-      width: 120
-      height: 120
+  - image:
+      id: album_cover_image
+      src: album_placeholder  # References the placeholder image
       align: CENTER
       y: -70
-      #bg_opa: 0%
-      bg_opa: 100%
-      border_width: 0  # This hides the border
-      bg_color: 0x1a1a1a
-      radius: 15
-      widgets:
-        - image:
-            id: album_cover_image
-            src: album_placeholder  # References the placeholder image
-            align: CENTER
+      width: ${imagewidth}
+      height: ${imageheight}
+      antialias: false
+      clickable: false
 
   # Track information with better spacing
   - label:
       id: track_artist_widget
-      text_font: theme_font_normal
       text_color: ${theme_font_color}
       align: CENTER
       width: 80%
@@ -113,7 +105,6 @@ widgets:
   # Volume percentage display
   - label:
       id: volume_text
-      text_font: theme_font_normal
       text_color: ${theme_font_color}
       align: CENTER
       y: 140

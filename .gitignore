@@ -7,4 +7,4 @@
 /venv/
 .kopiaignore
 .ackrc
-red-smartknob-ty.yaml
+red-smartknob-ty*.yaml

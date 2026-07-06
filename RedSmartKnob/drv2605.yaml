@@ -16,6 +16,8 @@ number:
     max_value: 255
     step: 1
     initial_value: 255
+    entity_category: config
+    optimistic: true
     set_action:
       - drv2605.set_realtime_value:
           id: haptic_driver

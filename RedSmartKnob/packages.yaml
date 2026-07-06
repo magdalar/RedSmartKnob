@@ -1,6 +1,6 @@
 substitutions:
   ### These are not user-configurable.
-  #imagewidth: 120
+  imagewidth: 120
   imageheight: 120
   #screenwidth: 360
   #screenheight: 360
@@ -28,10 +28,10 @@ packages:
   album_art_url: ${ {} if enable_sendspin else pkg_album_art_url }
   ######### END REMOTE MEDIAPLAYER MODE ###########
 
-  esp_settings: !include esp-config.yaml
-  ha_settings: !include ha-config.yaml
+  esp_config: !include esp-config.yaml
+  ha_config: !include ha-config.yaml
+  user_settings: !include settings.yaml
   # Touchscreen display initialization.
-  # TODO: change how the 'screensaver' works (screentime script).
   display: !include display.yaml
   # UI font and icon definitions.
   fonts: !include fonts.yaml

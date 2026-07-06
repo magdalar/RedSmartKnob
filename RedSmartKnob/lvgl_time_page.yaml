@@ -94,7 +94,6 @@ widgets:
 
   - label:
       id: batt_text
-      text_font: theme_font_normal
       text_color: ${theme_font_color}
       align: CENTER
       x: 10

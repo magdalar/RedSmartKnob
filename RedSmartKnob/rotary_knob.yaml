@@ -20,7 +20,8 @@ sensor:
     pin_b: 7
     min_value: 0
     max_value: 100
-    #publish_initial_value: true
+    entity_category: diagnostic
+    publish_initial_value: true
     restore_mode: RESTORE_DEFAULT_ZERO
     on_value:
       then:
@@ -44,7 +45,7 @@ sensor:
         - drv2605.play_effect:
             id: haptic_driver
             effect: 7
-        - script.execute: screentime
+        - script.execute: standby_screen_activity
         # Original behavior: seek within song.
         #- lambda: |-
         #    static int last = 0;

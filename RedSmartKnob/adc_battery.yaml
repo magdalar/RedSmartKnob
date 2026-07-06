@@ -4,9 +4,10 @@
     name: "Battery Voltage"
     id: battery_voltage
     attenuation: 12db               # matches ADC_ATTEN_DB_12
-    update_interval: 1s #30s
+    update_interval: 1s
     unit_of_measurement: "V"
     icon: mdi:battery-medium
+    entity_category: diagnostic
     accuracy_decimals: 2
     filters:
       - multiply: 2.0

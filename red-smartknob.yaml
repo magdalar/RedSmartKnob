@@ -11,11 +11,10 @@ substitutions:
 
   # Set to true if you want a local sendspin client, rather than controlling a remote mediaplayer.
   enable_sendspin: true
-  # Only used if `enable_sendspin` is `false`. Set this to the mediaplayer to control.
+  # The media player entity to control. If using `enable_sendspin`, this should
+  # refer to the Music Assistant version of the entity, not the device
+  # directly.
   mediaplayer: media_player.office
-
-  # How long the screen should stay on after the last interaction
-  screensaver: 300 sec
 
   api_encryption_key: !secret api_encryption_key
   ota_password: !secret ota_password

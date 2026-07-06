@@ -3,6 +3,10 @@ substitutions:
   theme_font_color2: 0xffffff
   theme_bg_color: 0x000000
 
+lvgl:
+  theme:
+    dark_mode: true
+
 #image:
 #  - id: !extend bg_image_file
 #    file: https://raw.githubusercontent.com/magdalar/RedSmartKnob/main/themes/blue/bg_360x360.png
