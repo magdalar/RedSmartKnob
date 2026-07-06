@@ -135,7 +135,14 @@ script:
     then:
       - lvgl.label.update:
           id: track_artist_widget
-          text: !lambda 'return artist_name.empty() ? "Unknown Artist" : artist_name;'
+          text: !lambda |-
+            std::string s = artist_name;
+            // Remove non-ASCII characters
+            s.erase(std::remove_if(s.begin(), s.end(), [](unsigned char c){
+              return c > 127;
+            }), s.end());
+            ESP_LOGD("actions_media", "Music artist: %s", s.c_str());
+            return s.empty() ? "Unknown Artist" : s;
 
   - id: handle_media_album_changed
     parameters:
@@ -143,6 +150,13 @@ script:
     then:
       - lvgl.label.update:
           id: track_album_widget
-          text: !lambda 'return album_name.empty() ? "Unknown Album" : album_name;'
+          text: !lambda |-
+            std::string s = album_name;
+            // Remove non-ASCII characters
+            s.erase(std::remove_if(s.begin(), s.end(), [](unsigned char c){
+              return c > 127;
+            }), s.end());
+            ESP_LOGD("actions_media", "Music album: %s", s.c_str());
+            return s.empty() ? "Unknown Album" : s;
 
 # vim: set tabstop=2 shiftwidth=2 expandtab:
