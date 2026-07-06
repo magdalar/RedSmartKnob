@@ -8,6 +8,9 @@ substitutions:
   # Where to pull image files from.
   # Override this in the outer layer to "./RedSmartKnob" to use local files.
   repo_base_uri: "https://raw.githubusercontent.com/magdalar/RedSmartKnob/main/RedSmartKnob"
+
+  # Default theme. Override in caller.
+  theme: "white"
   
   pkg_sendspin: !include sendspin.yaml
   pkg_album_art_sendspin: !include album_art_sendspin.yaml
