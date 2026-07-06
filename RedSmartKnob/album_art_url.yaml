@@ -16,9 +16,9 @@ online_image:
       - script.execute:
           id: handle_media_album_art_failed
 
-#http_request:
-#  timeout: 10s
-#  verify_ssl: false
+http_request:
+  timeout: 10s
+  verify_ssl: false
 
 script:
   - id: handle_media_album_url
