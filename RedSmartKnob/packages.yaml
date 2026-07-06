@@ -43,4 +43,7 @@ packages:
   # TODO: Add the sd card if needed, otherwise just leave it out...
   #sd_card: !include RedSmartKnob/sd_card.yaml
 
+  # Theme modifications
+  theme: !include themes/${theme}/theme.yaml
+
 # vim: set tabstop=2 shiftwidth=2 expandtab:

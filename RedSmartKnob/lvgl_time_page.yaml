@@ -18,7 +18,7 @@ widgets:
   - label:
       id: clock_icon
       text_font: mdi_icons
-      text_color: 0x000000
+      text_color: ${theme_font_color}
       align: CENTER
       y: -40
       x: -100
@@ -26,9 +26,8 @@ widgets:
       
   - label:
       id: date_time_widget
-      text_font: roboto_28
-      #text_color: 0xFFFFFF
-      text_color: 0x000000
+      text_font: theme_font_large
+      text_color: ${theme_font_color}
       align: CENTER
       y: -40
       long_mode: WRAP
@@ -38,7 +37,7 @@ widgets:
   - label:
       id: outdoor_temp_icon
       text_font: mdi_icons
-      text_color: 0x000000
+      text_color: ${theme_font_color}
       align: CENTER
       y: 25
       x: -100
@@ -46,9 +45,8 @@ widgets:
 
   - label:
       id: outdoor_temp_label
-      text_font: roboto_28
-      #text_color: 0x00BFFF
-      text_color: 0x000000
+      text_font: theme_font_large
+      text_color: ${theme_font_color}
       align: CENTER
       y: 25
       text: "–"
@@ -56,7 +54,7 @@ widgets:
   - label:
       id: indoor_temp_icon
       text_font: mdi_icons
-      text_color: 0x000000
+      text_color: ${theme_font_color}
       align: CENTER
       y: 55
       x: -100
@@ -64,9 +62,8 @@ widgets:
 
   - label:
       id: indoor_temp_label
-      text_font: roboto_28
-      #text_color: 0x00BFFF
-      text_color: 0x000000
+      text_font: theme_font_large
+      text_color: ${theme_font_color}
       align: CENTER
       y: 55
       text: "–"
@@ -88,7 +85,7 @@ widgets:
   - label:
       id: batt_icon
       text_font: mdi_icons
-      text_color: 0x000000
+      text_color: ${theme_font_color}
       align: CENTER
       x: -20
       y: -120
@@ -96,8 +93,8 @@ widgets:
 
   - label:
       id: batt_text
-      text_font: roboto
-      text_color: 0x000000
+      text_font: theme_font_normal
+      text_color: ${theme_font_color}
       align: CENTER
       x: 10
       y: -120

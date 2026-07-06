@@ -1,0 +1,7 @@
+substitutions:
+  theme_font_color: 0xffffff
+  theme_font_color2: 0x888888
+
+#image:
+#  - id: !extend bg_image_file
+#    file: https://raw.githubusercontent.com/magdalar/RedSmartKnob/main/themes/orange/bg_360x360.png

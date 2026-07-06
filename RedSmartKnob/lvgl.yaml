@@ -1,16 +1,15 @@
 # The lvgl UI base
 
 image:
-  # Paths are relative to the top-level yaml, not this file.
-  - file: https://raw.githubusercontent.com/magdalar/RedSmartKnob/main/images/bg.png
-    #file: "images/bg.png"
+  # File paths are relative to the top-level yaml, not this file. So we use http references instead.
+  - file: https://raw.githubusercontent.com/magdalar/RedSmartKnob/main/themes/${theme}/bg_360x360.png
     id: bg_image_file
     type: RGB565         # good choice for 16-bit displays; change to RGB if you need full color
     resize: 360x360      # optional, keeps the image at the display size (useful for round displays)
     transparency: alpha_channel   # optional — allows PNG alpha blending (requires RGB/RGB565 support)
   
-  # Optional: Add a static album cover placeholder
-  - file: https://raw.githubusercontent.com/magdalar/RedSmartKnob/main/images/album_placeholder.png
+  # Add a static album cover placeholder
+  - file: https://raw.githubusercontent.com/magdalar/RedSmartKnob/main/RedSmartKnob/images/album_placeholder.png
     #file: "images/album_placeholder.png"  # Create this 120x120 PNG file
     id: album_placeholder
     type: RGB565
