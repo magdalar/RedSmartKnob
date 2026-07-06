@@ -23,6 +23,11 @@ substitutions:
   wifi_api_fallback_password: !secret wifi_api_fallback_password
 
 packages:
-  RedSmartKnob: !include RedSmartKnob/packages.yaml
+  # For local development, use:
+  #RedSmartKnob: !include RedSmartKnob/packages.yaml
+  # Otherwise, this will pull it from GitHub:
+  RedSmartKnob:
+    url: github://magdalar/RedSmartKnob/RedSmartKnob/packages.yaml@main
+    refresh: 0  # always pull, comment out for caching
  
 # vim: set tabstop=2 shiftwidth=2 expandtab:
