@@ -5,6 +5,7 @@ id: time_page
 #on_click:
 #  then:
 #    - script.execute: set_media_play_pause
+bg_color: ${theme_bg_color}
 widgets:
   # Add background as first widget in each page
   - image:

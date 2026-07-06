@@ -2,6 +2,7 @@
 # Script references should be primarily in actions_settings.yaml
 
 id: settings_page
+bg_color: ${theme_bg_color}
 widgets:
   - image:
       id: bg_image_settings

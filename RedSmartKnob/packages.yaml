@@ -5,6 +5,10 @@ substitutions:
   #screenwidth: 360
   #screenheight: 360
   
+  # Where to pull image files from.
+  # Override this in the outer layer to "./RedSmartKnob" to use local files.
+  repo_base_uri: "https://raw.githubusercontent.com/magdalar/RedSmartKnob/main/RedSmartKnob"
+  
   pkg_sendspin: !include sendspin.yaml
   pkg_album_art_sendspin: !include album_art_sendspin.yaml
   pkg_mediaplayer: !include mediaplayer.yaml
@@ -43,7 +47,7 @@ packages:
   # TODO: Add the sd card if needed, otherwise just leave it out...
   #sd_card: !include RedSmartKnob/sd_card.yaml
 
-  # Theme modifications
+  # Theme modifications. Must come last.
   theme: !include themes/${theme}/theme.yaml
 
 # vim: set tabstop=2 shiftwidth=2 expandtab:

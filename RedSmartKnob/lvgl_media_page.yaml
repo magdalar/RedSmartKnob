@@ -12,6 +12,7 @@ on_swipe_right:
 on_swipe_left:
   - script.execute:
       id: set_media_next
+bg_color: ${theme_bg_color}
 widgets:
   # Add background as first widget in each page
   - image:
