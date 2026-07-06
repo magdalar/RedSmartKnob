@@ -27,7 +27,9 @@ packages:
   #RedSmartKnob: !include RedSmartKnob/packages.yaml
   # Otherwise, this will pull it from GitHub:
   RedSmartKnob:
-    url: github://magdalar/RedSmartKnob/RedSmartKnob/packages.yaml@main
-    refresh: 0  # always pull, comment out for caching
+    url: https://github.com/magdalar/RedSmartKnob
+    files: [RedSmartKnob/packages.yaml]
+    ref: main
+    refresh: 0s  # always pull, comment out for caching
  
 # vim: set tabstop=2 shiftwidth=2 expandtab:
