@@ -1,0 +1,46 @@
+substitutions:
+  ### These are not user-configurable.
+  #imagewidth: 120
+  imageheight: 120
+  #screenwidth: 360
+  #screenheight: 360
+  
+  pkg_sendspin: !include sendspin.yaml
+  pkg_album_art_sendspin: !include album_art_sendspin.yaml
+  pkg_mediaplayer: !include mediaplayer.yaml
+  pkg_album_art_url: !include album_art_url.yaml
+
+packages:
+  ######### SENDSPIN MODE ###########
+  sendspin: ${ pkg_sendspin if enable_sendspin else {} }
+  album_art_sendspin: ${ pkg_album_art_sendspin if enable_sendspin else {} }
+  ######### END SENDSPIN MODE ###########
+
+  ######### REMOTE MEDIAPLAYER MODE ###########
+  mediaplayer: ${ {} if enable_sendspin else pkg_mediaplayer }
+  album_art_url: ${ {} if enable_sendspin else pkg_album_art_url }
+  ######### END REMOTE MEDIAPLAYER MODE ###########
+
+  esp_settings: !include esp-config.yaml
+  ha_settings: !include ha-config.yaml
+  # Touchscreen display initialization.
+  # TODO: change how the 'screensaver' works (screentime script).
+  display: !include display.yaml
+  # UI font and icon definitions.
+  fonts: !include fonts.yaml
+  # The LVGL user interface
+  lvgl: !include lvgl.yaml
+  # Wiring for the `time` lvgl UI page.
+  actions_time: !include actions_time.yaml
+  # Wiring between the lvgl UI and the mediaplayer.
+  actions_media: !include actions_media.yaml
+  # Battery status
+  battery: !include adc_battery.yaml
+  # Rotary Knob
+  rotary_knob: !include rotary_knob.yaml
+  # drv2605: haptic feedback.
+  drv2605: !include drv2605.yaml
+  # TODO: Add the sd card if needed, otherwise just leave it out...
+  #sd_card: !include RedSmartKnob/sd_card.yaml
+
+# vim: set tabstop=2 shiftwidth=2 expandtab:

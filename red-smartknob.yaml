@@ -8,50 +8,21 @@ substitutions:
   indoor_temp_entity: sensor.indoor_temperature
   homeassistant_base_uri: "https://homeassistant.example.com"
 
-  # If using 'mediaplayer' rather than 'sendspin', define this, and comment out the right module below too.
-  #mediaplayer: media_player.office
+  # Set to true if you want a local sendspin client, rather than controlling a remote mediaplayer.
+  enable_sendspin: true
+  # Only used if `enable_sendspin` is `false`. Set this to the mediaplayer to control.
+  mediaplayer: media_player.office
 
   # How long the screen should stay on after the last interaction
   screensaver: 300 sec
 
-  ### These are not user-configurable.
-  #imagewidth: 120
-  imageheight: 120
-  #screenwidth: 360
-  #screenheight: 360
+  api_encryption_key: !secret api_encryption_key
+  ota_password: !secret ota_password
+  wifi_ssid: !secret wifi_ssid
+  wifi_password: !secret wifi_password
+  wifi_api_fallback_password: !secret wifi_api_fallback_password
 
 packages:
-  ######### SENDSPIN MODE ###########
-  sendspin: !include RedSmartKnob/sendspin.yaml
-  album_art_sendspin: !include RedSmartKnob/album_art_sendspin.yaml
-  ######### END SENDSPIN MODE ###########
-
-  ######### REMOTE MEDIAPLAYER MODE ###########
-  #mediaplayer: !include RedSmartKnob/mediaplayer.yaml
-  #album_art_url: !include RedSmartKnob/album_art_url.yaml
-  ######### END REMOTE MEDIAPLAYER MODE ###########
-
-  esp_settings: !include RedSmartKnob/esp-config.yaml
-  ha_settings: !include RedSmartKnob/ha-config.yaml
-  # Touchscreen display initialization.
-  # TODO: change how the 'screensaver' works (screentime script).
-  display: !include RedSmartKnob/waveshare.yaml
-  # UI font and icon definitions.
-  fonts: !include RedSmartKnob/fonts.yaml
-  # The LVGL user interface
-  lvgl: !include RedSmartKnob/lvgl.yaml
-  # Wiring for the `time` lvgl UI page.
-  actions_time: !include RedSmartKnob/actions_time.yaml
-  # Wiring between the lvgl UI and the mediaplayer.
-  actions_media: !include RedSmartKnob/actions_media.yaml
-  # Battery status
-  battery: !include RedSmartKnob/adc_battery.yaml
-  # Rotary Knob
-  rotary_knob: !include RedSmartKnob/rotary_knob.yaml
-  # drv2605: haptic feedback.
-  drv2605: !include RedSmartKnob/drv2605.yaml
-  # TODO: Add the sd card if needed, otherwise just leave it out...
-  #sd_card: !include RedSmartKnob/sd_card.yaml
-
+  RedSmartKnob: !include RedSmartKnob/packages.yaml
  
 # vim: set tabstop=2 shiftwidth=2 expandtab:
