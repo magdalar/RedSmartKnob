@@ -14,9 +14,10 @@ esphome:
                 brightness: 50%
             - script.execute: standby_screen_activity
 
-wifi:
-  on_connect:
-    - delay: 1s
+# TODO: If any runtime loads are needed, start them here.
+#wifi:
+#  on_connect:
+#    - delay: 1s
 
 api:
   on_client_connected:
