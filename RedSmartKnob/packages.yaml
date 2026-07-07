@@ -32,6 +32,8 @@ packages:
 
   esp_config: !include esp-config.yaml
   ha_config: !include ha-config.yaml
+  # Logic for startup / boot time.
+  startup: !include startup.yaml
   user_settings: !include settings.yaml
   # Touchscreen display initialization.
   display: !include display.yaml

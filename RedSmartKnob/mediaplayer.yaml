@@ -1,9 +1,4 @@
 globals:
-  # api_ready gates actions outward, to prevent desynchronization. Though it only works at startup, so utility is questionable...
-  - id: api_ready
-    type: bool
-    initial_value: 'false'
-
   - id: local_track_position
     type: float
     initial_value: '0.0'
@@ -13,36 +8,20 @@ globals:
     initial_value: '0.0'
 
 # Add API connection event to initialize everything when HA is connected
-api:
-  on_client_disconnected:
-    - if:
-        condition:
-          not:
-            api.connected:
-              state_subscription_only: true
-        then:
-          - logger.log: "CRITICAL: Home Assistant is no longer in the room!"
-          - lambda: |-
-              id(api_ready) = false;
-    - logger.log:
-        format: "Client %s disconnected (IP: %s)"
-        args: [ "client_info.c_str()", "client_address.c_str()" ]
-  on_client_connected:
-    - if:
-        condition:
-          api.connected:
-            state_subscription_only: true
-        then:
-          - delay: 1s  # Give sensors time to get initial values
-          - lambda: |-
-              ESP_LOGI("media", "Home Assistant connected, initializing media player...");
-              id(api_ready) = true;
-          # Request an explicit update from the source.
-          # This will push updates through the normal sensors.
-          - homeassistant.service:
-              service: homeassistant.update_entity
-              data:
-                entity_id: $mediaplayer
+#api:
+#  on_client_connected:
+#    - if:
+#        condition:
+#          api.connected:
+#            state_subscription_only: true
+#        then:
+#          - delay: 1s  # Give sensors time to get initial values
+#          # Request an explicit update from the source.
+#          # This will push updates through the normal sensors.
+#          - homeassistant.service:
+#              service: homeassistant.update_entity
+#              data:
+#                entity_id: $mediaplayer
 
 text_sensor:
   - platform: homeassistant
