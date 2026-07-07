@@ -127,31 +127,45 @@ script:
   - id: navigate_left
     then:
       - script.execute: haptic_pulse
-      - script.execute:
-          id: navigate_to
-          target: !lambda |-
-            if (id(current_page_enum).current_option() == "media") {
-              return "time";
-            } else if (id(current_page_enum).current_option() == "time") {
-              return "settings";
-            } else {
-              return "media";
-            }
+      - if:
+          condition:
+            lambda: 'return id(active_popup_enum).current_option() != "none";'
+          then:
+            - script.execute:
+                id: hide_popups
+          else:
+            - script.execute:
+                id: navigate_to
+                target: !lambda |-
+                  if (id(current_page_enum).current_option() == "media") {
+                    return "time";
+                  } else if (id(current_page_enum).current_option() == "time") {
+                    return "settings";
+                  } else {
+                    return "media";
+                  }
 
   - id: navigate_right
     then:
       - script.execute: haptic_pulse
-      # TODO: Any way to do the 'lvgl.page.next: animation: MOVE_RIGHT time: 200ms' ?
-      - script.execute:
-          id: navigate_to
-          target: !lambda |-
-            if (id(current_page_enum).current_option() == "media") {
-              return "settings";
-            } else if (id(current_page_enum).current_option() == "time") {
-              return "media";
-            } else {
-              return "time";
-            }
+      - if:
+          condition:
+            lambda: 'return id(active_popup_enum).current_option() != "none";'
+          then:
+            - script.execute:
+                id: hide_popups
+          else:
+            # TODO: Any way to do the 'lvgl.page.next: animation: MOVE_RIGHT time: 200ms' ?
+            - script.execute:
+                id: navigate_to
+                target: !lambda |-
+                  if (id(current_page_enum).current_option() == "media") {
+                    return "settings";
+                  } else if (id(current_page_enum).current_option() == "time") {
+                    return "media";
+                  } else {
+                    return "time";
+                  }
 
   - id: show_media_controls_popup
     mode: restart
