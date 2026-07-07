@@ -11,6 +11,8 @@ substitutions:
 
   # Default theme. Override in caller.
   theme: "white"
+
+  project_version: 2026.7.0
   
   pkg_sendspin: !include sendspin.yaml
   pkg_album_art_sendspin: !include album_art_sendspin.yaml
