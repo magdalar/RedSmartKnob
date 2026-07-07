@@ -39,8 +39,10 @@ packages:
   display: !include display.yaml
   # UI font and icon definitions.
   fonts: !include fonts.yaml
-  # The LVGL user interface
+  # The LVGL user interface definition
   lvgl: !include lvgl.yaml
+  # The main UI loop and navigation logic
+  ui_loop: !include ui_loop.yaml
   # Wiring for the `time` lvgl UI page.
   actions_time: !include actions_time.yaml
   # Wiring between the lvgl UI and the mediaplayer.

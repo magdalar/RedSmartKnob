@@ -23,4 +23,11 @@ number:
           id: haptic_driver
           value: !lambda "return x;"
 
+script:
+  - id: haptic_pulse
+    then:
+      - drv2605.play_effect:
+          id: haptic_driver
+          effect: 7  # Soft Bump
+
 # vim: set tabstop=2 shiftwidth=2 expandtab:

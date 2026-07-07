@@ -35,17 +35,9 @@ sensor:
             condition:
               lambda: 'return id(rotary_encoder_diff) > 0;'
             then:
-              - lvgl.page.next:
-                  animation: MOVE_LEFT
-                  time: 200ms
+              - script.execute: navigate_left
             else:
-              - lvgl.page.previous:
-                  animation: MOVE_RIGHT
-                  time: 200ms
-        - drv2605.play_effect:
-            id: haptic_driver
-            effect: 7
-        - script.execute: standby_screen_activity
+              - script.execute: navigate_right
         # Original behavior: seek within song.
         #- lambda: |-
         #    static int last = 0;
@@ -57,8 +49,5 @@ sensor:
         #    id(seek_pos) = base + diff * step;
         #    if (id(seek_pos) < 0) id(seek_pos) = 0;
         ## wait 200ms before actually calling, so rapid turns batch
-        #- drv2605.play_effect:
-        #    id: haptic_driver
-        #    effect: 7  # Soft Bump
         #- delay: 200ms
         #- script.execute: do_seek

@@ -9,10 +9,9 @@ esphome:
         - priority: -100
           then:
             - delay: 300ms
-            - light.turn_on:
-                id: back_light
-                brightness: 50%
-            - script.execute: standby_screen_activity
+            - script.execute:
+                id: navigate_to
+                target: !lambda 'return id(idle_page_preference).current_option();'
 
 # TODO: If any runtime loads are needed, start them here.
 #wifi:
@@ -32,6 +31,7 @@ api:
           - lambda: |-
               ESP_LOGI("startup", "Home Assistant connected.");
               id(api_ready) = true;
+              id(api_connected)->execute();
   on_client_disconnected:
     - logger.log:
         format: "Client %s disconnected (IP: %s)"
@@ -45,3 +45,4 @@ api:
           - lambda: |-
               ESP_LOGW("startup", "Home Assistant disconnected.");
               id(api_ready) = false;
+              id(api_disconnected)->execute();

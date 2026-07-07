@@ -31,7 +31,7 @@ touchscreen:
       mirror_y: false
       swap_xy: false
     #on_update:
-    #  - script.execute: standby_screen_activity
+    #  - script.execute: reset_idle_timer
     #  - lambda: |-
     #        for (auto touch: touches)  {
     #            if (touch.state <= 2) {
@@ -46,7 +46,7 @@ touchscreen:
         - binary_sensor.template.publish:
             id: touch_input
             state: ON
-        - script.execute: standby_screen_activity
+        - script.execute: reset_idle_timer
     on_release:
       then:
         - binary_sensor.template.publish:
@@ -91,19 +91,5 @@ light:
     on_turn_on: 
       then:
         - lvgl.resume:
-
-script:    
-  - id: standby_screen_activity
-    mode: restart
-    then:
-      - light.turn_on: back_light
-      - delay: !lambda |-
-          return (uint32_t) (id(screen_timeout_seconds).state * 1000.0f);
-      - light.turn_off: back_light
-      
-  - id: screenoff
-    then:
-      - script.stop: standby_screen_activity
-      - light.turn_off: back_light
 
 # vim: set tabstop=2 shiftwidth=2 expandtab:

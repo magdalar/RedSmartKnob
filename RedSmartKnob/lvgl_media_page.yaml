@@ -6,12 +6,12 @@ id: media_player_page
 on_click:
   - script.execute:
       id: set_media_play_pause
-on_swipe_right:
-  - script.execute:
-      id: set_media_previous
-on_swipe_left:
-  - script.execute:
-      id: set_media_next
+#on_swipe_right:
+#  - script.execute:
+#      id: set_media_previous
+#on_swipe_left:
+#  - script.execute:
+#      id: set_media_next
 bg_color: ${theme_bg_color}
 widgets:
   # Add background as first widget in each page

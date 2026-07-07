@@ -13,7 +13,23 @@ number:
     step: 5
     initial_value: 60
     set_action:
-      - script.execute: standby_screen_activity
+      - script.execute: reset_idle_timer
+
+  - platform: template
+    id: idle_timeout_seconds
+    name: Idle timeout delay
+    unit_of_measurement: "s"
+    icon: "mdi:timer-outline"
+    entity_category: config
+    optimistic: true
+    restore_value: true
+    mode: box
+    min_value: 1
+    max_value: 60
+    step: 1
+    initial_value: 5
+    set_action:
+      - script.execute: reset_idle_timer
 
 text:
   # This seems nice, but gets confusing since it can drift from $mediaplayer
@@ -35,3 +51,20 @@ text:
     mode: text
     initial_value: "My Awesome Playlist"
     restore_value: true
+
+select:
+  - platform: template
+    name: "Idle Page Preference"
+    id: idle_page_preference
+    optimistic: true
+    restore_value: true
+    options:
+      - "time"
+      - "media"
+    initial_option: "time"
+    set_action:
+      - script.execute: reset_idle_timer
+    on_value:
+      - logger.log:
+          format: "Display preference changed to: %s"
+          args: ["x.c_str()"]

@@ -1,0 +1,149 @@
+# The core UI loop and navigation
+
+globals:
+  # (Optional) Tracks if a popup is currently visible, to avoid double-triggers.
+  - id: active_popup
+    type: std::string
+    initial_value: '""'
+
+select:
+  - platform: template
+    id: current_page_enum
+    name: "Current Page"
+    icon: "mdi:book-open-page-variant-outline"
+    entity_category: diagnostic
+    optimistic: true
+    options:
+      - "bootup"
+      - "time"
+      - "media"
+      - "settings"
+    initial_option: "bootup"
+
+script:    
+  - id: api_connected
+    then:
+      - lvgl.widget.show: top_api_status_widget
+
+  - id: api_disconnected
+    then:
+      - lvgl.widget.hide: top_api_status_widget
+
+  - id: standby_screen_activity
+    mode: restart
+    then:
+      - light.turn_on: back_light
+      - delay: !lambda |-
+          return (uint32_t) (id(screen_timeout_seconds).state * 1000.0f);
+      - light.turn_off: back_light
+      
+  - id: screen_off
+    then:
+      - script.stop: standby_screen_activity
+      - light.turn_off: back_light
+
+  - id: reset_idle_timer
+    mode: restart
+    then:
+      - script.execute: standby_screen_activity
+      - delay: !lambda |-
+          return (uint32_t) (id(idle_timeout_seconds).state * 1000.0f);
+      # 1. First, hide any active popups
+      - if:
+          condition:
+            lambda: 'return id(active_popup) != "";'
+          then:
+            - script.execute: hide_popups
+            
+      # 2. Then, check if we need to return to the default page
+      - if:
+          condition:
+            lambda: |-
+              // Compare current page to the HA select preference
+              return id(current_page_enum).current_opion() != id(idle_page_preference).current_option();
+          then:
+            - logger.log: "Idle timeout reached, reverting to default page."
+            - script.execute:
+                id: navigate_to
+                target: !lambda 'return id(idle_page_preference).current_option();'
+
+  - id: navigate_to
+    parameters:
+      target: std::string
+    then:
+      # 1. Update the global state
+      - select.set:
+          id: current_page_enum
+          option: !lambda 'return target.c_str();'
+      
+      # 2. Restart the idle timer since navigation implies user activity
+      - script.execute: reset_idle_timer
+      
+      # 3. Route to the correct LVGL page
+      - if:
+          condition:
+            lambda: 'return target == "time";'
+          then:
+            - lvgl.page.show:
+                id: time_page
+      - if:
+          condition:
+            lambda: 'return target == "media";'
+          then:
+            - lvgl.page.show:
+                id: media_player_page
+      - if:
+          condition:
+            lambda: 'return target == "settings";'
+          then:
+            - lvgl.page.show:
+                id: settings_page
+      # TODO: Add playlists, shortcuts, etc.
+
+  - id: navigate_left
+    then:
+      - script.execute: haptic_pulse
+      - script.execute:
+          id: navigate_to
+          target: !lambda |-
+            if (id(current_page_enum).current_option() == "media") {
+              return "time";
+            } else if (id(current_page_enum).current_option() == "time") {
+              return "settings";
+            } else {
+              return "media";
+            }
+
+  - id: navigate_right
+    then:
+      - script.execute: haptic_pulse
+      # TODO: Any way to do the 'lvgl.page.next: animation: MOVE_RIGHT time: 200ms' ?
+      - script.execute:
+          id: navigate_to
+          target: !lambda |-
+            if (id(current_page_enum).current_option() == "media") {
+              return "settings";
+            } else if (id(current_page_enum).current_option() == "time") {
+              return "media";
+            } else {
+              return "time";
+            }
+
+  - id: show_media_controls_popup
+    mode: restart
+    then:
+      #- lvgl.page.show:
+      #    id: lvgl_media_controls_page
+      - lambda: 'id(active_popup) = "media_controls";'
+      #- script.execute: reset_idle_timer
+
+  - id: hide_popups
+    then:
+      #- lvgl.widget.update:
+      #    id: lvgl_media_controls_popup
+      #    state:
+      #      hidden: true
+      - lambda: 'id(active_popup) = "";'
+      # Restart the main idle timer so the device doesn't immediately
+      # revert to the default page right as the popup closes
+      - script.execute: reset_idle_timer

@@ -1,7 +1,7 @@
 # The lvgl UI base
 
-# Defaults. Override in per-theme yaml.
 substitutions:
+  # Defaults. Override in per-theme yaml.
   theme_font_color: 0x888888
   theme_font_color2: 0xff8888
   theme_bg_color: 0xffffff
@@ -32,6 +32,22 @@ lvgl:
   # Add color depth specification - Arduino uses 16-bit
   color_depth: 16
   default_font: theme_font_normal
+
+  on_swipe_right:
+    - script.execute: navigate_right
+  on_swipe_left:
+    - script.execute: navigate_left
+
+  top_layer:
+    widgets:
+      - label:
+          id: top_api_status_widget
+          text_font: mdi_icons
+          text: ${icon_wifi}
+          hidden: true
+          align: BOTTOM_MID
+          text_align: right
+          text_color: ${theme_font_color2}
 
   pages:
     - !include lvgl_media_page.yaml
