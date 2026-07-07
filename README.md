@@ -22,11 +22,6 @@ The `red-smartknob.yaml` supports two modes: running as a local sendspin player,
 
 1. Edit `red-smartknob.yaml` to set your device names, home assistant entities, and local vs remote mediplayer choice.
 1. Copy `secrets.yaml.example` to `secrets.yaml` and edit it as appropriate for your setup.
-1. Download the materialdesign font:
-
-```
-curl --create-dirs -o fonts/materialdesignicons-webfont.ttf http://materialdesignicons.com/cdn/7.4.47/fonts/materialdesignicons-webfont.ttf
-```
 1. Compile and flash your device: `esphome run red-smartknob.yaml`
 1. Add the device in Home Assistant
 1. If using sendspin, then you should already see your device in Music Assistant too. Play some music!

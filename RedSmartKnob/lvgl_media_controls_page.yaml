@@ -1,0 +1,40 @@
+# This is an lvgl page directly.
+# Script references should be primarily in actions_media.yaml
+# This unit should _not_ reference $mediaplayer.
+
+id: media_controls_page
+skip: true
+bg_color: ${theme_bg_color}
+widgets:
+  # Add background as first widget in each page
+  - image:
+      id: bg_image_media_controls
+      src: bg_image_file
+      align: CENTER
+      width: 100%
+      height: 100%
+
+  - button:
+      id: controls_toggle_button
+      align: CENTER
+      y: 0
+      width: 50%
+      height: 50%
+      bg_color: ${theme_button_bg_color}
+      bg_opa: COVER
+      border_color: ${theme_button_border_color}
+      border_width: 2
+      pressed:
+        bg_color: ${theme_button_pressed_bg_color}
+        border_color: ${theme_button_pressed_border_color}
+        border_width: 4
+      on_click:
+        - script.execute: set_media_play_pause
+      widgets:
+        - label:
+            align: CENTER
+            text: ${icon_play_pause}
+            text_color: ${theme_font_color}
+            text_font: font_mdi_media
+
+# vim: set tabstop=2 shiftwidth=2 expandtab:

@@ -1,24 +1,45 @@
 # The core UI loop and navigation
-
-globals:
-  # (Optional) Tracks if a popup is currently visible, to avoid double-triggers.
-  - id: active_popup
-    type: std::string
-    initial_value: '""'
-
 select:
   - platform: template
     id: current_page_enum
-    name: "Current Page"
-    icon: "mdi:book-open-page-variant-outline"
-    entity_category: diagnostic
+    internal: true
     optimistic: true
     options:
-      - "bootup"
       - "time"
       - "media"
       - "settings"
-    initial_option: "bootup"
+    initial_option: "time"
+    on_value:
+      - text_sensor.template.publish:
+          id: public_current_page
+          state: !lambda 'return x;'
+
+  - platform: template
+    id: active_popup_enum
+    internal: true
+    optimistic: true
+    options:
+      - "none"
+      - "media_controls"
+    initial_option: "none"
+    on_value:
+      - text_sensor.template.publish:
+          id: public_active_popup
+          state: !lambda 'return x;'
+
+text_sensor:
+  # A read-only copy of the current_page_enum, published to HA.
+  - platform: template
+    id: public_current_page
+    name: "Current Page"
+    icon: "mdi:tablet-dashboard"
+    entity_category: diagnostic
+
+  - platform: template
+    id: public_active_popup
+    name: "Currently Active Popup"
+    icon: "mdi:forum-outline"
+    entity_category: diagnostic
 
 script:    
   - id: api_connected
@@ -51,7 +72,7 @@ script:
       # 1. First, hide any active popups
       - if:
           condition:
-            lambda: 'return id(active_popup) != "";'
+            lambda: 'return id(active_popup_enum).current_option() != "none";'
           then:
             - script.execute: hide_popups
             
@@ -60,7 +81,7 @@ script:
           condition:
             lambda: |-
               // Compare current page to the HA select preference
-              return id(current_page_enum).current_opion() != id(idle_page_preference).current_option();
+              return id(current_page_enum).current_option() != id(idle_page_preference).current_option();
           then:
             - logger.log: "Idle timeout reached, reverting to default page."
             - script.execute:
@@ -72,6 +93,9 @@ script:
       target: std::string
     then:
       # 1. Update the global state
+      - select.set:
+          id: active_popup_enum
+          option: "none"
       - select.set:
           id: current_page_enum
           option: !lambda 'return target.c_str();'
@@ -132,18 +156,15 @@ script:
   - id: show_media_controls_popup
     mode: restart
     then:
-      #- lvgl.page.show:
-      #    id: lvgl_media_controls_page
-      - lambda: 'id(active_popup) = "media_controls";'
-      #- script.execute: reset_idle_timer
+      - select.set:
+          id: active_popup_enum
+          option: "media_controls"
+      - script.execute: reset_idle_timer
+      - lvgl.page.show:
+          id: media_controls_page
 
   - id: hide_popups
     then:
-      #- lvgl.widget.update:
-      #    id: lvgl_media_controls_popup
-      #    state:
-      #      hidden: true
-      - lambda: 'id(active_popup) = "";'
-      # Restart the main idle timer so the device doesn't immediately
-      # revert to the default page right as the popup closes
-      - script.execute: reset_idle_timer
+      - script.execute:
+          id: navigate_to
+          target: !lambda 'return id(current_page_enum).current_option();'

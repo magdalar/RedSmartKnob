@@ -23,15 +23,14 @@ api:
     - logger.log:
         format: "Client %s connected (IP: %s)"
         args: [ "client_info.c_str()", "client_address.c_str()" ]
-    - if:
+    - wait_until:
         condition:
           api.connected:
             state_subscription_only: true
-        then:
-          - lambda: |-
-              ESP_LOGI("startup", "Home Assistant connected.");
-              id(api_ready) = true;
-              id(api_connected)->execute();
+    - lambda: |-
+        ESP_LOGI("startup", "Home Assistant connected.");
+        id(api_ready) = true;
+        id(api_connected)->execute();
   on_client_disconnected:
     - logger.log:
         format: "Client %s disconnected (IP: %s)"

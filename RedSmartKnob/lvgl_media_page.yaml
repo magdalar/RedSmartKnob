@@ -5,7 +5,7 @@
 id: media_player_page
 on_click:
   - script.execute:
-      id: set_media_play_pause
+      id: show_media_controls_popup
 #on_swipe_right:
 #  - script.execute:
 #      id: set_media_previous

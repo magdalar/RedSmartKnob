@@ -121,13 +121,8 @@ script:
       - lvgl.label.update:
           id: track_name_widget
           text: !lambda |-
-            std::string s = track_name;
-            // Remove non-ASCII characters
-            s.erase(std::remove_if(s.begin(), s.end(), [](unsigned char c){
-              return c > 127;
-            }), s.end());
-            ESP_LOGD("actions_media", "Music track: %s", s.c_str());
-            return s.empty() ? "Unknown Track" : s;
+            ESP_LOGD("actions_media", "Music track: %s", track_name.c_str());
+            return track_name.empty() ? "Unknown Track" : track_name;
 
   - id: handle_media_artist_changed
     parameters:
@@ -136,13 +131,8 @@ script:
       - lvgl.label.update:
           id: track_artist_widget
           text: !lambda |-
-            std::string s = artist_name;
-            // Remove non-ASCII characters
-            s.erase(std::remove_if(s.begin(), s.end(), [](unsigned char c){
-              return c > 127;
-            }), s.end());
-            ESP_LOGD("actions_media", "Music artist: %s", s.c_str());
-            return s.empty() ? "Unknown Artist" : s;
+            ESP_LOGD("actions_media", "Music artist: %s", artist_name.c_str());
+            return artist_name.empty() ? "Unknown Artist" : artist_name;
 
   - id: handle_media_album_changed
     parameters:
@@ -151,13 +141,8 @@ script:
       - lvgl.label.update:
           id: track_album_widget
           text: !lambda |-
-            std::string s = album_name;
-            // Remove non-ASCII characters
-            s.erase(std::remove_if(s.begin(), s.end(), [](unsigned char c){
-              return c > 127;
-            }), s.end());
-            ESP_LOGD("actions_media", "Music album: %s", s.c_str());
-            return s.empty() ? "Unknown Album" : s;
+            ESP_LOGD("actions_media", "Music album: %s", album_name.c_str());
+            return album_name.empty() ? "Unknown Album" : album_name;
 
   - id: play_playlist
     parameters:

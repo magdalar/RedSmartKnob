@@ -18,7 +18,7 @@ widgets:
   # Clock icon, placed just above the date/time label
   - label:
       id: clock_icon
-      text_font: mdi_icons
+      text_font: font_mdi_time
       text_color: ${theme_font_color}
       align: CENTER
       y: -40
@@ -37,7 +37,7 @@ widgets:
 
   - label:
       id: outdoor_temp_icon
-      text_font: mdi_icons
+      text_font: font_mdi_time
       text_color: ${theme_font_color}
       align: CENTER
       y: 25
@@ -54,7 +54,7 @@ widgets:
 
   - label:
       id: indoor_temp_icon
-      text_font: mdi_icons
+      text_font: font_mdi_time
       text_color: ${theme_font_color}
       align: CENTER
       y: 55
@@ -85,7 +85,7 @@ widgets:
   # Battery icon, placed to the left of the percentage text
   - label:
       id: batt_icon
-      text_font: mdi_icons
+      text_font: font_mdi_time
       text_color: ${theme_font_color}
       align: CENTER
       x: -20

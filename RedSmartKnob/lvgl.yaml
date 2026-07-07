@@ -5,6 +5,10 @@ substitutions:
   theme_font_color: 0x888888
   theme_font_color2: 0xff8888
   theme_bg_color: 0xffffff
+  theme_button_bg_color: 0xFFFF00
+  theme_button_border_color: 0xFFFFFF
+  theme_button_pressed_bg_color: 0xFFFFFF
+  theme_button_pressed_border_color: 0x66CCFF
 
 image:
   # File paths are relative to the top-level yaml, not this file. So we use http references instead.
@@ -42,7 +46,7 @@ lvgl:
     widgets:
       - label:
           id: top_api_status_widget
-          text_font: mdi_icons
+          text_font: font_mdi_top
           text: ${icon_wifi}
           hidden: true
           align: BOTTOM_MID
@@ -53,3 +57,4 @@ lvgl:
     - !include lvgl_media_page.yaml
     - !include lvgl_time_page.yaml
     - !include lvgl_settings_page.yaml
+    - !include lvgl_media_controls_page.yaml
