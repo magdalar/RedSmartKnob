@@ -191,7 +191,7 @@ script:
                 action: media_player.volume_mute
                 data:
                   entity_id: $mediaplayer
-                  is_volume_muted: true
+                  is_volume_muted: "true"
 
   - id: set_media_volume_unmute
     then:
@@ -203,7 +203,7 @@ script:
                 action: media_player.volume_mute
                 data:
                   entity_id: $mediaplayer
-                  is_volume_muted: false
+                  is_volume_muted: "false"
 
   - id: set_media_play_pause
     then:
