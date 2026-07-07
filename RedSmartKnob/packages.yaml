@@ -2,8 +2,8 @@ substitutions:
   ### These are not user-configurable.
   imagewidth: 120
   imageheight: 120
-  #screenwidth: 360
-  #screenheight: 360
+  screenwidth: 360
+  screenheight: 360
   
   # Where to pull image files from.
   # Override this in the outer layer to "./RedSmartKnob" to use local files.

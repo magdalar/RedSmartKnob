@@ -2,6 +2,8 @@ substitutions:
   theme_font_color: 0xffffff
   theme_font_color2: 0xffffff
   theme_bg_color: 0x000000
+  theme_accent_color: 0x00bfff
+  theme_accent_dark_color: 0x035680
 
 lvgl:
   theme:

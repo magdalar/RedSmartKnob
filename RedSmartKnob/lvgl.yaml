@@ -5,10 +5,18 @@ substitutions:
   theme_font_color: 0x888888
   theme_font_color2: 0xff8888
   theme_bg_color: 0xffffff
-  theme_button_bg_color: 0xFFFF00
-  theme_button_border_color: 0xFFFFFF
-  theme_button_pressed_bg_color: 0xFFFFFF
-  theme_button_pressed_border_color: 0x66CCFF
+  theme_accent_color: 0xFFFF00
+  theme_accent_dark_color: 0x66CCFF
+
+  theme_button_bg_color: ${theme_accent_color}
+  theme_button_border_color: ${theme_accent_dark_color}
+  theme_button_pressed_bg_color: ${theme_accent_dark_color}
+  theme_button_pressed_border_color: ${theme_accent_color}
+
+  ui_padding: 4
+  ui_radius: 52
+  ui_border: 2
+  ui_border_pressed: 3
 
 image:
   # File paths are relative to the top-level yaml, not this file. So we use http references instead.

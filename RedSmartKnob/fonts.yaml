@@ -1,11 +1,19 @@
 substitutions:
   font: gfonts://Roboto
-  icon_clock: "\U000F00F0"
+
+  # font_mdi_top
   icon_wifi: "\U000F05A9"
+
+  # font_mdi_time
+  icon_clock: "\U000F00F0"
   icon_thermo_outside: "\U000F18D7"
   icon_thermo_inside: "\U000F0F55"
   icon_battery: "\U000F0079"
+
+  # font_mdi_media
   icon_play_pause: "\U000F040E"
+  icon_previous: "\U000F04AE"
+  icon_next: "\U000F04AD"
 
 # Font definition
 font:
@@ -31,6 +39,8 @@ font:
     size: 44
     glyphs:
       - "${icon_play_pause}"
+      - "${icon_previous}"
+      - "${icon_next}"
 
   - id: theme_font_small
     file: "gfonts://Roboto"

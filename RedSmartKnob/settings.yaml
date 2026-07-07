@@ -27,7 +27,7 @@ number:
     min_value: 1
     max_value: 60
     step: 1
-    initial_value: 5
+    initial_value: 10
     set_action:
       - script.execute: reset_idle_timer
 

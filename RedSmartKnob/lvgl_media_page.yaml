@@ -71,6 +71,7 @@ widgets:
       width: 200
       height: 15
       align: center
+      arc_color: ${theme_accent_color}
       y: 75
       value: 0
 
@@ -94,7 +95,7 @@ widgets:
       height: 320
       adjustable: true
       arc_width: 8
-      arc_color: 0x00BFFF
+      arc_color: ${theme_accent_color}
       start_angle: 135
       end_angle: 45
       on_value:

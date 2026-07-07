@@ -15,26 +15,100 @@ widgets:
       height: 100%
 
   - button:
-      id: controls_toggle_button
-      align: CENTER
-      y: 0
-      width: 50%
-      height: 50%
+      id: controls_dismiss
+      align: top_mid
+      y: 10
+      width: 10%
+      height: 10%
       bg_color: ${theme_button_bg_color}
       bg_opa: COVER
+      radius: ${ui_radius}
       border_color: ${theme_button_border_color}
-      border_width: 2
+      border_width: ${ui_border}
       pressed:
         bg_color: ${theme_button_pressed_bg_color}
         border_color: ${theme_button_pressed_border_color}
-        border_width: 4
+        border_width: ${ui_border_pressed}
       on_click:
-        - script.execute: set_media_play_pause
+        - script.execute: hide_popups
       widgets:
         - label:
             align: CENTER
-            text: ${icon_play_pause}
+            text: "X"
             text_color: ${theme_font_color}
-            text_font: font_mdi_media
+            text_font: theme_font_large
+
+  - obj:
+      align: CENTER
+      width: 90%
+      height: 90%
+      bg_opa: TRANSP
+      border_opa: TRANSP
+      layout: horizontal
+      pad_all: ${ui_padding}
+      widgets:
+        - button:
+            id: controls_previous
+            width: 20%
+            height: 20%
+            bg_color: ${theme_button_bg_color}
+            bg_opa: COVER
+            radius: ${ui_radius}
+            border_color: ${theme_button_border_color}
+            border_width: ${ui_border}
+            pressed:
+              bg_color: ${theme_button_pressed_bg_color}
+              border_color: ${theme_button_pressed_border_color}
+              border_width: ${ui_border_pressed}
+            on_click:
+              - script.execute: set_media_previous
+            widgets:
+              - label:
+                  align: CENTER
+                  text: ${icon_previous}
+                  text_color: ${theme_font_color}
+                  text_font: font_mdi_media
+        - button:
+            id: controls_toggle_button
+            width: 20%
+            height: 20%
+            bg_color: ${theme_button_bg_color}
+            bg_opa: COVER
+            radius: ${ui_radius}
+            border_color: ${theme_button_border_color}
+            border_width: ${ui_border}
+            pressed:
+              bg_color: ${theme_button_pressed_bg_color}
+              border_color: ${theme_button_pressed_border_color}
+              border_width: ${ui_border_pressed}
+            on_click:
+              - script.execute: set_media_play_pause
+            widgets:
+              - label:
+                  align: CENTER
+                  text: ${icon_play_pause}
+                  text_color: ${theme_font_color}
+                  text_font: font_mdi_media
+        - button:
+            id: controls_next
+            width: 20%
+            height: 20%
+            bg_color: ${theme_button_bg_color}
+            bg_opa: COVER
+            radius: ${ui_radius}
+            border_color: ${theme_button_border_color}
+            border_width: ${ui_border}
+            pressed:
+              bg_color: ${theme_button_pressed_bg_color}
+              border_color: ${theme_button_pressed_border_color}
+              border_width: ${ui_border_pressed}
+            on_click:
+              - script.execute: set_media_next
+            widgets:
+              - label:
+                  align: CENTER
+                  text: ${icon_next}
+                  text_color: ${theme_font_color}
+                  text_font: font_mdi_media
 
 # vim: set tabstop=2 shiftwidth=2 expandtab:
