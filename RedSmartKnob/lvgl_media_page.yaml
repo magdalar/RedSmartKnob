@@ -72,6 +72,7 @@ widgets:
       height: 15
       align: center
       arc_color: ${theme_accent_color}
+      gesture_bubble: true
       y: 75
       value: 0
 
@@ -98,6 +99,7 @@ widgets:
       arc_color: ${theme_accent_color}
       start_angle: 135
       end_angle: 45
+      gesture_bubble: true
       on_value:
         - script.execute:
             id: set_media_volume

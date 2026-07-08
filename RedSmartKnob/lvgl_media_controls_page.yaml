@@ -29,6 +29,7 @@ widgets:
         bg_color: ${theme_button_pressed_bg_color}
         border_color: ${theme_button_pressed_border_color}
         border_width: ${ui_border_pressed}
+      gesture_bubble: true
       on_click:
         - script.execute: hide_popups
       widgets:
@@ -46,6 +47,7 @@ widgets:
       border_opa: TRANSP
       layout: horizontal
       pad_all: ${ui_padding}
+      gesture_bubble: true
       widgets:
         - button:
             id: controls_previous
@@ -60,6 +62,7 @@ widgets:
               bg_color: ${theme_button_pressed_bg_color}
               border_color: ${theme_button_pressed_border_color}
               border_width: ${ui_border_pressed}
+            gesture_bubble: true
             on_click:
               - script.execute: set_media_previous
             widgets:
@@ -81,6 +84,7 @@ widgets:
               bg_color: ${theme_button_pressed_bg_color}
               border_color: ${theme_button_pressed_border_color}
               border_width: ${ui_border_pressed}
+            gesture_bubble: true
             on_click:
               - script.execute: set_media_play_pause
             widgets:
@@ -102,6 +106,7 @@ widgets:
               bg_color: ${theme_button_pressed_bg_color}
               border_color: ${theme_button_pressed_border_color}
               border_width: ${ui_border_pressed}
+            gesture_bubble: true
             on_click:
               - script.execute: set_media_next
             widgets:
