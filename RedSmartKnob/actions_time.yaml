@@ -4,9 +4,9 @@ globals:
   - id: batt_percent
     type: int
     initial_value: '0'
-  - id: time_str
+  - id: time_format
     type: std::string
-    initial_value: ""
+    initial_value: '"%Y-%m-%d\n%H:%M:%S"'
 
 sensor:
   - platform: homeassistant
@@ -66,22 +66,24 @@ script:
           id: batt_text
           text: !lambda 'return std::to_string(id(batt_percent)) + "%";'
 
-  - id: update_time_labels
+  - id: update_time_format
     then:
       - lambda: |-
-          auto t = id(time_comp).now();
-          static const char* days[]   = {"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
-          static const char* months[] = {"Jan","Feb","Mar","Apr","May","Jun",
-                                         "Jul","Aug","Sep","Oct","Nov","Dec"};
-          char buf[64];
-          snprintf(buf, sizeof(buf), "%s %02u %s\n%02u:%02u:%02u",
-                   days[t.day_of_week - 1],
-                   t.day_of_month,
-                   months[t.month - 1],
-                   t.hour, t.minute, t.second);
-          id(time_str) = std::string(buf);
+          // HA can't pass literal newlines, so accept the escaped newline, and
+          // convert it.
+          std::string tf = id(setting_time_format).state;
+          const std::string newline = "\\n";
+          std::string::size_type n = 0;
+          while ((n = tf.find(newline, n)) != std::string::npos) {
+            tf.replace(n, newline.size(), "\n");
+            n += 1;
+          }
+          id(time_format) = tf;
+
+  - id: update_time_labels
+    then:
       - lvgl.label.update:
           id: date_time_widget
-          text: !lambda 'return id(time_str);'
+          text: !lambda 'return id(ha_time).now().strftime(id(time_format).c_str());'
 
 # vim: set tabstop=2 shiftwidth=2 expandtab:

@@ -43,6 +43,18 @@ text:
   #  restore_value: true
 
   - platform: template
+    name: "Time Format"
+    id: setting_time_format
+    optimistic: true
+    entity_category: config
+    icon: "mdi:calendar-clock"
+    mode: text
+    initial_value: "%a %d %b\\n%H:%M:%S"
+    restore_value: true
+    on_value:
+      - script.execute: update_time_format
+
+  - platform: template
     name: "Favorite Playlist 1"
     id: fav_playlist_1
     optimistic: true

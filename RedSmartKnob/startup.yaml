@@ -8,6 +8,7 @@ esphome:
     on_boot:
         - priority: -100
           then:
+            - script.execute: update_time_format
             - delay: 300ms
             - script.execute:
                 id: navigate_to

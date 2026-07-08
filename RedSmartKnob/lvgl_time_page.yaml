@@ -33,7 +33,8 @@ widgets:
       y: -40
       long_mode: WRAP
       text_align: CENTER
-      text: !lambda 'return id(time_str);'
+      # This will be overridden by actions_time.yaml
+      text: "<initializing>"
 
   - label:
       id: outdoor_temp_icon

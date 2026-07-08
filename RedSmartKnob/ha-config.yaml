@@ -42,7 +42,7 @@ captive_portal:
     
 time:
   - platform: homeassistant
-    id: time_comp
+    id: ha_time
     on_time:
       - seconds: /1
         then:
