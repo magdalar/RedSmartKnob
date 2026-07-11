@@ -3,7 +3,7 @@ substitutions:
   theme_font_color2: 0xA9B7C6
   theme_bg_color: 0x000000
   theme_accent_color: 0x00bfff
-  theme_accent_dark_color: 0x035680
+  theme_accent_dark_color: 0x4000ff
   theme_warning_color: 0xeb5757
   theme_success_color: 0x6fcf97
 

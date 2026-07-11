@@ -8,20 +8,20 @@ globals:
     initial_value: '0.0'
 
 # Add API connection event to initialize everything when HA is connected
-#api:
-#  on_client_connected:
-#    - if:
-#        condition:
-#          api.connected:
-#            state_subscription_only: true
-#        then:
-#          - delay: 1s  # Give sensors time to get initial values
-#          # Request an explicit update from the source.
-#          # This will push updates through the normal sensors.
-#          - homeassistant.service:
-#              service: homeassistant.update_entity
-#              data:
-#                entity_id: $mediaplayer
+api:
+  on_client_connected:
+    - if:
+        condition:
+          api.connected:
+            state_subscription_only: true
+        then:
+          - delay: 1s  # Give sensors time to get initial values
+          # Request an explicit update from the source.
+          # This will push updates through the normal sensors.
+          - homeassistant.service:
+              service: homeassistant.update_entity
+              data:
+                entity_id: $mediaplayer
 
 text_sensor:
   - platform: homeassistant

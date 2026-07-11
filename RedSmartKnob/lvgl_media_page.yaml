@@ -71,12 +71,14 @@ widgets:
       width: 200
       height: 15
       align: center
-      arc_color: ${theme_accent_color}
-      indicator:
-        arc_color: ${theme_accent_dark_color}
       gesture_bubble: true
       y: 75
       value: 0
+      bg_color: ${theme_accent_dark_color}
+      bg_opa: 100%
+      indicator:
+        bg_color: ${theme_accent_color}
+        bg_opa: 100%
 
   - label:
       id: track_time_label
@@ -98,13 +100,13 @@ widgets:
       height: 320
       adjustable: true
       arc_width: 8
-      arc_color: ${theme_accent_color}
+      arc_color: ${theme_accent_dark_color}
       indicator:
-        arc_color: ${theme_accent_dark_color}
+        arc_color: ${theme_accent_color}
         user_1:
           arc_color: ${theme_warning_color}
       knob:
-        bg_color: ${theme_accent_dark_color}
+        bg_color: ${theme_accent_color}
         # This doesn't seem to trigger.
         user_1:
           arc_color: ${theme_warning_color}
