@@ -53,9 +53,10 @@ widgets:
             id: track_name_label_overlay
             align: TOP_MID
             y: -15%
-            # TODO: long_mode isn't working here.
+            width: 90%
             long_mode: SCROLL_CIRCULAR
             anim_duration: 8s
+            text_align: CENTER
             text_color: ${theme_font_color}
             text_font: theme_font_large
             text: "Unknown Track"
@@ -63,8 +64,10 @@ widgets:
             id: track_album_label_overlay
             align: TOP_MID
             y: 18%
+            width: 80%
             long_mode: SCROLL_CIRCULAR
             anim_duration: 8s
+            text_align: CENTER
             text_color: ${theme_font_color2}
             text_font: theme_font_normal
             text: "Unknown Album"
@@ -72,8 +75,10 @@ widgets:
             id: track_artist_label_overlay
             align: TOP_MID
             y: 47%
+            width: 70%
             long_mode: SCROLL_CIRCULAR
             anim_duration: 8s
+            text_align: CENTER
             text_color: ${theme_font_color2}
             text_font: theme_font_small
             text: "Unknown Artist"
@@ -81,6 +86,7 @@ widgets:
             id: track_time_label_overlay
             align: TOP_MID
             y: 70%
+            text_align: CENTER
             text_color: ${theme_font_color2}
             text_font: theme_font_small
             text: "00:00 / 99:99"
