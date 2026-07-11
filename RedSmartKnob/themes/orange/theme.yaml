@@ -1,10 +1,13 @@
 substitutions:
-  theme_font_color: 0xffffff
-  theme_font_color2: 0xffffff
+  theme_font_color: 0xFBF3E7
+  theme_font_color2: 0xC9AFA0
   theme_bg_color: 0x000000
+  # consider teals: 4FD3C4 / 5B9BD5
   theme_accent_color: 0xff0e0e
   theme_accent_dark_color: 0x990707
+  theme_warning_color: 0xf5d547
+  theme_success_color: 0x8fd19e
 
-#image:
-#  - id: !extend bg_image_file
-#    file: https://raw.githubusercontent.com/magdalar/RedSmartKnob/main/themes/orange/bg_360x360.png
+image:
+  - id: !extend bg_image_file
+    file: ${repo_base_uri}/themes/${theme}/muted_bg_360x360.png

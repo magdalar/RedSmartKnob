@@ -7,6 +7,8 @@ substitutions:
   theme_bg_color: 0xffffff
   theme_accent_color: 0xFFFF00
   theme_accent_dark_color: 0x66CCFF
+  theme_warning_color: 0xff0000
+  theme_success_color: 0x00ff00
 
   theme_button_bg_color: ${theme_accent_color}
   theme_button_border_color: ${theme_accent_dark_color}

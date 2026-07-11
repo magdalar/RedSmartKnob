@@ -1,14 +1,12 @@
 substitutions:
-  theme_font_color: 0xffffff
-  theme_font_color2: 0xffffff
+  theme_font_color: 0xF5F2EA
+  theme_font_color2: 0xA9B7C6
   theme_bg_color: 0x000000
   theme_accent_color: 0x00bfff
   theme_accent_dark_color: 0x035680
+  theme_warning_color: 0xeb5757
+  theme_success_color: 0x6fcf97
 
-lvgl:
-  theme:
-    dark_mode: true
-
-#image:
-#  - id: !extend bg_image_file
-#    file: https://raw.githubusercontent.com/magdalar/RedSmartKnob/main/themes/blue/bg_360x360.png
+image:
+  - id: !extend bg_image_file
+    file: ${repo_base_uri}/themes/${theme}/muted_bg_360x360.png

@@ -20,6 +20,7 @@ widgets:
       y: 10
       width: 10%
       height: 10%
+      ext_click_area: 20
       bg_color: ${theme_button_bg_color}
       bg_opa: COVER
       radius: ${ui_radius}

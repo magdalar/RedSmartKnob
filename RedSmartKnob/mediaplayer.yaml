@@ -86,6 +86,7 @@ text_sensor:
           condition:
             lambda: 'return !x.empty();'
           then:
+            - delay: 150ms  # give some room to breathe
             - script.execute:
                 id: handle_media_album_url
                 url: !lambda 'return x;'

@@ -1,0 +1,12 @@
+substitutions:
+  theme_font_color: 0xf5f0e6
+  theme_font_color2: 0xa8b8a5
+  theme_bg_color: 0x000000
+  theme_accent_color: 0xd4e157
+  theme_accent_dark_color: 0xf2a65a
+  theme_warning_color: 0xe85d5d
+  theme_success_color: 0x7fe0b0
+
+image:
+  - id: !extend bg_image_file
+    file: ${repo_base_uri}/themes/${theme}/bg_360x360.png

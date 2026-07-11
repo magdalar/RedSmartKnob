@@ -72,6 +72,8 @@ widgets:
       height: 15
       align: center
       arc_color: ${theme_accent_color}
+      indicator:
+        arc_color: ${theme_accent_dark_color}
       gesture_bubble: true
       y: 75
       value: 0
@@ -97,10 +99,22 @@ widgets:
       adjustable: true
       arc_width: 8
       arc_color: ${theme_accent_color}
+      indicator:
+        arc_color: ${theme_accent_dark_color}
+        user_1:
+          arc_color: ${theme_warning_color}
+      knob:
+        bg_color: ${theme_accent_dark_color}
+        user_1:
+          arc_color: ${theme_warning_color}
       start_angle: 135
       end_angle: 45
       gesture_bubble: true
       on_value:
+        - lvgl.widget.update:
+            id: volume_control_widget
+            state:
+              user_1: !lambda 'return x > 80;'
         - script.execute:
             id: set_media_volume
             new_vol: !lambda 'return x / 100.0;'
