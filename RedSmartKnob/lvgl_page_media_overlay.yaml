@@ -36,6 +36,7 @@ widgets:
       bg_main_opa: 40%
       clickable: false
       adjustable: false
+  # TODO: Add a paused/muted indicator overlay
 
   # Translucent caption band across the lower third of the circle.
   - obj:
@@ -61,7 +62,7 @@ widgets:
         - label:
             id: track_album_label_overlay
             align: TOP_MID
-            y: 15%
+            y: 18%
             long_mode: SCROLL_CIRCULAR
             anim_duration: 8s
             text_color: ${theme_font_color2}
@@ -70,7 +71,7 @@ widgets:
         - label:
             id: track_artist_label_overlay
             align: TOP_MID
-            y: 42%
+            y: 47%
             long_mode: SCROLL_CIRCULAR
             anim_duration: 8s
             text_color: ${theme_font_color2}
@@ -79,7 +80,7 @@ widgets:
         - label:
             id: track_time_label_overlay
             align: TOP_MID
-            y: 65%
+            y: 70%
             text_color: ${theme_font_color2}
             text_font: theme_font_small
             text: "00:00 / 99:99"
