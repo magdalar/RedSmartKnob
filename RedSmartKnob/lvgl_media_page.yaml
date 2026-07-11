@@ -105,6 +105,7 @@ widgets:
           arc_color: ${theme_warning_color}
       knob:
         bg_color: ${theme_accent_dark_color}
+        # This doesn't seem to trigger.
         user_1:
           arc_color: ${theme_warning_color}
       start_angle: 135
