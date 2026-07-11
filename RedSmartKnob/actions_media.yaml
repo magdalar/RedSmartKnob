@@ -93,11 +93,18 @@ script:
     then:
       - lambda: |-
           ESP_LOGI("actions_media", "Muted.");
-      - lvgl.arc.update:
+      - lvgl.slider.update:
           id: volume_control_widget
           value: 0
       - lvgl.label.update:
           id: volume_text
+          text: "Mute"
+      # TODO: Add a mute icon to the media pages?
+      - lvgl.arc.update:
+          id: page_media_volume_control_widget
+          value: 0
+      - lvgl.label.update:
+          id: page_media_volume_text
           text: "Mute"
 
   - id: handle_media_volume_unmuted
@@ -113,11 +120,19 @@ script:
       - lambda: |-
           ESP_LOGI("actions_media", "Current volume: %.1f%%", volume * 100.0);
           id(current_volume) = volume;
-      - lvgl.arc.update:
+      - lvgl.slider.update:
           id: volume_control_widget
           value: !lambda 'return (volume * 100);'
       - lvgl.label.update:
           id: volume_text
+          text:
+            format: "Vol: %.0f%%"
+            args: [ "volume * 100" ]
+      - lvgl.arc.update:
+          id: page_media_volume_control_widget
+          value: !lambda 'return (volume * 100);'
+      - lvgl.label.update:
+          id: page_media_volume_text
           text:
             format: "Vol: %.0f%%"
             args: [ "volume * 100" ]

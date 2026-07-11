@@ -28,10 +28,11 @@ widgets:
       min_value: 0
       max_value: 100
       value: 0
-      arc_width: 6         # stroke thickness — pixel-only in LVGL
+      arc_width: 6
       arc_color: ${theme_accent_dark_color}
       indicator:
         arc_color: ${theme_accent_color}
+        arc_width: 10
       bg_main_opa: 40%
       clickable: false
       adjustable: false
@@ -50,7 +51,8 @@ widgets:
         - label:
             id: track_name_label_overlay
             align: TOP_MID
-            y: -12%
+            y: -15%
+            # TODO: long_mode isn't working here.
             long_mode: SCROLL_CIRCULAR
             anim_duration: 8s
             text_color: ${theme_font_color}
@@ -68,7 +70,7 @@ widgets:
         - label:
             id: track_artist_label_overlay
             align: TOP_MID
-            y: 40%
+            y: 42%
             long_mode: SCROLL_CIRCULAR
             anim_duration: 8s
             text_color: ${theme_font_color2}

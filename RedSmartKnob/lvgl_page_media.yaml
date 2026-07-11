@@ -30,7 +30,7 @@ widgets:
       y: -70
       width: 33%
       height: 33%
-      zoom: 0.33  # 120px / 360px
+      scale: 0.33  # 120px / 360px
       antialias: false
       clickable: false
 
@@ -97,7 +97,7 @@ widgets:
 
   # Enhanced volume control
   - arc:
-      id: volume_control_widget
+      id: page_media_volume_control_widget
       adv_hittest: true
       align: CENTER
       y: 0
@@ -120,7 +120,7 @@ widgets:
       gesture_bubble: true
       on_value:
         - lvgl.widget.update:
-            id: volume_control_widget
+            id: page_media_volume_control_widget
             state:
               user_1: !lambda 'return x > 80;'
         - script.execute:
@@ -129,7 +129,7 @@ widgets:
 
   # Volume percentage display
   - label:
-      id: volume_text
+      id: page_media_volume_text
       text_color: ${theme_font_color}
       align: CENTER
       y: 140

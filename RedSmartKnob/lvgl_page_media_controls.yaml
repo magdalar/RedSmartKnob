@@ -117,4 +117,38 @@ widgets:
                   text_color: ${theme_font_color}
                   text_font: font_mdi_media
 
+  # Volume control
+  - slider:
+      id: volume_control_widget
+      align: CENTER
+      y: 25%
+      width: 60%
+      height: 4%
+      bg_color: ${theme_accent_dark_color}
+      indicator:
+        bg_color: ${theme_accent_color}
+        user_1:
+          arc_color: ${theme_warning_color}
+      knob:
+        bg_color: ${theme_accent_color}
+        user_1:
+          arc_color: ${theme_warning_color}
+      gesture_bubble: true
+      on_value:
+        - lvgl.widget.update:
+            id: volume_control_widget
+            state:
+              user_1: !lambda 'return x > 80;'
+        - script.execute:
+            id: set_media_volume
+            new_vol: !lambda 'return x / 100.0;'
+
+  # Volume percentage display
+  - label:
+      id: volume_text
+      text_color: ${theme_font_color}
+      align: CENTER
+      y: 30%
+      text: "XX%"
+
 # vim: set tabstop=2 shiftwidth=2 expandtab:
