@@ -2,7 +2,7 @@
 # Script references should be primarily in actions_media.yaml
 # This unit should _not_ reference $mediaplayer.
 
-id: media_controls_page
+id: page_media_controls
 skip: true
 bg_color: ${theme_bg_color}
 widgets:

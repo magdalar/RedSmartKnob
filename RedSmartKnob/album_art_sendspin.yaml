@@ -21,7 +21,7 @@ generic_image:
     id: sendspin_album_art
     format: jpeg
     type: RGB565
-    resize: ${imageheight}x${imageheight}
+    resize: ${screenheight}x${screenheight}
     source: ALBUM
     on_image_display:
       - script.execute:

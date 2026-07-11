@@ -1,7 +1,7 @@
 # This is an lvgl page directly.
 # Script references should be primarily in actions_settings.yaml
 
-id: settings_page
+id: page_settings
 bg_color: ${theme_bg_color}
 widgets:
   - image:

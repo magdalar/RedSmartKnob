@@ -2,7 +2,7 @@
 # Script references should be primarily in actions_media.yaml
 # This unit should _not_ reference $mediaplayer.
 
-id: media_player_page
+id: page_media
 on_click:
   - script.execute:
       id: show_media_controls_popup
@@ -28,42 +28,47 @@ widgets:
       src: album_placeholder  # References the placeholder image
       align: CENTER
       y: -70
-      width: ${imagewidth}
-      height: ${imageheight}
+      width: 33%
+      height: 33%
+      zoom: 0.33  # 120px / 360px
       antialias: false
       clickable: false
 
   # Track information with better spacing
   - label:
-      id: track_artist_widget
+      id: track_artist_label
       text_color: ${theme_font_color}
+      text_font: theme_font_normal
       align: CENTER
       width: 80%
       text_align: CENTER
       long_mode: SCROLL_CIRCULAR
+      anim_duration: 8s
       y: 0
       text: "No Artist"
 
   - label:
-      id: track_name_widget
+      id: track_name_label
       text_font: theme_font_large
       text_color: ${theme_font_color}
       align: CENTER
       width: 80%
       text_align: CENTER
       long_mode: SCROLL_CIRCULAR
+      anim_duration: 8s
       y: 30
       text: "No Track"
 
   - label:
-      id: track_album_widget
+      id: track_album_label
       text_font: theme_font_small
       text_color: ${theme_font_color2}
       align: CENTER
       width: 80%
       text_align: CENTER
-      long_mode: DOT
-      y: 60
+      long_mode: SCROLL_CIRCULAR
+      anim_duration: 8s
+      y: 55
       text: "No Album"
 
   - bar:
@@ -96,8 +101,8 @@ widgets:
       adv_hittest: true
       align: CENTER
       y: 0
-      width: 320
-      height: 320
+      width: 90%
+      height: 90%
       adjustable: true
       arc_width: 8
       arc_color: ${theme_accent_dark_color}

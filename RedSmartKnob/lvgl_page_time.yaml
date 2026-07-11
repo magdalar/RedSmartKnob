@@ -1,7 +1,7 @@
 # This is an lvgl page directly.
 # Script references should be primarily in actions_time.yaml
 
-id: time_page
+id: page_time
 #on_click:
 #  then:
 #    - script.execute: set_media_play_pause

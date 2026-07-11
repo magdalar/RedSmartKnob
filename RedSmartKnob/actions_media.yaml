@@ -17,21 +17,27 @@ globals:
 script:
   - id: handle_media_album_art_failed
     then:
+      - lambda: |-
+          ESP_LOGI("actions_media", "Album art download failed!");
       - lvgl.image.update:
           id: album_cover_image
           src: album_placeholder
-      - lambda: |-
-          ESP_LOGI("actions_media", "Album art download failed!");
+      - lvgl.image.update:
+          id: album_cover_image_overlay
+          src: album_placeholder
 
   - id: handle_media_album_art_decoded
     parameters:
       art_source: esphome::image::Image*
     then:
+      - lambda: |-
+          ESP_LOGD("actions_media", "Album art downloaded!");
       - lvgl.image.update:
           id: album_cover_image
           src: !lambda "return art_source;"
-      - lambda: |-
-          ESP_LOGD("actions_media", "Album art downloaded!");
+      - lvgl.image.update:
+          id: album_cover_image_overlay
+          src: !lambda "return art_source;"
 
   - id: handle_media_progress
     parameters:
@@ -41,6 +47,7 @@ script:
     then:
       - lambda: |-
           lv_bar_set_value(id(track_progress_bar), pct, LV_ANIM_OFF);
+          lv_arc_set_value(id(track_progress_arc_overlay), pct);
 
           // --- FORMAT AND UPDATE THE TEXT LABEL ---
           // Break down position into minutes and seconds
@@ -63,11 +70,12 @@ script:
 
           // Push the formatted string to the LVGL label
           lv_label_set_text(id(track_time_label), buffer);
+          lv_label_set_text(id(track_time_label_overlay), buffer);
 
   - id: handle_media_playing
     then:
       - lambda: 'ESP_LOGI("actions_media", "Media started playing.");'
-      #- lvgl.page.show: media_player_page
+      #- lvgl.page.show: page_media || page_media_overlay
 
   - id: handle_media_announcement
     then:
@@ -118,31 +126,40 @@ script:
     parameters:
       track_name: std::string
     then:
+      - lambda: |-
+          ESP_LOGD("actions_media", "Music track: %s", track_name.c_str());
       - lvgl.label.update:
-          id: track_name_widget
-          text: !lambda |-
-            ESP_LOGD("actions_media", "Music track: %s", track_name.c_str());
-            return track_name.empty() ? "Unknown Track" : track_name;
+          id: track_name_label
+          text: !lambda 'return track_name.empty() ? "Unknown Track" : track_name;'
+      - lvgl.label.update:
+          id: track_name_label_overlay
+          text: !lambda 'return track_name.empty() ? "Unknown Track" : track_name;'
 
   - id: handle_media_artist_changed
     parameters:
       artist_name: std::string
     then:
+      - lambda: |-
+          ESP_LOGD("actions_media", "Music artist: %s", artist_name.c_str());
       - lvgl.label.update:
-          id: track_artist_widget
-          text: !lambda |-
-            ESP_LOGD("actions_media", "Music artist: %s", artist_name.c_str());
-            return artist_name.empty() ? "Unknown Artist" : artist_name;
+          id: track_artist_label
+          text: !lambda 'return artist_name.empty() ? "Unknown Artist" : artist_name;'
+      - lvgl.label.update:
+          id: track_artist_label_overlay
+          text: !lambda 'return artist_name.empty() ? "Unknown Artist" : artist_name;'
 
   - id: handle_media_album_changed
     parameters:
       album_name: std::string
     then:
+      - lambda: |-
+          ESP_LOGD("actions_media", "Music album: %s", album_name.c_str());
       - lvgl.label.update:
-          id: track_album_widget
-          text: !lambda |-
-            ESP_LOGD("actions_media", "Music album: %s", album_name.c_str());
-            return album_name.empty() ? "Unknown Album" : album_name;
+          id: track_album_label
+          text: !lambda 'return album_name.empty() ? "Unknown Album" : album_name;'
+      - lvgl.label.update:
+          id: track_album_label_overlay
+          text: !lambda 'return album_name.empty() ? "Unknown Album" : album_name;'
 
   - id: play_playlist
     parameters:

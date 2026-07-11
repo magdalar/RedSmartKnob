@@ -1,4 +1,10 @@
 # The core UI loop and navigation
+globals:
+  - id: ui_pages
+    type: std::vector<std::string>
+    initial_value: '{"time", "media", "media_overlay", "settings"}'
+    # TODO: Add playlists, shortcuts, etc.
+
 select:
   - platform: template
     id: current_page_enum
@@ -7,6 +13,7 @@ select:
     options:
       - "time"
       - "media"
+      - "media_overlay"
       - "settings"
     initial_option: "time"
     on_value:
@@ -41,7 +48,7 @@ text_sensor:
     icon: "mdi:forum-outline"
     entity_category: diagnostic
 
-script:    
+script:
   - id: api_connected
     then:
       - lvgl.widget.show: top_api_status_widget
@@ -57,7 +64,7 @@ script:
       - delay: !lambda |-
           return (uint32_t) (id(screen_timeout_seconds).state * 1000.0f);
       - light.turn_off: back_light
-      
+
   - id: screen_off
     then:
       - script.stop: standby_screen_activity
@@ -75,7 +82,7 @@ script:
             lambda: 'return id(active_popup_enum).current_option() != "none";'
           then:
             - script.execute: hide_popups
-            
+
       # 2. Then, check if we need to return to the default page
       - if:
           condition:
@@ -92,6 +99,16 @@ script:
     parameters:
       target: std::string
     then:
+      - script.execute:
+          id: navigate_to_animated
+          target: !lambda "return target;"
+          direction: "NONE"
+
+  - id: navigate_to_animated
+    parameters:
+      target: std::string
+      direction: std::string
+    then:
       # 1. Update the global state
       - select.set:
           id: active_popup_enum
@@ -99,30 +116,51 @@ script:
       - select.set:
           id: current_page_enum
           option: !lambda 'return target.c_str();'
-      
+      - script.execute:
+          id: internal_navigate_to_animated
+          target: !lambda 'return target;'
+          direction: !lambda 'return direction;'
+
+  - id: internal_navigate_to_animated
+    parameters:
+      target: std::string
+      direction: std::string
+    then:
+      # 1. Caller must already update the current_page_enum and active_popup_enum.
+
       # 2. Restart the idle timer since navigation implies user activity
       - script.execute: reset_idle_timer
-      
-      # 3. Route to the correct LVGL page
-      - if:
-          condition:
-            lambda: 'return target == "time";'
-          then:
-            - lvgl.page.show:
-                id: time_page
-      - if:
-          condition:
-            lambda: 'return target == "media";'
-          then:
-            - lvgl.page.show:
-                id: media_player_page
-      - if:
-          condition:
-            lambda: 'return target == "settings";'
-          then:
-            - lvgl.page.show:
-                id: settings_page
-      # TODO: Add playlists, shortcuts, etc.
+
+      # Perform the navigation
+      - lambda: |-
+          // 1. Determine the native LVGL animation type
+          lv_scr_load_anim_t anim = LV_SCR_LOAD_ANIM_NONE;
+          if (direction == "LEFT") {
+            anim = LV_SCR_LOAD_ANIM_MOVE_LEFT;
+          } else if (direction == "RIGHT") {
+            anim = LV_SCR_LOAD_ANIM_MOVE_RIGHT;
+          } else if (direction == "UP") {
+            anim = LV_SCR_LOAD_ANIM_MOVE_TOP;
+          } else if (direction == "DOWN") {
+            anim = LV_SCR_LOAD_ANIM_MOVE_BOTTOM;
+          }
+
+          // 2. Map the string target to your actual LVGL page IDs
+          lv_obj_t *page_ptr = nullptr;
+          if (target == "time") page_ptr = id(page_time).obj;
+          else if (target == "media") page_ptr = id(page_media).obj;
+          else if (target == "media_overlay") page_ptr = id(page_media_overlay).obj;
+          else if (target == "settings") page_ptr = id(page_settings).obj;
+          // Popups are also supported in internal_navigate_to_animated
+          else if (target == "media_controls") page_ptr = id(page_media_controls).obj;
+          else ESP_LOGE("ui_loop", "Unknown navigate_to target: %s", target.c_str());
+
+          // 3. Execute the transition
+          if (page_ptr != nullptr) {
+            // Function args:
+            // Target Page Pointer, Animation Type, Duration (ms), Delay (ms), Auto-Delete (false)
+            lv_scr_load_anim(page_ptr, anim, 150, 0, false);
+          }
 
   - id: navigate_left
     then:
@@ -135,15 +173,19 @@ script:
                 id: hide_popups
           else:
             - script.execute:
-                id: navigate_to
+                id: navigate_to_animated
+                direction: "LEFT"
                 target: !lambda |-
-                  if (id(current_page_enum).current_option() == "media") {
-                    return "time";
-                  } else if (id(current_page_enum).current_option() == "time") {
-                    return "settings";
-                  } else {
-                    return "media";
-                  }
+                  const std::string& current = id(current_page_enum).current_option();
+                  const std::vector<std::string>& pages = id(ui_pages); // Grab the global array
+
+                  // Find current page index
+                  auto it = std::find(pages.begin(), pages.end(), current);
+                  int idx = (it != pages.end()) ? std::distance(pages.begin(), it) : 0;
+
+                  // Move Left (Previous) and wrap around
+                  int prev_idx = (idx - 1 + pages.size()) % pages.size();
+                  return pages[prev_idx];
 
   - id: navigate_right
     then:
@@ -155,17 +197,20 @@ script:
             - script.execute:
                 id: hide_popups
           else:
-            # TODO: Any way to do the 'lvgl.page.next: animation: MOVE_RIGHT time: 200ms' ?
             - script.execute:
-                id: navigate_to
+                id: navigate_to_animated
+                direction: "RIGHT"
                 target: !lambda |-
-                  if (id(current_page_enum).current_option() == "media") {
-                    return "settings";
-                  } else if (id(current_page_enum).current_option() == "time") {
-                    return "media";
-                  } else {
-                    return "time";
-                  }
+                  const std::string& current = id(current_page_enum).current_option();
+                  const std::vector<std::string>& pages = id(ui_pages); // Grab the global array
+
+                  // Find current page index
+                  auto it = std::find(pages.begin(), pages.end(), current);
+                  int idx = (it != pages.end()) ? std::distance(pages.begin(), it) : 0;
+
+                  // Move Right (Next) and wrap around
+                  int prev_idx = (idx + 1) % pages.size();
+                  return pages[prev_idx];
 
   - id: show_media_controls_popup
     mode: restart
@@ -173,12 +218,14 @@ script:
       - select.set:
           id: active_popup_enum
           option: "media_controls"
-      - script.execute: reset_idle_timer
-      - lvgl.page.show:
-          id: media_controls_page
+      - script.execute:
+          id: internal_navigate_to_animated
+          target: "media_controls"
+          direction: "UP"
 
   - id: hide_popups
     then:
       - script.execute:
-          id: navigate_to
+          id: navigate_to_animated
           target: !lambda 'return id(current_page_enum).current_option();'
+          direction: "DOWN"

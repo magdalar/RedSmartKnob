@@ -25,7 +25,7 @@ image:
   - id: bg_image_file
     file: ${repo_base_uri}/themes/${theme}/bg_360x360.png
     type: RGB565         # good choice for 16-bit displays; change to RGB if you need full color
-    resize: 360x360      # optional, keeps the image at the display size (useful for round displays)
+    resize: ${screenheight}x${screenheight}
     transparency: alpha_channel   # optional — allows PNG alpha blending (requires RGB/RGB565 support)
   
   # Add a static album cover placeholder
@@ -33,7 +33,7 @@ image:
     file: ${repo_base_uri}/images/album_placeholder.png
     #file: "images/album_placeholder.png"  # Create this 120x120 PNG file
     type: RGB565
-    resize: 120x120
+    resize: ${screenheight}x${screenheight}
     transparency: alpha_channel
 
 lvgl:
@@ -64,7 +64,8 @@ lvgl:
           text_color: ${theme_font_color2}
 
   pages:
-    - !include lvgl_media_page.yaml
-    - !include lvgl_time_page.yaml
-    - !include lvgl_settings_page.yaml
-    - !include lvgl_media_controls_page.yaml
+    - !include lvgl_page_media.yaml
+    - !include lvgl_page_media_overlay.yaml
+    - !include lvgl_page_time.yaml
+    - !include lvgl_page_settings.yaml
+    - !include lvgl_page_media_controls.yaml

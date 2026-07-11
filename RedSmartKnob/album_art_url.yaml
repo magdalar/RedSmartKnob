@@ -7,7 +7,7 @@ online_image:
     format: jpeg
     id: online_image_album_art
     type: RGB565
-    resize: ${imageheight}x${imageheight}
+    resize: ${screenheight}x${screenheight}
     on_download_finished:
       - script.execute:
           id: handle_media_album_art_decoded

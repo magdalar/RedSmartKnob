@@ -73,6 +73,7 @@ select:
     options:
       - "time"
       - "media"
+      - "media_overlay"
     initial_option: "time"
     set_action:
       - script.execute: reset_idle_timer
