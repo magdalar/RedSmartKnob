@@ -148,7 +148,7 @@ widgets:
       id: volume_text
       text_color: ${theme_font_color}
       align: CENTER
-      y: 30%
+      y: 32%
       text: "XX%"
 
 # vim: set tabstop=2 shiftwidth=2 expandtab:
