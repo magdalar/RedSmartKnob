@@ -18,9 +18,6 @@ script:
   - id: handle_media_album_art_display_placeholder
     then:
       - lvgl.image.update:
-          id: album_cover_image
-          src: album_placeholder
-      - lvgl.image.update:
           id: album_cover_image_overlay
           src: album_placeholder
 
@@ -35,9 +32,6 @@ script:
             - lambda: |-
                 ESP_LOGD("actions_media", "Album art downloaded!");
             - lvgl.image.update:
-                id: album_cover_image
-                src: !lambda "return art_source;"
-            - lvgl.image.update:
                 id: album_cover_image_overlay
                 src: !lambda "return art_source;"
           else:
@@ -50,7 +44,6 @@ script:
       pct: float
     then:
       - lambda: |-
-          lv_bar_set_value(id(track_progress_bar), pct, LV_ANIM_OFF);
           lv_arc_set_value(id(track_progress_arc_overlay), pct);
 
           // --- FORMAT AND UPDATE THE TEXT LABEL ---
@@ -73,13 +66,12 @@ script:
                    pos_min, pos_sec, dur_min, dur_sec);
 
           // Push the formatted string to the LVGL label
-          lv_label_set_text(id(track_time_label), buffer);
           lv_label_set_text(id(track_time_label_overlay), buffer);
 
   - id: handle_media_playing
     then:
       - lambda: 'ESP_LOGI("actions_media", "Media started playing.");'
-      #- lvgl.page.show: page_media || page_media_overlay
+      #- lvgl.page.show: page_media_overlay
 
   - id: handle_media_announcement
     then:
@@ -97,18 +89,12 @@ script:
     then:
       - lambda: |-
           ESP_LOGI("actions_media", "Muted.");
+      # TODO: Add a mute icon to the media pages?
       - lvgl.slider.update:
           id: volume_control_widget
           value: 0
       - lvgl.label.update:
           id: volume_text
-          text: "Mute"
-      # TODO: Add a mute icon to the media pages?
-      - lvgl.arc.update:
-          id: page_media_volume_control_widget
-          value: 0
-      - lvgl.label.update:
-          id: page_media_volume_text
           text: "Mute"
 
   - id: handle_media_volume_unmuted
@@ -132,14 +118,6 @@ script:
           text:
             format: "Vol: %.0f%%"
             args: [ "volume * 100" ]
-      - lvgl.arc.update:
-          id: page_media_volume_control_widget
-          value: !lambda 'return (volume * 100);'
-      - lvgl.label.update:
-          id: page_media_volume_text
-          text:
-            format: "Vol: %.0f%%"
-            args: [ "volume * 100" ]
 
   - id: handle_media_track_changed
     parameters:
@@ -147,9 +125,6 @@ script:
     then:
       - lambda: |-
           ESP_LOGD("actions_media", "Music track: %s", track_name.c_str());
-      - lvgl.label.update:
-          id: track_name_label
-          text: !lambda 'return track_name.empty() ? "Unknown Track" : track_name;'
       - lvgl.label.update:
           id: track_name_label_overlay
           text: !lambda 'return track_name.empty() ? "Unknown Track" : track_name;'
@@ -164,9 +139,6 @@ script:
       - lambda: |-
           ESP_LOGD("actions_media", "Music artist: %s", artist_name.c_str());
       - lvgl.label.update:
-          id: track_artist_label
-          text: !lambda 'return artist_name.empty() ? "Unknown Artist" : artist_name;'
-      - lvgl.label.update:
           id: track_artist_label_overlay
           text: !lambda 'return artist_name.empty() ? "Unknown Artist" : artist_name;'
       - lvgl.label.update:
@@ -179,9 +151,6 @@ script:
     then:
       - lambda: |-
           ESP_LOGD("actions_media", "Music album: %s", album_name.c_str());
-      - lvgl.label.update:
-          id: track_album_label
-          text: !lambda 'return album_name.empty() ? "Unknown Album" : album_name;'
       - lvgl.label.update:
           id: track_album_label_overlay
           text: !lambda 'return album_name.empty() ? "Unknown Album" : album_name;'

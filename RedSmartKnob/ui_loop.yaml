@@ -2,7 +2,7 @@
 globals:
   - id: ui_pages
     type: std::vector<std::string>
-    initial_value: '{"time", "media", "media_overlay", "settings"}'
+    initial_value: '{"time", "media", "settings"}'
     # TODO: Add playlists, shortcuts, etc.
 
 select:
@@ -13,7 +13,6 @@ select:
     options:
       - "time"
       - "media"
-      - "media_overlay"
       - "settings"
     initial_option: "time"
     on_value:
@@ -148,8 +147,7 @@ script:
           // 2. Map the string target to your actual LVGL page IDs
           lv_obj_t *page_ptr = nullptr;
           if (target == "time") page_ptr = id(page_time).obj;
-          else if (target == "media") page_ptr = id(page_media).obj;
-          else if (target == "media_overlay") page_ptr = id(page_media_overlay).obj;
+          else if (target == "media") page_ptr = id(page_media_overlay).obj;
           else if (target == "settings") page_ptr = id(page_settings).obj;
           // Popups are also supported in internal_navigate_to_animated
           else if (target == "media_controls") page_ptr = id(page_media_controls).obj;

@@ -63,7 +63,6 @@ lvgl:
           text_color: ${theme_font_color2}
 
   pages:
-    - !include lvgl_page_media.yaml
     - !include lvgl_page_media_overlay.yaml
     - !include lvgl_page_time.yaml
     - !include lvgl_page_settings.yaml
