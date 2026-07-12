@@ -55,35 +55,37 @@ widgets:
       scrollable: false
       widgets:
         - label:
-            id: track_album_label_controls
+            id: track_artist_label_controls
             align: TOP_MID
-            width: 80%
+            width: 85%
+            y: 3%
             long_mode: SCROLL_CIRCULAR
             anim_duration: 8s
             text_align: CENTER
             text_color: ${theme_font_color2}
             text_font: theme_font_normal
-            text: "Unknown Album"
-        - label:
-            id: track_artist_label_controls
-            align: CENTER
-            width: 90%
-            long_mode: SCROLL_CIRCULAR
-            anim_duration: 8s
-            text_align: CENTER
-            text_color: ${theme_font_color2}
-            text_font: theme_font_small
             text: "Unknown Artist"
         - label:
             id: track_name_label_controls
-            align: BOTTOM_MID
-            width: 95%
+            align: CENTER
+            width: 90%
             long_mode: SCROLL_CIRCULAR
             anim_duration: 8s
             text_align: CENTER
             text_color: ${theme_font_color}
             text_font: theme_font_large
             text: "Unknown Track"
+        - label:
+            id: track_album_label_controls
+            align: BOTTOM_MID
+            y: -5%
+            width: 95%
+            long_mode: SCROLL_CIRCULAR
+            anim_duration: 8s
+            text_align: CENTER
+            text_color: ${theme_font_color2}
+            text_font: theme_font_small
+            text: "Unknown Album"
 
   - obj:
       align: CENTER

@@ -48,11 +48,23 @@ widgets:
       bg_color: ${theme_bg_color}
       bg_opa: 55%
       border_width: 0
+      pad_all: 0
+      scrollable: false
       widgets:
+        - label:
+            id: track_artist_label_overlay
+            align: TOP_MID
+            width: 95%
+            long_mode: SCROLL_CIRCULAR
+            anim_duration: 8s
+            text_align: CENTER
+            text_color: ${theme_font_color2}
+            text_font: theme_font_normal
+            text: "Unknown Artist"
         - label:
             id: track_name_label_overlay
             align: TOP_MID
-            y: -15%
+            y: 18%
             width: 90%
             long_mode: SCROLL_CIRCULAR
             anim_duration: 8s
@@ -63,29 +75,18 @@ widgets:
         - label:
             id: track_album_label_overlay
             align: TOP_MID
-            y: 18%
-            width: 80%
-            long_mode: SCROLL_CIRCULAR
-            anim_duration: 8s
-            text_align: CENTER
-            text_color: ${theme_font_color2}
-            text_font: theme_font_normal
-            text: "Unknown Album"
-        - label:
-            id: track_artist_label_overlay
-            align: TOP_MID
-            y: 47%
-            width: 70%
+            y: 46%
+            width: 85%
             long_mode: SCROLL_CIRCULAR
             anim_duration: 8s
             text_align: CENTER
             text_color: ${theme_font_color2}
             text_font: theme_font_small
-            text: "Unknown Artist"
+            text: "Unknown Album"
         - label:
             id: track_time_label_overlay
             align: TOP_MID
-            y: 70%
+            y: 65%
             text_align: CENTER
             text_color: ${theme_font_color2}
             text_font: theme_font_small
