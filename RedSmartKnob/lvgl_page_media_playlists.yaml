@@ -1,0 +1,76 @@
+# This is an lvgl page directly.
+# Script references should be primarily in actions_media.yaml
+# This unit should _not_ reference $mediaplayer.
+
+id: page_media_playlists
+skip: true
+bg_color: ${theme_bg_color}
+widgets:
+  # Add background as first widget in each page
+  - image:
+      id: bg_image_media_playlists
+      src: album_placeholder
+      align: CENTER
+      width: 100%
+      height: 100%
+
+  - obj:
+      align: CENTER
+      width: 80%
+      height: 75%
+      bg_opa: TRANSP
+      border_opa: TRANSP
+      layout: vertical
+      pad_all: ${ui_padding}
+      gesture_bubble: true
+      widgets:
+        - button: &playlist_button
+            width: 100%
+            bg_color: ${theme_button_bg_color}
+            bg_opa: COVER
+            radius: ${ui_radius}
+            border_color: ${theme_button_border_color}
+            border_width: ${ui_border}
+            pressed:
+              bg_color: ${theme_button_pressed_bg_color}
+              border_color: ${theme_button_pressed_border_color}
+              border_width: ${ui_border_pressed}
+            gesture_bubble: true
+            on_click:
+              - script.execute:
+                  id: play_playlist
+                  media_id: !lambda 'return id(setting_playlist_1).state;'
+            widgets:
+              - label: &playlist_label
+                  id: playlist_1_label
+                  align: CENTER
+                  text_align: CENTER
+                  text: !lambda 'return "Playlist 1:\n" + id(setting_playlist_1).state;'
+                  text_color: ${theme_font_color}
+                  text_font: theme_font_normal
+        - button:
+            <<: *playlist_button
+            id: button_playlist2
+            on_click:
+              - script.execute:
+                  id: play_playlist
+                  media_id: !lambda 'return id(setting_playlist_2).state;'
+            widgets:
+              - label:
+                  <<: *playlist_label
+                  id: playlist_2_label
+                  text: !lambda 'return "Playlist 2:\n" + id(setting_playlist_2).state;'
+        - button:
+            <<: *playlist_button
+            id: button_playlist3
+            on_click:
+              - script.execute:
+                  id: play_playlist
+                  media_id: !lambda 'return id(setting_playlist_3).state;'
+            widgets:
+              - label:
+                  <<: *playlist_label
+                  id: playlist_3_label
+                  text: !lambda 'return "Playlist 3:\n" + id(setting_playlist_3).state;'
+
+# vim: set tabstop=2 shiftwidth=2 expandtab:

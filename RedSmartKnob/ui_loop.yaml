@@ -2,8 +2,8 @@
 globals:
   - id: ui_pages
     type: std::vector<std::string>
-    initial_value: '{"time", "media", "settings"}'
-    # TODO: Add playlists, shortcuts, etc.
+    initial_value: '{"time", "media", "playlists"}'
+    # TODO: Add HA shortcuts
 
 select:
   - platform: template
@@ -13,7 +13,7 @@ select:
     options:
       - "time"
       - "media"
-      - "settings"
+      - "playlists"
     initial_option: "time"
     on_value:
       - text_sensor.template.publish:
@@ -148,7 +148,7 @@ script:
           lv_obj_t *page_ptr = nullptr;
           if (target == "time") page_ptr = id(page_time).obj;
           else if (target == "media") page_ptr = id(page_media_overlay).obj;
-          else if (target == "settings") page_ptr = id(page_settings).obj;
+          else if (target == "playlists") page_ptr = id(page_media_playlists).obj;
           // Popups are also supported in internal_navigate_to_animated
           else if (target == "media_controls") page_ptr = id(page_media_controls).obj;
           else ESP_LOGE("ui_loop", "Unknown navigate_to target: %s", target.c_str());

@@ -64,6 +64,6 @@ lvgl:
 
   pages:
     - !include lvgl_page_media_overlay.yaml
+    - !include lvgl_page_media_playlists.yaml
     - !include lvgl_page_time.yaml
-    - !include lvgl_page_settings.yaml
     - !include lvgl_page_media_controls.yaml

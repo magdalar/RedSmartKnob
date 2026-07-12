@@ -160,12 +160,15 @@ script:
 
   - id: play_playlist
     parameters:
-      uri: std::string
+      media_id: std::string
     then:
       - if:
           condition:
-            lambda: 'return !uri.empty();'
+            lambda: 'return !media_id.empty();'
           then:
+            - logger.log:
+                format: "Playing playlist: %s"
+                args: [ "media_id.c_str()" ]
             - homeassistant.service:
                 service: music_assistant.play_media
                 data:
@@ -173,8 +176,8 @@ script:
                   media_type: playlist
                   enqueue: replace
                 data_template:
-                  media_id: "{{ media_url }}"
+                  media_id: "{{ media_id_var }}"
                 variables:
-                  media_url: return uri.c_str();
+                  media_id_var: return media_id.c_str();
 
 # vim: set tabstop=2 shiftwidth=2 expandtab:

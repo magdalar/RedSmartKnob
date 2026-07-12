@@ -54,7 +54,7 @@ widgets:
         - label:
             id: track_artist_label_overlay
             align: TOP_MID
-            width: 95%
+            width: 90%
             long_mode: SCROLL_CIRCULAR
             anim_duration: 8s
             text_align: CENTER
@@ -65,7 +65,7 @@ widgets:
             id: track_name_label_overlay
             align: TOP_MID
             y: 18%
-            width: 90%
+            width: 85%
             long_mode: SCROLL_CIRCULAR
             anim_duration: 8s
             text_align: CENTER
@@ -76,7 +76,7 @@ widgets:
             id: track_album_label_overlay
             align: TOP_MID
             y: 46%
-            width: 85%
+            width: 80%
             long_mode: SCROLL_CIRCULAR
             anim_duration: 8s
             text_align: CENTER

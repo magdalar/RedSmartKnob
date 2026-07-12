@@ -55,14 +55,46 @@ text:
       - script.execute: update_time_format
 
   - platform: template
-    name: "Favorite Playlist 1"
-    id: fav_playlist_1
+    name: "Playlist 1"
+    id: setting_playlist_1
     optimistic: true
     entity_category: config
     icon: "mdi:playlist-music"
     mode: text
     initial_value: "My Awesome Playlist"
     restore_value: true
+    on_value:
+      - lvgl.label.update:
+          id: playlist_1_label
+          text: !lambda 'return "Playlist 1:\n" + id(setting_playlist_1).state;'
+
+  - platform: template
+    name: "Playlist 2"
+    id: setting_playlist_2
+    optimistic: true
+    entity_category: config
+    icon: "mdi:playlist-music"
+    mode: text
+    initial_value: ""
+    restore_value: true
+    on_value:
+      - lvgl.label.update:
+          id: playlist_2_label
+          text: !lambda 'return "Playlist 2:\n" + id(setting_playlist_2).state;'
+
+  - platform: template
+    name: "Playlist 3"
+    id: setting_playlist_3
+    optimistic: true
+    entity_category: config
+    icon: "mdi:playlist-music"
+    mode: text
+    initial_value: ""
+    restore_value: true
+    on_value:
+      - lvgl.label.update:
+          id: playlist_3_label
+          text: !lambda 'return "Playlist 3:\n" + id(setting_playlist_3).state;'
 
 select:
   - platform: template
