@@ -40,6 +40,7 @@ widgets:
               - script.execute:
                   id: play_playlist
                   media_id: !lambda 'return id(setting_playlist_1).state;'
+                  shuffle: !lambda 'return id(setting_playlist_shuffle).state;'
             widgets:
               - label: &playlist_label
                   id: playlist_1_label
@@ -55,6 +56,7 @@ widgets:
               - script.execute:
                   id: play_playlist
                   media_id: !lambda 'return id(setting_playlist_2).state;'
+                  shuffle: !lambda 'return id(setting_playlist_shuffle).state;'
             widgets:
               - label:
                   <<: *playlist_label
@@ -67,6 +69,7 @@ widgets:
               - script.execute:
                   id: play_playlist
                   media_id: !lambda 'return id(setting_playlist_3).state;'
+                  shuffle: !lambda 'return id(setting_playlist_shuffle).state;'
             widgets:
               - label:
                   <<: *playlist_label

@@ -161,11 +161,20 @@ script:
   - id: play_playlist
     parameters:
       media_id: std::string
+      shuffle: bool
     then:
       - if:
           condition:
             lambda: 'return !media_id.empty();'
           then:
+            - homeassistant.service:
+                service: media_player.shuffle_set
+                data:
+                  entity_id: "${mediaplayer}"
+                data_template:
+                  shuffle: "{{ shuffle_var }}"
+                variables:
+                  shuffle_var: return shuffle;
             - logger.log:
                 format: "Playing playlist: %s"
                 args: [ "media_id.c_str()" ]

@@ -116,6 +116,28 @@ select:
 
 switch:
   - platform: template
+    name: "Playlist Shuffle"
+    id: setting_playlist_shuffle
+    icon: "mdi:album"
+    entity_category: config
+    optimistic: true
+    restore_mode: RESTORE_DEFAULT_OFF
+    turn_on_action:
+      - logger.log: "Playlist shuffle enabled"
+      - homeassistant.service:
+          service: media_player.shuffle_set
+          data:
+            entity_id: "${mediaplayer}"
+            shuffle: "true"
+    turn_off_action:
+      - logger.log: "Playlist shuffle disabled"
+      - homeassistant.service:
+          service: media_player.shuffle_set
+          data:
+            entity_id: "${mediaplayer}"
+            shuffle: "false"
+
+  - platform: template
     name: "Display Album Art"
     id: album_art_preference
     icon: "mdi:album"
