@@ -35,9 +35,9 @@ sensor:
             condition:
               lambda: 'return id(rotary_encoder_diff) > 0;'
             then:
-              - script.execute: navigate_left
-            else:
               - script.execute: navigate_right
+            else:
+              - script.execute: navigate_left
         # Original behavior: seek within song.
         #- lambda: |-
         #    static int last = 0;
