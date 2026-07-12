@@ -15,10 +15,8 @@ globals:
     initial_value: '0.5'  # Default fallback volume
 
 script:
-  - id: handle_media_album_art_failed
+  - id: handle_media_album_art_display_placeholder
     then:
-      - lambda: |-
-          ESP_LOGI("actions_media", "Album art download failed!");
       - lvgl.image.update:
           id: album_cover_image
           src: album_placeholder
@@ -26,18 +24,24 @@ script:
           id: album_cover_image_overlay
           src: album_placeholder
 
-  - id: handle_media_album_art_decoded
+  - id: handle_media_album_art_display
     parameters:
       art_source: esphome::image::Image*
     then:
-      - lambda: |-
-          ESP_LOGD("actions_media", "Album art downloaded!");
-      - lvgl.image.update:
-          id: album_cover_image
-          src: !lambda "return art_source;"
-      - lvgl.image.update:
-          id: album_cover_image_overlay
-          src: !lambda "return art_source;"
+      - if:
+          condition:
+            lambda: 'return id(album_art_preference).state;'
+          then:
+            - lambda: |-
+                ESP_LOGD("actions_media", "Album art downloaded!");
+            - lvgl.image.update:
+                id: album_cover_image
+                src: !lambda "return art_source;"
+            - lvgl.image.update:
+                id: album_cover_image_overlay
+                src: !lambda "return art_source;"
+          else:
+            - script.execute: handle_media_album_art_display_placeholder
 
   - id: handle_media_progress
     parameters:
@@ -149,6 +153,9 @@ script:
       - lvgl.label.update:
           id: track_name_label_overlay
           text: !lambda 'return track_name.empty() ? "Unknown Track" : track_name;'
+      - lvgl.label.update:
+          id: track_name_label_controls
+          text: !lambda 'return track_name.empty() ? "Unknown Track" : track_name;'
 
   - id: handle_media_artist_changed
     parameters:
@@ -162,6 +169,9 @@ script:
       - lvgl.label.update:
           id: track_artist_label_overlay
           text: !lambda 'return artist_name.empty() ? "Unknown Artist" : artist_name;'
+      - lvgl.label.update:
+          id: track_artist_label_controls
+          text: !lambda 'return artist_name.empty() ? "Unknown Artist" : artist_name;'
 
   - id: handle_media_album_changed
     parameters:
@@ -174,6 +184,9 @@ script:
           text: !lambda 'return album_name.empty() ? "Unknown Album" : album_name;'
       - lvgl.label.update:
           id: track_album_label_overlay
+          text: !lambda 'return album_name.empty() ? "Unknown Album" : album_name;'
+      - lvgl.label.update:
+          id: track_album_label_controls
           text: !lambda 'return album_name.empty() ? "Unknown Album" : album_name;'
 
   - id: play_playlist

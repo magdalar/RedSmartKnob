@@ -40,10 +40,56 @@ widgets:
             text_color: ${theme_font_color}
             text_font: theme_font_large
 
+
+  # Translucent caption band across the top-middle, below the dismissal.
+  - obj:
+      x: 0%
+      y: 18%
+      width: 100%
+      height: 23%
+      radius: 0
+      bg_color: ${theme_bg_color}
+      bg_opa: 55%
+      border_width: 0
+      pad_all: 0
+      scrollable: false
+      widgets:
+        - label:
+            id: track_album_label_controls
+            align: TOP_MID
+            width: 80%
+            long_mode: SCROLL_CIRCULAR
+            anim_duration: 8s
+            text_align: CENTER
+            text_color: ${theme_font_color2}
+            text_font: theme_font_normal
+            text: "Unknown Album"
+        - label:
+            id: track_artist_label_controls
+            align: CENTER
+            width: 90%
+            long_mode: SCROLL_CIRCULAR
+            anim_duration: 8s
+            text_align: CENTER
+            text_color: ${theme_font_color2}
+            text_font: theme_font_small
+            text: "Unknown Artist"
+        - label:
+            id: track_name_label_controls
+            align: BOTTOM_MID
+            width: 95%
+            long_mode: SCROLL_CIRCULAR
+            anim_duration: 8s
+            text_align: CENTER
+            text_color: ${theme_font_color}
+            text_font: theme_font_large
+            text: "Unknown Track"
+
   - obj:
       align: CENTER
       width: 90%
-      height: 90%
+      height: 20%
+      y: 5%
       bg_opa: TRANSP
       border_opa: TRANSP
       layout: horizontal
@@ -53,7 +99,7 @@ widgets:
         - button:
             id: controls_previous
             width: 20%
-            height: 20%
+            height: 100%
             bg_color: ${theme_button_bg_color}
             bg_opa: COVER
             radius: ${ui_radius}
@@ -75,7 +121,7 @@ widgets:
         - button:
             id: controls_toggle_button
             width: 20%
-            height: 20%
+            height: 100%
             bg_color: ${theme_button_bg_color}
             bg_opa: COVER
             radius: ${ui_radius}
@@ -97,7 +143,7 @@ widgets:
         - button:
             id: controls_next
             width: 20%
-            height: 20%
+            height: 100%
             bg_color: ${theme_button_bg_color}
             bg_opa: COVER
             radius: ${ui_radius}
@@ -146,9 +192,10 @@ widgets:
   # Volume percentage display
   - label:
       id: volume_text
-      text_color: ${theme_font_color}
       align: CENTER
       y: 32%
+      text_color: ${theme_font_color}
+      text_font: theme_font_normal
       text: "XX%"
 
 # vim: set tabstop=2 shiftwidth=2 expandtab:

@@ -1,5 +1,5 @@
 # Album Art: sendspin source.
-# Calls handle_media_album_art_decoded or handle_media_album_art_failed
+# Calls handle_media_album_art_display or handle_media_album_art_display_placeholder
 # Script handle_media_album_url exists, but is unexpected.
 
 external_components:
@@ -15,6 +15,8 @@ script:
     then:
       - lambda: |-
           ESP_LOGI("album_art_sendspin", "Unexpected call: sendspin handle_media_album_url: %s", url);
+      - script.execute:
+          id: handle_media_album_art_display_placeholder
 
 generic_image:
   - platform: sendspin
@@ -25,10 +27,12 @@ generic_image:
     source: ALBUM
     on_image_display:
       - script.execute:
-          id: handle_media_album_art_decoded
+          id: handle_media_album_art_display
           art_source: sendspin_album_art
     on_image_error:
+      - lambda: |-
+          ESP_LOGI("album_art_sendspin", "Album art download failed!");
       - script.execute:
-          id: handle_media_album_art_failed
+          id: handle_media_album_art_display_placeholder
 
 # vim: set tabstop=2 shiftwidth=2 expandtab:

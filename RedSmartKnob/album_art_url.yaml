@@ -1,5 +1,5 @@
 # Album Art: URL (non-sendspin) version.
-# Calls handle_media_album_art_decoded or handle_media_album_art_failed
+# Calls handle_media_album_art_display or handle_media_album_art_display_placeholder
 # Trigger it by hooking up to script handle_media_album_url
 
 online_image:
@@ -10,11 +10,13 @@ online_image:
     resize: ${screenheight}x${screenheight}
     on_download_finished:
       - script.execute:
-          id: handle_media_album_art_decoded
+          id: handle_media_album_art_display
           art_source: online_image_album_art
     on_error:
+      - lambda: |-
+          ESP_LOGI("album_art_url", "Album art download failed!");
       - script.execute:
-          id: handle_media_album_art_failed
+          id: handle_media_album_art_display_placeholder
 
 http_request:
   timeout: 10s
@@ -25,8 +27,14 @@ script:
     parameters:
       url: std::string
     then:
-      - lambda: |-
-          ESP_LOGD("uri_album_art", "New album cover URL: %s", url.c_str());
-      - online_image.set_url:
-          id: online_image_album_art
-          url: !lambda 'return "${homeassistant_base_uri}" + url;'
+      - script.execute:
+          id: handle_media_album_art_display_placeholder
+      - if:
+          condition:
+            lambda: 'return id(album_art_preference).state;'
+          then:
+            - lambda: |-
+                ESP_LOGD("uri_album_art", "New album cover URL: %s", url.c_str());
+            - online_image.set_url:
+                id: online_image_album_art
+                url: !lambda 'return "${homeassistant_base_uri}" + url;'

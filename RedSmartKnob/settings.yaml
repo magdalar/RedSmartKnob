@@ -68,6 +68,7 @@ select:
   - platform: template
     name: "Idle Page Preference"
     id: idle_page_preference
+    entity_category: config
     optimistic: true
     restore_value: true
     options:
@@ -81,3 +82,18 @@ select:
       - logger.log:
           format: "Display preference changed to: %s"
           args: ["x.c_str()"]
+
+switch:
+  - platform: template
+    name: "Display Album Art"
+    id: album_art_preference
+    icon: "mdi:album"
+    entity_category: config
+    optimistic: true
+    restore_mode: RESTORE_DEFAULT_ON
+    turn_on_action:
+      - logger.log: "Artwork enabled"
+    turn_off_action:
+      - logger.log: "Artwork disabled"
+      - script.execute:
+          id: handle_media_album_art_display_placeholder
