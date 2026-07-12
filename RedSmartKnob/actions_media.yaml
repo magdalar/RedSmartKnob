@@ -158,6 +158,30 @@ script:
           id: track_album_label_controls
           text: !lambda 'return album_name.empty() ? "Unknown Album" : album_name;'
 
+  - id: handle_playlist_shuffle
+    parameters:
+      shuffle: bool
+    then:
+      - logger.log:
+          format: "Playlist shuffle: %s"
+          args: [ 'shuffle ? "true" : "false"' ]
+      - lvgl.label.update:
+          id: label_playlist_shuffle
+          text: !lambda |-
+            if (shuffle) {
+              return "${icon_shuffle}";
+            } else {
+              return "${icon_shuffle_disabled}";
+            }
+      - homeassistant.service:
+          service: media_player.shuffle_set
+          data:
+            entity_id: "${mediaplayer}"
+          data_template:
+            shuffle: "{{ shuffle_var }}"
+          variables:
+            shuffle_var: return shuffle;
+
   - id: play_playlist
     parameters:
       media_id: std::string
@@ -167,14 +191,9 @@ script:
           condition:
             lambda: 'return !media_id.empty();'
           then:
-            - homeassistant.service:
-                service: media_player.shuffle_set
-                data:
-                  entity_id: "${mediaplayer}"
-                data_template:
-                  shuffle: "{{ shuffle_var }}"
-                variables:
-                  shuffle_var: return shuffle;
+            - script.execute:
+                id: handle_playlist_shuffle
+                shuffle: !lambda 'return id(setting_playlist_shuffle).state;'
             - logger.log:
                 format: "Playing playlist: %s"
                 args: [ "media_id.c_str()" ]

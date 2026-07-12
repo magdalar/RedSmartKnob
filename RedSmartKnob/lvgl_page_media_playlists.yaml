@@ -17,7 +17,8 @@ widgets:
   - obj:
       align: CENTER
       width: 80%
-      height: 75%
+      height: 70%
+      y: 3%
       bg_opa: TRANSP
       border_opa: TRANSP
       layout: vertical
@@ -75,5 +76,26 @@ widgets:
                   <<: *playlist_label
                   id: playlist_3_label
                   text: !lambda 'return "Playlist 3:\n" + id(setting_playlist_3).state;'
+
+  - button:
+      <<: *playlist_button
+      id: button_playlist_shuffle
+      align: top_mid
+      y: 3%
+      width: 15%
+      height: 15%
+      ext_click_area: 20
+      on_click:
+        - switch.template.publish:
+            id: setting_playlist_shuffle
+            state: !lambda 'return !id(setting_playlist_shuffle).state;'
+      widgets:
+        - label:
+            id: label_playlist_shuffle
+            align: CENTER
+            text: "${icon_shuffle_disabled}"
+            text_color: ${theme_font_color}
+            text_font: font_mdi_media
+
 
 # vim: set tabstop=2 shiftwidth=2 expandtab:

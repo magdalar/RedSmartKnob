@@ -14,6 +14,8 @@ substitutions:
   icon_play_pause: "\U000F040E"
   icon_previous: "\U000F04AE"
   icon_next: "\U000F04AD"
+  icon_shuffle: "\U000F049F"
+  icon_shuffle_disabled: "\U000F049E"
 
 # Font definition
 font:
@@ -41,6 +43,8 @@ font:
       - "${icon_play_pause}"
       - "${icon_previous}"
       - "${icon_next}"
+      - "${icon_shuffle}"
+      - "${icon_shuffle_disabled}"
 
   - id: theme_font_small
     file: "gfonts://Roboto"
