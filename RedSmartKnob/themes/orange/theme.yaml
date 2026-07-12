@@ -10,4 +10,6 @@ substitutions:
 
 image:
   - id: !extend bg_image_file
-    file: ${repo_base_uri}/themes/${theme}/muted_bg_360x360.png
+    file: ${repo_base_uri}/themes/${theme}/bg_360x360.png
+  - id: !extend album_placeholder
+    file: ${repo_base_uri}/themes/${theme}/album_360x360.png

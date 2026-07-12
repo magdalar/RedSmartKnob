@@ -7,7 +7,7 @@ substitutions:
   # Your indoor temperature entity in Home Assistant
   indoor_temp_entity: sensor.indoor_temperature
   homeassistant_base_uri: "https://homeassistant.example.com"
-  theme: "blue"  # blue, orange, white
+  theme: "blue"  # blue, orange, green, white
 
   # Set to true if you want a local sendspin client, rather than controlling a remote mediaplayer.
   enable_sendspin: true

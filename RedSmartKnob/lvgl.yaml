@@ -24,14 +24,13 @@ image:
   # File paths are relative to the top-level yaml, not this file. So we use http references instead.
   - id: bg_image_file
     file: ${repo_base_uri}/themes/${theme}/bg_360x360.png
-    type: RGB565         # good choice for 16-bit displays; change to RGB if you need full color
+    type: RGB565
     resize: ${screenheight}x${screenheight}
-    transparency: alpha_channel   # optional — allows PNG alpha blending (requires RGB/RGB565 support)
+    transparency: alpha_channel
   
   # Add a static album cover placeholder
   - id: album_placeholder
-    file: ${repo_base_uri}/images/album_placeholder.png
-    #file: "images/album_placeholder.png"  # Create this 120x120 PNG file
+    file: ${repo_base_uri}/themes/${theme}/album_360x360.png
     type: RGB565
     resize: ${screenheight}x${screenheight}
     transparency: alpha_channel

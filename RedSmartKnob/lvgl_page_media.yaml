@@ -31,7 +31,7 @@ widgets:
       width: 33%
       height: 33%
       scale: 0.33  # 120px / 360px
-      antialias: false
+      antialias: true
       clickable: false
 
   # Track information with better spacing
