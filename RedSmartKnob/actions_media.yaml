@@ -6,13 +6,16 @@
 # The `set_media_*` scripts are used to send commands to the media player.
 
 globals:
-  - id: is_playing
-    type: bool
-    initial_value: 'false'
-
   - id: current_volume
     type: float
     initial_value: '0.5'  # Default fallback volume
+
+  - id: last_posted_position_secs
+    type: int
+    initial_value: '-1'
+  - id: last_posted_duration_secs
+    type: int
+    initial_value: '-1'
 
 script:
   - id: handle_media_album_art_display_placeholder
@@ -41,10 +44,18 @@ script:
     parameters:
       position_secs: float
       duration_secs: float
-      pct: float
     then:
       - lambda: |-
-          lv_arc_set_value(id(track_progress_arc_overlay), pct);
+          if (position_secs == id(last_posted_position_secs)
+              && duration_secs == id(last_posted_duration_secs)) {
+            return;
+          }
+          id(last_posted_position_secs) = position_secs;
+          id(last_posted_duration_secs) = duration_secs;
+
+          float progress_percent =
+            duration_secs > 0.0 ? (position_secs / duration_secs * 100.0) : 0.0;
+          lv_arc_set_value(id(track_progress_arc_overlay), progress_percent);
 
           // --- FORMAT AND UPDATE THE TEXT LABEL ---
           // Break down position into minutes and seconds
@@ -54,10 +65,9 @@ script:
           // Break down duration into minutes and seconds
           int dur_min = (int)duration_secs / 60;
           int dur_sec = (int)duration_secs % 60;
-
           if (pos_sec % 10 == 0) {
             ESP_LOGD("actions_media", "Position: %.1f/%.1f (%.1f%%)",
-              position_secs, duration_secs, pct);
+              position_secs, duration_secs, progress_percent);
           }
 
           // Create a temporary buffer to hold the formatted text.
@@ -85,7 +95,6 @@ script:
   - id: handle_media_stopped
     then:
       - lambda: 'ESP_LOGI("actions_media", "Media stopped playing.");'
-      - script.execute: handle_media_album_art_display_placeholder
       # TODO: Display a stopped icon overlay.
 
   - id: handle_media_volume_muted

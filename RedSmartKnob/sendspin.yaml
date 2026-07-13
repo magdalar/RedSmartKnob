@@ -2,7 +2,6 @@
 # Switched to a sendspin player based on https://github.com/RealDeco/sendspin-guition/blob/main/Guition_Knob_v2.yaml
 # TODO: If coming from a stopped/idle state, art, position and track duration stay unknown.
 # TODO: Pausing goes to on_idle immediately.
-# TODO: Unpausing is unreliable, though possibly network related (wifi signal 32% during test)
 
 substitutions:
   i2c_id: internal_i2c
@@ -87,17 +86,17 @@ sensor:
     update_interval: 1s
     on_value:
       - lambda: |-
-          if (id(sendspin_is_idle)) {
-            return;
-          }
           float pos_secs = x / 1000.0;
           float dur_secs = id(sendspin_duration).has_state() ? id(sendspin_duration).state / 1000.0 : 0.0;
-          float progress_percent = dur_secs > 0.0 ? (pos_secs / dur_secs * 100.0) : 0.0;
-          id(handle_media_progress)->execute(pos_secs, dur_secs, progress_percent);
+          id(handle_media_progress)->execute(pos_secs, dur_secs);
 
   - platform: sendspin
     type: track_duration
     id: sendspin_duration
+    on_value:
+      - lambda: |-
+          ESP_LOGD("sendspin", "New track duration: %d", id(sendspin_duration).state);
+
 
 audio_file:
 
@@ -173,7 +172,7 @@ media_player:
             lambda: 'return !id(sendspin_is_idle);'
           then:
             - lambda: 'id(sendspin_is_idle) = true;'
-            - script.execute: handle_media_stopped
+            - script.execute: handle_media_paused
     on_pause:
       - script.execute: handle_media_paused
     on_announcement:

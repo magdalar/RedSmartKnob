@@ -26,9 +26,19 @@ generic_image:
     resize: ${screenheight}x${screenheight}
     source: ALBUM
     on_image_display:
-      - script.execute:
-          id: handle_media_album_art_display
-          art_source: sendspin_album_art
+      # https://github.com/esphome/esphome/pull/16057#issuecomment-4944414858
+      # the callback is called when the image is cleared, as well as when
+      # loaded, so guard accordingly.
+      - if:
+          condition:
+            lambda: 'return id(sendspin_album_art).is_loaded();'
+          then:
+            - script.execute:
+                id: handle_media_album_art_display
+                art_source: sendspin_album_art
+          else:
+            - script.execute:
+                id: handle_media_album_art_display_placeholder
     on_image_error:
       - lambda: |-
           ESP_LOGI("album_art_sendspin", "Album art download failed!");

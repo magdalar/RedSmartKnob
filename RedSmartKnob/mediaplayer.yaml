@@ -227,11 +227,8 @@ interval:
             id(local_track_position) += 1.0;
 
             if (id(local_track_duration) > 0) {
-              float progress_percent =
-                (id(local_track_position) / id(local_track_duration)) * 100.0;
               id(handle_media_progress)->execute(
-                id(local_track_position), id(local_track_duration),
-                progress_percent);
+                id(local_track_position), id(local_track_duration));
             }
           }
 
