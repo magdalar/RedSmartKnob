@@ -19,7 +19,7 @@ substitutions:
 
 # Font definition
 font:
-  # http://materialdesignicons.com/cdn/7.4.47/ 
+  # http://materialdesignicons.com/cdn/7.4.47/
   # http://materialdesignicons.com/cdn/7.4.47/fonts/materialdesignicons-webfont.ttf
   - id: font_mdi_top
     file: https://github.com/Templarian/MaterialDesign-Webfont/raw/refs/heads/master/fonts/materialdesignicons-webfont.ttf

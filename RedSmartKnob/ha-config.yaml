@@ -9,7 +9,7 @@ logger:
 debug:
   # was 5s
   update_interval: 60s
-  
+
 # Enable Home Assistant API
 api:
   encryption:
@@ -18,7 +18,7 @@ api:
 ota:
   - platform: esphome
     password: !secret ota_password
-    
+
 wifi:
   id: iptime
   ssid: !secret wifi_ssid
@@ -27,7 +27,7 @@ wifi:
   #power_save_mode: HIGH
   # Consider fast_connect, but then also likely bssid and manual_ip.
   #fast_connect: true
-  #manual_ip: 
+  #manual_ip:
   #  static_ip: 192.168.X.X
   #  gateway: 192.168.X.1
   #  subnet: 255.255.255.0
@@ -39,7 +39,7 @@ wifi:
     password: !secret wifi_api_fallback_password
 
 captive_portal:
-    
+
 time:
   - platform: homeassistant
     id: ha_time
@@ -47,7 +47,7 @@ time:
       - seconds: /1
         then:
           - script.execute: update_time_labels
-  
+
 text_sensor:
   - platform: version
     name: "Esphome Version"
@@ -59,17 +59,17 @@ text_sensor:
   - platform: debug
     reset_reason:
       name: "Reset Reason"
-     
+
 binary_sensor:
   - platform: status
     name: "Connection Status"
-    
+
 button:
   - platform: restart
     name: "Restart"
     id: re_start
     entity_category: diagnostic
-    
+
 sensor:
   - platform: wifi_signal # Reports the WiFi signal strength/RSSI in dB
     name: "WiFi Signal dB"
@@ -86,7 +86,7 @@ sensor:
     entity_category: "diagnostic"
     device_class: ""
     icon: mdi:wifi
-    
+
   # Free memory info
   - platform: debug
     free:

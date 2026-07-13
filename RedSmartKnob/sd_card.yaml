@@ -13,7 +13,7 @@ esp32:
       disable_vfs_support_termios: false
       disable_vfs_support_select: false
       disable_vfs_support_dir: false
-  
+
 sd_mmc_card:
   id: sd_card
   # The SD card is connected in the 1-bit mode and connect the pins accordingly.
@@ -24,7 +24,7 @@ sd_mmc_card:
   data0_pin: GPIO5
   data1_pin: GPIO6
   data2_pin: GPIO42
-  data3_pin: GPIO2  
+  data3_pin: GPIO2
 
 sensor:
   - platform: sd_mmc_card
@@ -65,7 +65,7 @@ sensor:
       - lambda: |-
           if (x > 1000000000.0f) return 0.0f;
           return x;
-          
+
   - platform: sd_mmc_card
     type: frequency
     name: "SD Frequency"

@@ -1,101 +1,99 @@
-# This is an lvgl page directly.
-# Script references should be primarily in actions_media.yaml
-# This unit should _not_ reference $mediaplayer.
+# LVGL Page definition for Playlist shortcuts.
 
-id: page_media_playlists
-skip: true
-bg_color: ${theme_bg_color}
-widgets:
-  # Add background as first widget in each page
-  - image:
-      id: bg_image_media_playlists
-      src: album_placeholder
-      align: CENTER
-      width: 100%
-      height: 100%
-
-  - obj:
-      align: CENTER
-      width: 80%
-      height: 70%
-      y: 3%
-      bg_opa: TRANSP
-      border_opa: TRANSP
-      layout: vertical
-      pad_all: ${ui_padding}
-      gesture_bubble: true
+lvgl:
+  pages:
+    - id: page_media_playlists
+      bg_color: ${theme_bg_color}
       widgets:
-        - button: &playlist_button
-            width: 100%
-            bg_color: ${theme_button_bg_color}
-            bg_opa: COVER
-            radius: ${ui_radius}
-            border_color: ${theme_button_border_color}
-            border_width: ${ui_border}
-            pressed:
-              bg_color: ${theme_button_pressed_bg_color}
-              border_color: ${theme_button_pressed_border_color}
-              border_width: ${ui_border_pressed}
-            gesture_bubble: true
-            on_click:
-              - script.execute:
-                  id: play_playlist
-                  media_id: !lambda 'return id(setting_playlist_1).state;'
-                  shuffle: !lambda 'return id(setting_playlist_shuffle).state;'
-            widgets:
-              - label: &playlist_label
-                  id: playlist_1_label
-                  align: CENTER
-                  text_align: CENTER
-                  text: !lambda 'return "Playlist 1:\n" + id(setting_playlist_1).state;'
-                  text_color: ${theme_font_color}
-                  text_font: theme_font_normal
-        - button:
-            <<: *playlist_button
-            id: button_playlist2
-            on_click:
-              - script.execute:
-                  id: play_playlist
-                  media_id: !lambda 'return id(setting_playlist_2).state;'
-                  shuffle: !lambda 'return id(setting_playlist_shuffle).state;'
-            widgets:
-              - label:
-                  <<: *playlist_label
-                  id: playlist_2_label
-                  text: !lambda 'return "Playlist 2:\n" + id(setting_playlist_2).state;'
-        - button:
-            <<: *playlist_button
-            id: button_playlist3
-            on_click:
-              - script.execute:
-                  id: play_playlist
-                  media_id: !lambda 'return id(setting_playlist_3).state;'
-                  shuffle: !lambda 'return id(setting_playlist_shuffle).state;'
-            widgets:
-              - label:
-                  <<: *playlist_label
-                  id: playlist_3_label
-                  text: !lambda 'return "Playlist 3:\n" + id(setting_playlist_3).state;'
-
-  - button:
-      <<: *playlist_button
-      id: button_playlist_shuffle
-      align: top_mid
-      y: 3%
-      width: 15%
-      height: 15%
-      ext_click_area: 20
-      on_click:
-        - switch.template.publish:
-            id: setting_playlist_shuffle
-            state: !lambda 'return !id(setting_playlist_shuffle).state;'
-      widgets:
-        - label:
-            id: label_playlist_shuffle
+        # Add background as first widget in each page
+        - image:
+            id: bg_image_media_playlists
+            src: album_placeholder
             align: CENTER
-            text: "${icon_shuffle_disabled}"
-            text_color: ${theme_font_color}
-            text_font: font_mdi_media
+            width: 100%
+            height: 100%
 
+        - obj:
+            align: CENTER
+            width: 80%
+            height: 70%
+            y: 3%
+            bg_opa: TRANSP
+            border_opa: TRANSP
+            layout: vertical
+            pad_all: ${ui_padding}
+            gesture_bubble: true
+            widgets:
+              - button: &playlist_button
+                  width: 100%
+                  bg_color: ${theme_button_bg_color}
+                  bg_opa: COVER
+                  radius: ${ui_radius}
+                  border_color: ${theme_button_border_color}
+                  border_width: ${ui_border}
+                  pressed:
+                    bg_color: ${theme_button_pressed_bg_color}
+                    border_color: ${theme_button_pressed_border_color}
+                    border_width: ${ui_border_pressed}
+                  gesture_bubble: true
+                  on_click:
+                    - script.execute:
+                        id: play_playlist
+                        media_id: !lambda 'return id(setting_playlist_1).state;'
+                        shuffle: !lambda 'return id(setting_playlist_shuffle).state;'
+                  widgets:
+                    - label: &playlist_label
+                        id: playlist_1_label
+                        align: CENTER
+                        text_align: CENTER
+                        text: !lambda 'return "Playlist 1:\n" + id(setting_playlist_1).state;'
+                        text_color: ${theme_font_color}
+                        text_font: theme_font_normal
+              - button:
+                  <<: *playlist_button
+                  id: button_playlist2
+                  on_click:
+                    - script.execute:
+                        id: play_playlist
+                        media_id: !lambda 'return id(setting_playlist_2).state;'
+                        shuffle: !lambda 'return id(setting_playlist_shuffle).state;'
+                  widgets:
+                    - label:
+                        <<: *playlist_label
+                        id: playlist_2_label
+                        text: !lambda 'return "Playlist 2:\n" + id(setting_playlist_2).state;'
+              - button:
+                  <<: *playlist_button
+                  id: button_playlist3
+                  on_click:
+                    - script.execute:
+                        id: play_playlist
+                        media_id: !lambda 'return id(setting_playlist_3).state;'
+                        shuffle: !lambda 'return id(setting_playlist_shuffle).state;'
+                  widgets:
+                    - label:
+                        <<: *playlist_label
+                        id: playlist_3_label
+                        text: !lambda 'return "Playlist 3:\n" + id(setting_playlist_3).state;'
+
+        - button:
+            <<: *playlist_button
+            id: button_playlist_shuffle
+            align: top_mid
+            y: 3%
+            width: 15%
+            height: 15%
+            ext_click_area: 20
+            on_click:
+              - switch.template.publish:
+                  id: setting_playlist_shuffle
+                  state: !lambda 'return !id(setting_playlist_shuffle).state;'
+            widgets:
+              - label:
+                  id: label_playlist_shuffle
+                  align: CENTER
+                  text: "${icon_shuffle_disabled}"
+                  text_color: ${theme_font_color}
+                  text_font: font_mdi_media
 
 # vim: set tabstop=2 shiftwidth=2 expandtab:

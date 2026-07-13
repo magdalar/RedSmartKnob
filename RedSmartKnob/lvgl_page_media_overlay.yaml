@@ -1,94 +1,98 @@
-# Alternative media Now Playing page.
+# LVGL Page definition for media Now Playing page.
 # This one features a full-size album cover, with the bottom 1/3rd of the page
 # showing the track info, and a track progress arc around the outside.
-id: page_media_overlay
-on_click:
-  - script.execute:
-      id: show_media_controls_popup
-bg_color: ${theme_bg_color}
-widgets:
-  - image:
-      id: album_cover_image_overlay
-      src: album_placeholder
-      x: 0%
-      y: 0%
-      width: 100%
-      height: 100%
 
-  - arc:
-      id: track_progress_arc_overlay
-      x: 0%
-      y: 0%
-      width: 100%
-      height: 100%
-      # angles to be above the caption band.
-      # 180 is left, 0 is right.
-      start_angle: 161
-      end_angle: 19
-      min_value: 0
-      max_value: 100
-      value: 0
-      arc_width: 6
-      arc_color: ${theme_accent_dark_color}
-      indicator:
-        arc_color: ${theme_accent_color}
-        arc_width: 10
-      bg_main_opa: 40%
-      clickable: false
-      adjustable: false
-  # TODO: Add a paused/muted indicator overlay
-
-  # Translucent caption band across the lower third of the circle.
-  - obj:
-      x: 0%
-      y: 67%
-      width: 100%
-      height: 33%
-      radius: 0
+lvgl:
+  pages:
+    - id: page_media_overlay
+      on_click:
+        - script.execute:
+            id: show_media_controls_popup
       bg_color: ${theme_bg_color}
-      bg_opa: 55%
-      border_width: 0
-      pad_all: 0
-      scrollable: false
       widgets:
-        - label:
-            id: track_artist_label_overlay
-            align: TOP_MID
-            width: 90%
-            long_mode: SCROLL_CIRCULAR
-            anim_duration: 8s
-            text_align: CENTER
-            text_color: ${theme_font_color2}
-            text_font: theme_font_normal
-            text: "Unknown Artist"
-        - label:
-            id: track_name_label_overlay
-            align: TOP_MID
-            y: 18%
-            width: 85%
-            long_mode: SCROLL_CIRCULAR
-            anim_duration: 8s
-            text_align: CENTER
-            text_color: ${theme_font_color}
-            text_font: theme_font_large
-            text: "Unknown Track"
-        - label:
-            id: track_album_label_overlay
-            align: TOP_MID
-            y: 46%
-            width: 80%
-            long_mode: SCROLL_CIRCULAR
-            anim_duration: 8s
-            text_align: CENTER
-            text_color: ${theme_font_color2}
-            text_font: theme_font_small
-            text: "Unknown Album"
-        - label:
-            id: track_time_label_overlay
-            align: TOP_MID
-            y: 65%
-            text_align: CENTER
-            text_color: ${theme_font_color2}
-            text_font: theme_font_small
-            text: "00:00 / 99:99"
+        - image:
+            id: album_cover_image_overlay
+            src: album_placeholder
+            x: 0%
+            y: 0%
+            width: 100%
+            height: 100%
 
+        - arc:
+            id: track_progress_arc_overlay
+            x: 0%
+            y: 0%
+            width: 100%
+            height: 100%
+            # angles to be above the caption band.
+            # 180 is left, 0 is right.
+            start_angle: 161
+            end_angle: 19
+            min_value: 0
+            max_value: 100
+            value: 0
+            arc_width: 6
+            arc_color: ${theme_accent_dark_color}
+            indicator:
+              arc_color: ${theme_accent_color}
+              arc_width: 10
+            bg_main_opa: 40%
+            clickable: false
+            adjustable: false
+        # TODO: Add a paused/muted indicator overlay
+
+        # Translucent caption band across the lower third of the circle.
+        - obj:
+            x: 0%
+            y: 67%
+            width: 100%
+            height: 33%
+            radius: 0
+            bg_color: ${theme_bg_color}
+            bg_opa: 55%
+            border_width: 0
+            pad_all: 0
+            scrollable: false
+            widgets:
+              - label:
+                  id: track_artist_label_overlay
+                  align: TOP_MID
+                  width: 90%
+                  long_mode: SCROLL_CIRCULAR
+                  anim_duration: 8s
+                  text_align: CENTER
+                  text_color: ${theme_font_color2}
+                  text_font: theme_font_normal
+                  text: "Unknown Artist"
+              - label:
+                  id: track_name_label_overlay
+                  align: TOP_MID
+                  y: 18%
+                  width: 85%
+                  long_mode: SCROLL_CIRCULAR
+                  anim_duration: 8s
+                  text_align: CENTER
+                  text_color: ${theme_font_color}
+                  text_font: theme_font_large
+                  text: "Unknown Track"
+              - label:
+                  id: track_album_label_overlay
+                  align: TOP_MID
+                  y: 46%
+                  width: 80%
+                  long_mode: SCROLL_CIRCULAR
+                  anim_duration: 8s
+                  text_align: CENTER
+                  text_color: ${theme_font_color2}
+                  text_font: theme_font_small
+                  text: "Unknown Album"
+              - label:
+                  id: track_time_label_overlay
+                  align: TOP_MID
+                  y: 65%
+                  text_align: CENTER
+                  text_color: ${theme_font_color2}
+                  text_font: theme_font_small
+                  text: "00:00 / 99:99"
+
+# vim: set tabstop=2 shiftwidth=2 expandtab:

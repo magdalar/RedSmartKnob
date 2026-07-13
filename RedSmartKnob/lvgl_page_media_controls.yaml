@@ -1,205 +1,207 @@
-# This is an lvgl page directly.
+# LVGL Page definition for media controls.
 # Script references should be primarily in actions_media.yaml
 # This unit should _not_ reference $mediaplayer.
 
-id: page_media_controls
-skip: true
-bg_color: ${theme_bg_color}
-widgets:
-  # Add background as first widget in each page
-  - image:
-      id: bg_image_media_controls
-      src: album_placeholder
-      align: CENTER
-      width: 100%
-      height: 100%
-
-  - button:
-      id: controls_dismiss
-      align: top_mid
-      y: 10
-      width: 10%
-      height: 10%
-      ext_click_area: 20
-      bg_color: ${theme_button_bg_color}
-      bg_opa: COVER
-      radius: ${ui_radius}
-      border_color: ${theme_button_border_color}
-      border_width: ${ui_border}
-      pressed:
-        bg_color: ${theme_button_pressed_bg_color}
-        border_color: ${theme_button_pressed_border_color}
-        border_width: ${ui_border_pressed}
-      gesture_bubble: true
-      on_click:
-        - script.execute: hide_popups
-      widgets:
-        - label:
-            align: CENTER
-            text: "X"
-            text_color: ${theme_font_color}
-            text_font: theme_font_large
-
-
-  # Translucent caption band across the top-middle, below the dismissal.
-  - obj:
-      x: 0%
-      y: 18%
-      width: 100%
-      height: 23%
-      radius: 0
+lvgl:
+  pages:
+    - id: page_media_controls
+      skip: true
       bg_color: ${theme_bg_color}
-      bg_opa: 55%
-      border_width: 0
-      pad_all: 0
-      scrollable: false
       widgets:
-        - label:
-            id: track_artist_label_controls
-            align: TOP_MID
-            width: 85%
-            y: 3%
-            long_mode: SCROLL_CIRCULAR
-            anim_duration: 8s
-            text_align: CENTER
-            text_color: ${theme_font_color2}
-            text_font: theme_font_normal
-            text: "Unknown Artist"
-        - label:
-            id: track_name_label_controls
+        # Add background as first widget in each page
+        - image:
+            id: bg_image_media_controls
+            src: album_placeholder
+            align: CENTER
+            width: 100%
+            height: 100%
+
+        - button:
+            id: controls_dismiss
+            align: top_mid
+            y: 10
+            width: 10%
+            height: 10%
+            ext_click_area: 20
+            bg_color: ${theme_button_bg_color}
+            bg_opa: COVER
+            radius: ${ui_radius}
+            border_color: ${theme_button_border_color}
+            border_width: ${ui_border}
+            pressed:
+              bg_color: ${theme_button_pressed_bg_color}
+              border_color: ${theme_button_pressed_border_color}
+              border_width: ${ui_border_pressed}
+            gesture_bubble: true
+            on_click:
+              - script.execute: hide_popups
+            widgets:
+              - label:
+                  align: CENTER
+                  text: "X"
+                  text_color: ${theme_font_color}
+                  text_font: theme_font_large
+
+
+        # Translucent caption band across the top-middle, below the dismissal.
+        - obj:
+            x: 0%
+            y: 18%
+            width: 100%
+            height: 23%
+            radius: 0
+            bg_color: ${theme_bg_color}
+            bg_opa: 55%
+            border_width: 0
+            pad_all: 0
+            scrollable: false
+            widgets:
+              - label:
+                  id: track_artist_label_controls
+                  align: TOP_MID
+                  width: 85%
+                  y: 3%
+                  long_mode: SCROLL_CIRCULAR
+                  anim_duration: 8s
+                  text_align: CENTER
+                  text_color: ${theme_font_color2}
+                  text_font: theme_font_normal
+                  text: "Unknown Artist"
+              - label:
+                  id: track_name_label_controls
+                  align: CENTER
+                  width: 90%
+                  long_mode: SCROLL_CIRCULAR
+                  anim_duration: 8s
+                  text_align: CENTER
+                  text_color: ${theme_font_color}
+                  text_font: theme_font_large
+                  text: "Unknown Track"
+              - label:
+                  id: track_album_label_controls
+                  align: BOTTOM_MID
+                  y: -5%
+                  width: 95%
+                  long_mode: SCROLL_CIRCULAR
+                  anim_duration: 8s
+                  text_align: CENTER
+                  text_color: ${theme_font_color2}
+                  text_font: theme_font_small
+                  text: "Unknown Album"
+
+        - obj:
             align: CENTER
             width: 90%
-            long_mode: SCROLL_CIRCULAR
-            anim_duration: 8s
-            text_align: CENTER
-            text_color: ${theme_font_color}
-            text_font: theme_font_large
-            text: "Unknown Track"
-        - label:
-            id: track_album_label_controls
-            align: BOTTOM_MID
-            y: -5%
-            width: 95%
-            long_mode: SCROLL_CIRCULAR
-            anim_duration: 8s
-            text_align: CENTER
-            text_color: ${theme_font_color2}
-            text_font: theme_font_small
-            text: "Unknown Album"
+            height: 20%
+            y: 5%
+            bg_opa: TRANSP
+            border_opa: TRANSP
+            layout: horizontal
+            pad_all: ${ui_padding}
+            gesture_bubble: true
+            widgets:
+              - button:
+                  id: controls_previous
+                  width: 20%
+                  height: 100%
+                  bg_color: ${theme_button_bg_color}
+                  bg_opa: COVER
+                  radius: ${ui_radius}
+                  border_color: ${theme_button_border_color}
+                  border_width: ${ui_border}
+                  pressed:
+                    bg_color: ${theme_button_pressed_bg_color}
+                    border_color: ${theme_button_pressed_border_color}
+                    border_width: ${ui_border_pressed}
+                  gesture_bubble: true
+                  on_click:
+                    - script.execute: set_media_previous
+                  widgets:
+                    - label:
+                        align: CENTER
+                        text: ${icon_previous}
+                        text_color: ${theme_font_color}
+                        text_font: font_mdi_media
+              - button:
+                  id: controls_toggle_button
+                  width: 20%
+                  height: 100%
+                  bg_color: ${theme_button_bg_color}
+                  bg_opa: COVER
+                  radius: ${ui_radius}
+                  border_color: ${theme_button_border_color}
+                  border_width: ${ui_border}
+                  pressed:
+                    bg_color: ${theme_button_pressed_bg_color}
+                    border_color: ${theme_button_pressed_border_color}
+                    border_width: ${ui_border_pressed}
+                  gesture_bubble: true
+                  on_click:
+                    - script.execute: set_media_play_pause
+                  widgets:
+                    - label:
+                        align: CENTER
+                        text: ${icon_play_pause}
+                        text_color: ${theme_font_color}
+                        text_font: font_mdi_media
+              - button:
+                  id: controls_next
+                  width: 20%
+                  height: 100%
+                  bg_color: ${theme_button_bg_color}
+                  bg_opa: COVER
+                  radius: ${ui_radius}
+                  border_color: ${theme_button_border_color}
+                  border_width: ${ui_border}
+                  pressed:
+                    bg_color: ${theme_button_pressed_bg_color}
+                    border_color: ${theme_button_pressed_border_color}
+                    border_width: ${ui_border_pressed}
+                  gesture_bubble: true
+                  on_click:
+                    - script.execute: set_media_next
+                  widgets:
+                    - label:
+                        align: CENTER
+                        text: ${icon_next}
+                        text_color: ${theme_font_color}
+                        text_font: font_mdi_media
 
-  - obj:
-      align: CENTER
-      width: 90%
-      height: 20%
-      y: 5%
-      bg_opa: TRANSP
-      border_opa: TRANSP
-      layout: horizontal
-      pad_all: ${ui_padding}
-      gesture_bubble: true
-      widgets:
-        - button:
-            id: controls_previous
-            width: 20%
-            height: 100%
-            bg_color: ${theme_button_bg_color}
-            bg_opa: COVER
-            radius: ${ui_radius}
-            border_color: ${theme_button_border_color}
-            border_width: ${ui_border}
-            pressed:
-              bg_color: ${theme_button_pressed_bg_color}
-              border_color: ${theme_button_pressed_border_color}
-              border_width: ${ui_border_pressed}
-            gesture_bubble: true
-            on_click:
-              - script.execute: set_media_previous
-            widgets:
-              - label:
-                  align: CENTER
-                  text: ${icon_previous}
-                  text_color: ${theme_font_color}
-                  text_font: font_mdi_media
-        - button:
-            id: controls_toggle_button
-            width: 20%
-            height: 100%
-            bg_color: ${theme_button_bg_color}
-            bg_opa: COVER
-            radius: ${ui_radius}
-            border_color: ${theme_button_border_color}
-            border_width: ${ui_border}
-            pressed:
-              bg_color: ${theme_button_pressed_bg_color}
-              border_color: ${theme_button_pressed_border_color}
-              border_width: ${ui_border_pressed}
-            gesture_bubble: true
-            on_click:
-              - script.execute: set_media_play_pause
-            widgets:
-              - label:
-                  align: CENTER
-                  text: ${icon_play_pause}
-                  text_color: ${theme_font_color}
-                  text_font: font_mdi_media
-        - button:
-            id: controls_next
-            width: 20%
-            height: 100%
-            bg_color: ${theme_button_bg_color}
-            bg_opa: COVER
-            radius: ${ui_radius}
-            border_color: ${theme_button_border_color}
-            border_width: ${ui_border}
-            pressed:
-              bg_color: ${theme_button_pressed_bg_color}
-              border_color: ${theme_button_pressed_border_color}
-              border_width: ${ui_border_pressed}
-            gesture_bubble: true
-            on_click:
-              - script.execute: set_media_next
-            widgets:
-              - label:
-                  align: CENTER
-                  text: ${icon_next}
-                  text_color: ${theme_font_color}
-                  text_font: font_mdi_media
-
-  # Volume control
-  - slider:
-      id: volume_control_widget
-      align: CENTER
-      y: 25%
-      width: 60%
-      height: 4%
-      bg_color: ${theme_accent_dark_color}
-      indicator:
-        bg_color: ${theme_accent_color}
-        user_1:
-          arc_color: ${theme_warning_color}
-      knob:
-        bg_color: ${theme_accent_color}
-        user_1:
-          arc_color: ${theme_warning_color}
-      gesture_bubble: true
-      # on_value causes a loop when the value is updated from e.g. sendspin.
-      # on_release only does it on user release.
-      on_release:
-        - lvgl.widget.update:
+        # Volume control
+        - slider:
             id: volume_control_widget
-            state:
-              user_1: !lambda 'return x > 80;'
-        - script.execute:
-            id: set_media_volume
-            new_vol: !lambda 'return x / 100.0;'
+            align: CENTER
+            y: 25%
+            width: 60%
+            height: 4%
+            bg_color: ${theme_accent_dark_color}
+            indicator:
+              bg_color: ${theme_accent_color}
+              user_1:
+                arc_color: ${theme_warning_color}
+            knob:
+              bg_color: ${theme_accent_color}
+              user_1:
+                arc_color: ${theme_warning_color}
+            gesture_bubble: true
+            # on_value causes a loop when the value is updated from e.g. sendspin.
+            # on_release only does it on user release.
+            on_release:
+              - lvgl.widget.update:
+                  id: volume_control_widget
+                  state:
+                    user_1: !lambda 'return x > 80;'
+              - script.execute:
+                  id: set_media_volume
+                  new_vol: !lambda 'return x / 100.0;'
 
-  # Volume percentage display
-  - label:
-      id: volume_text
-      align: CENTER
-      y: 32%
-      text_color: ${theme_font_color}
-      text_font: theme_font_normal
-      text: "XX%"
+        # Volume percentage display
+        - label:
+            id: volume_text
+            align: CENTER
+            y: 32%
+            text_color: ${theme_font_color}
+            text_font: theme_font_normal
+            text: "XX%"
 
 # vim: set tabstop=2 shiftwidth=2 expandtab:

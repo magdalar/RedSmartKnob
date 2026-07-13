@@ -84,7 +84,7 @@ sensor:
   - platform: sendspin
     type: track_progress
     id: sendspin_progress
-    update_interval: 1s 
+    update_interval: 1s
     on_value:
       - lambda: |-
           if (id(sendspin_is_idle)) {
@@ -133,7 +133,7 @@ media_player:
     name: Media Player
     id: external_media_player
 
-    announcement_pipeline: 
+    announcement_pipeline:
       speaker: announcement_speaker_mixer_input
       format: FLAC
       sample_rate: ${i2s_sample_rate_speaker}
@@ -142,7 +142,7 @@ media_player:
         - audio_file_announcement_source
         - http_announcement_source
 
-    media_pipeline: 
+    media_pipeline:
       format: FLAC
       sample_rate: ${i2s_sample_rate_speaker}
       speaker: media_speaker_mixer_input

@@ -59,7 +59,7 @@ spi:
   type: quad
   clk_pin: 13
   data_pins: [15, 16, 17, 18]   # TFT_SDA0..3
-  
+
 # I2C for touch controller
 i2c:
   sda: 11  # TOUCH_PIN_NUM_I2C_SDA
@@ -84,11 +84,11 @@ light:
       milliseconds: 30
     initial_state:
       brightness: 50%
-    on_turn_off: 
+    on_turn_off:
       then:
         - lvgl.pause:
             show_snow: true
-    on_turn_on: 
+    on_turn_on:
       then:
         - lvgl.resume:
 

@@ -19,7 +19,7 @@
     on_value:
       then:
         - component.update: battery_percentage
-            
+
   - platform: template
     id: battery_percentage
     name: "Battery Percentage"

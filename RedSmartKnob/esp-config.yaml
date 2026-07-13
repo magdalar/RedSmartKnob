@@ -1,8 +1,8 @@
 substitutions:
-# Device setting  
+# Device setting
   board: esp32-s3-devkitc-1
-  type: esp-idf  
-  
+  type: esp-idf
+
 esphome:
   friendly_name: "${friendly_name}"
   name: "${name}"
@@ -15,7 +15,7 @@ esphome:
     board_build.flash_mode: dio
     board_build.f_flash: 80000000L
     board_build.f_cpu: 240000000L
-    
+
 esp32:
   board: ${board}
   flash_size: 16MB
@@ -30,5 +30,5 @@ esp32:
 psram:
   mode: octal
   speed: 80MHz
-  
+
 # vim: set tabstop=2 shiftwidth=2 expandtab:

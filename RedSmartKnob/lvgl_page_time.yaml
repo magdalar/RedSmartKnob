@@ -1,102 +1,106 @@
-# This is an lvgl page directly.
+# LVGL Page definition for time & weather.
 # Script references should be primarily in actions_time.yaml
 
-id: page_time
-#on_click:
-#  then:
-#    - script.execute: set_media_play_pause
-bg_color: ${theme_bg_color}
-widgets:
-  # Add background as first widget in each page
-  - image:
-      id: bg_image_time
-      src: bg_image_file
-      align: CENTER
-      width: 100%
-      height: 100%
+lvgl:
+  pages:
+    - id: page_time
+      #on_click:
+      #  then:
+      #    - script.execute: set_media_play_pause
+      bg_color: ${theme_bg_color}
+      widgets:
+        # Add background as first widget in each page
+        - image:
+            id: bg_image_time
+            src: bg_image_file
+            align: CENTER
+            width: 100%
+            height: 100%
 
-  # Clock icon, placed just above the date/time label
-  - label:
-      id: clock_icon
-      text_font: font_mdi_time
-      text_color: ${theme_font_color}
-      align: CENTER
-      y: -40
-      x: -100
-      text: "${icon_clock}"
-      
-  - label:
-      id: date_time_widget
-      text_font: theme_font_large
-      text_color: ${theme_font_color}
-      align: CENTER
-      y: -40
-      long_mode: WRAP
-      text_align: CENTER
-      # This will be overridden by actions_time.yaml
-      text: "<initializing>"
+        # Clock icon, placed just above the date/time label
+        - label:
+            id: clock_icon
+            text_font: font_mdi_time
+            text_color: ${theme_font_color}
+            align: CENTER
+            y: -40
+            x: -100
+            text: "${icon_clock}"
 
-  - label:
-      id: outdoor_temp_icon
-      text_font: font_mdi_time
-      text_color: ${theme_font_color}
-      align: CENTER
-      y: 25
-      x: -100
-      text: "${icon_thermo_outside}"
+        - label:
+            id: date_time_widget
+            text_font: theme_font_large
+            text_color: ${theme_font_color}
+            align: CENTER
+            y: -40
+            long_mode: WRAP
+            text_align: CENTER
+            # This will be overridden by actions_time.yaml
+            text: "<initializing>"
 
-  - label:
-      id: outdoor_temp_label
-      text_font: theme_font_large
-      text_color: ${theme_font_color}
-      align: CENTER
-      y: 25
-      text: "–"
+        - label:
+            id: outdoor_temp_icon
+            text_font: font_mdi_time
+            text_color: ${theme_font_color}
+            align: CENTER
+            y: 25
+            x: -100
+            text: "${icon_thermo_outside}"
 
-  - label:
-      id: indoor_temp_icon
-      text_font: font_mdi_time
-      text_color: ${theme_font_color}
-      align: CENTER
-      y: 55
-      x: -100
-      text: "${icon_thermo_inside}"
+        - label:
+            id: outdoor_temp_label
+            text_font: theme_font_large
+            text_color: ${theme_font_color}
+            align: CENTER
+            y: 25
+            text: "–"
 
-  - label:
-      id: indoor_temp_label
-      text_font: theme_font_large
-      text_color: ${theme_font_color}
-      align: CENTER
-      y: 55
-      text: "–"
+        - label:
+            id: indoor_temp_icon
+            text_font: font_mdi_time
+            text_color: ${theme_font_color}
+            align: CENTER
+            y: 55
+            x: -100
+            text: "${icon_thermo_inside}"
 
-  # Enhanced battery arc with better positioning
-  - arc:
-      id: batt_arc
-      align: CENTER
-      y: -120
-      width: 80
-      height: 80
-      start_angle: 135
-      end_angle: 45
-      arc_width: 8
-      arc_color: 0x00FF00  # Keep static green color
-      value: 0
+        - label:
+            id: indoor_temp_label
+            text_font: theme_font_large
+            text_color: ${theme_font_color}
+            align: CENTER
+            y: 55
+            text: "–"
 
-  # Battery icon, placed to the left of the percentage text
-  - label:
-      id: batt_icon
-      text_font: font_mdi_time
-      text_color: ${theme_font_color}
-      align: CENTER
-      x: -20
-      y: -120
-      text: "${icon_battery}"
+        # Enhanced battery arc with better positioning
+        - arc:
+            id: batt_arc
+            align: CENTER
+            y: -120
+            width: 80
+            height: 80
+            start_angle: 135
+            end_angle: 45
+            arc_width: 8
+            arc_color: 0x00FF00  # Keep static green color
+            value: 0
 
-  - label:
-      id: batt_text
-      text_color: ${theme_font_color}
-      align: CENTER
-      x: 10
-      y: -120
-      text: "0%"
+        # Battery icon, placed to the left of the percentage text
+        - label:
+            id: batt_icon
+            text_font: font_mdi_time
+            text_color: ${theme_font_color}
+            align: CENTER
+            x: -20
+            y: -120
+            text: "${icon_battery}"
+
+        - label:
+            id: batt_text
+            text_color: ${theme_font_color}
+            align: CENTER
+            x: 10
+            y: -120
+            text: "0%"
+
+# vim: set tabstop=2 shiftwidth=2 expandtab:

@@ -13,7 +13,7 @@ sensor:
     id: outdoor_temperature
     attribute: temperature
     entity_id: $weather
-    on_value: 
+    on_value:
       then:
         - lvgl.label.update:
             id: outdoor_temp_label
@@ -24,7 +24,7 @@ sensor:
     id: indoor_temperature
     #attribute: temperature
     entity_id: $indoor_temp_entity
-    on_value: 
+    on_value:
       then:
         - lvgl.label.update:
             id: indoor_temp_label
