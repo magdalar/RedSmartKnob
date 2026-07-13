@@ -50,6 +50,9 @@ script:
               && duration_secs == id(last_posted_duration_secs)) {
             return;
           }
+          if (duration_secs != id(last_posted_duration_secs)) {
+            ESP_LOGD("actions_media", "New track duration: %.1f", duration_secs);
+          }
           id(last_posted_position_secs) = position_secs;
           id(last_posted_duration_secs) = duration_secs;
 

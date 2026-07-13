@@ -95,7 +95,9 @@ sensor:
     id: sendspin_duration
     on_value:
       - lambda: |-
-          ESP_LOGD("sendspin", "New track duration: %d", id(sendspin_duration).state);
+          float pos_secs = id(sendspin_progress).has_state() ? id(sendspin_progress).state / 1000.0 : 0.0;
+          float dur_secs = x / 1000.0;
+          id(handle_media_progress)->execute(pos_secs, dur_secs);
 
 
 audio_file:
