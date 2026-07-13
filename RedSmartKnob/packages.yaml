@@ -14,23 +14,19 @@ substitutions:
 
   project_version: 2026.7.0
 
-  pkg_sendspin: !include sendspin.yaml
-  pkg_album_art_sendspin: !include album_art_sendspin.yaml
-  pkg_mediaplayer: !include mediaplayer.yaml
-  pkg_album_art_url: !include album_art_url.yaml
-
 packages:
   ######### SENDSPIN MODE ###########
-  sendspin: ${ pkg_sendspin if enable_sendspin else {} }
-  album_art_sendspin: ${ pkg_album_art_sendspin if enable_sendspin else {} }
+  sendspin: !include ${ "sendspin.yaml" if enable_sendspin else "disabled.yaml" }
+  album_art_sendspin: !include ${ "album_art_sendspin.yaml" if enable_sendspin else "disabled.yaml" }
   ######### END SENDSPIN MODE ###########
 
   ######### REMOTE MEDIAPLAYER MODE ###########
-  mediaplayer: ${ {} if enable_sendspin else pkg_mediaplayer }
-  album_art_url: ${ {} if enable_sendspin else pkg_album_art_url }
+  mediaplayer: !include ${ "disabled.yaml" if enable_sendspin else "mediaplayer.yaml" }
+  album_art_url: !include ${ "disabled.yaml" if enable_sendspin else "album_art_url.yaml" }
   ######### END REMOTE MEDIAPLAYER MODE ###########
 
   esp_config: !include esp-config.yaml
+  wifi: !include wifi.yaml
   ha_config: !include ha-config.yaml
   # Logic for startup / boot time.
   startup: !include startup.yaml
