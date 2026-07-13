@@ -1,5 +1,8 @@
 # Started from from https://community.home-assistant.io/t/display-knob/905249/15 user trinitytest
 # Switched to a sendspin player based on https://github.com/RealDeco/sendspin-guition/blob/main/Guition_Knob_v2.yaml
+# TODO: If coming from a stopped/idle state, art, position and track duration stay unknown.
+# TODO: Pausing goes to on_idle immediately.
+# TODO: Unpausing is unreliable, though possibly network related (wifi signal 32% during test)
 
 substitutions:
   i2c_id: internal_i2c
@@ -50,7 +53,7 @@ speaker:
 
 sendspin:
   id: sendspin_hub
-  task_stack_in_psram: ${task_stack_in_psram}  # TODO: Guition_Knob_v2 has false
+  task_stack_in_psram: ${task_stack_in_psram}
 
 text_sensor:
   - platform: sendspin
@@ -107,6 +110,7 @@ media_source:
     id: http_media_source
   - platform: sendspin
     id: sendspin_media_source
+    task_stack_in_psram: ${task_stack_in_psram}
 
 globals:
   - id: sendspin_is_idle
@@ -120,6 +124,10 @@ media_player:
   - platform: sendspin
     id: sendspin_group_media_player
     name: Sendspin Group Media Player
+    # Prevent this from showing up in Home Assistant by default.
+    # The user can still enable it, though they should use the Music Assistant
+    # entity instead.
+    disabled_by_default: true
 
   - platform: speaker_source
     name: Media Player
@@ -165,9 +173,9 @@ media_player:
             lambda: 'return !id(sendspin_is_idle);'
           then:
             - lambda: 'id(sendspin_is_idle) = true;'
-            - script.execute: handle_media_paused
+            - script.execute: handle_media_stopped
     on_pause:
-      - script.execute: handle_media_stopped
+      - script.execute: handle_media_paused
     on_announcement:
       - script.execute: handle_media_announcement
 
@@ -177,32 +185,32 @@ script:
         new_vol: float
     then:
       - media_player.volume_set:
-          id: external_media_player
+          id: sendspin_group_media_player
           volume: !lambda 'return new_vol;'
 
   - id: set_media_volume_mute
     then:
       - media_player.mute:
-          id: external_media_player
+          id: sendspin_group_media_player
 
   - id: set_media_volume_unmute
     then:
       - media_player.unmute:
-          id: external_media_player
+          id: sendspin_group_media_player
 
   - id: set_media_play_pause
     then:
       - media_player.toggle:
-          id: external_media_player
+          id: sendspin_group_media_player
 
   - id: set_media_next
     then:
       - media_player.next:
-          id: external_media_player
+          id: sendspin_group_media_player
 
   - id: set_media_previous
     then:
       - media_player.previous:
-          id: external_media_player
+          id: sendspin_group_media_player
 
 # vim: set tabstop=2 shiftwidth=2 expandtab:

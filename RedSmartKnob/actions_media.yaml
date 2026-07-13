@@ -80,10 +80,13 @@ script:
   - id: handle_media_paused
     then:
       - lambda: 'ESP_LOGI("actions_media", "Media paused playing.");'
+      # TODO: Display a paused icon overlay.
 
   - id: handle_media_stopped
     then:
       - lambda: 'ESP_LOGI("actions_media", "Media stopped playing.");'
+      - script.execute: handle_media_album_art_display_placeholder
+      # TODO: Display a stopped icon overlay.
 
   - id: handle_media_volume_muted
     then:
