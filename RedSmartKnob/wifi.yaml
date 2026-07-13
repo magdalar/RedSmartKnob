@@ -1,5 +1,4 @@
 wifi:
-  id: wifi
   ssid: !secret wifi_ssid
   password: !secret wifi_password
   #power_save_mode: none
