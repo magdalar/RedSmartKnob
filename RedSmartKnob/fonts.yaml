@@ -1,6 +1,10 @@
 substitutions:
   font: gfonts://Roboto
 
+  # http://materialdesignicons.com/cdn/7.4.47/
+  # http://materialdesignicons.com/cdn/7.4.47/fonts/materialdesignicons-webfont.ttf
+  icons_font: "https://github.com/Templarian/MaterialDesign-Webfont/raw/refs/heads/master/fonts/materialdesignicons-webfont.ttf"
+
   # font_mdi_top
   icon_wifi: "\U000F05A9"
 
@@ -19,16 +23,14 @@ substitutions:
 
 # Font definition
 font:
-  # http://materialdesignicons.com/cdn/7.4.47/
-  # http://materialdesignicons.com/cdn/7.4.47/fonts/materialdesignicons-webfont.ttf
   - id: font_mdi_top
-    file: https://github.com/Templarian/MaterialDesign-Webfont/raw/refs/heads/master/fonts/materialdesignicons-webfont.ttf
+    file: ${icons_font}
     size: 16
     glyphs:
       - "${icon_wifi}"
 
   - id: font_mdi_time
-    file: https://github.com/Templarian/MaterialDesign-Webfont/raw/refs/heads/master/fonts/materialdesignicons-webfont.ttf
+    file: ${icons_font}
     size: 24
     glyphs:
       - "${icon_clock}"
@@ -37,7 +39,7 @@ font:
       - "${icon_battery}"
 
   - id: font_mdi_media
-    file: https://github.com/Templarian/MaterialDesign-Webfont/raw/refs/heads/master/fonts/materialdesignicons-webfont.ttf
+    file: ${icons_font}
     size: 44
     glyphs:
       - "${icon_play_pause}"
@@ -47,7 +49,7 @@ font:
       - "${icon_shuffle_disabled}"
 
   - id: theme_font_small
-    file: "gfonts://Roboto"
+    file: ${font}
     size: 14
     glyphsets:
       - GF_Latin_Core
@@ -55,7 +57,7 @@ font:
       - GF_Cyrillic_Core
 
   - id: theme_font_normal
-    file: "gfonts://Roboto"
+    file: ${font}
     size: 20
     glyphsets:
       - GF_Latin_Core
@@ -63,7 +65,7 @@ font:
       - GF_Cyrillic_Core
 
   - id: theme_font_large
-    file: "gfonts://Roboto"
+    file: ${font}
     size: 28
     glyphsets:
       - GF_Latin_Core
