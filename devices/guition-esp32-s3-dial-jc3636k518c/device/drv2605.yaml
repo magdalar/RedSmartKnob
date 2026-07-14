@@ -24,7 +24,7 @@ number:
           value: !lambda "return x;"
 
 script:
-  - id: haptic_pulse
+  - id: !extend haptic_pulse
     then:
       - drv2605.play_effect:
           id: haptic_driver

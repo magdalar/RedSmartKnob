@@ -1,0 +1,51 @@
+substitutions:
+  name: "redsmartknob"
+  friendly_name: "RedSmartKnob"
+  comment: ESP Smart Knob
+  # Your weather entity in Home Assistant
+  weather: weather.forecast
+  # Your indoor temperature entity in Home Assistant
+  indoor_temp_entity: sensor.indoor_temperature
+  # HomeAssistant base URI. This will be used when fetching non-sendspin album art.
+  homeassistant_base_uri: "https://homeassistant.example.com"
+  # The UI theme to use.
+  # Options include: blue, orange, green & white.
+  theme: "blue"
+
+  # Set to true if you want a local sendspin client, rather than controlling a remote mediaplayer.
+  enable_sendspin: true
+  # The media player entity to control. If using `enable_sendspin`, this should
+  # refer to the Music Assistant version of the entity, not the device
+  # directly.
+  mediaplayer: media_player.office
+
+  # Uncomment to pull images from the local deployment (vs github main)
+  #repo_base_uri: "../../RedSmartKnob"
+
+logger:
+  level: DEBUG
+
+# WiFi credentials; stored in secrets.yaml.
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+api:
+  encryption:
+    key: !secret api_encryption_key
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
+packages:
+  # For local development, use:
+  #setup: !include packages.yaml
+  # Otherwise, this will pull it from GitHub:
+  setup:
+    url: https://github.com/magdalar/RedSmartKnob
+    files: [devices/guition-esp32-s3-dial-jc3636k518c/packages.yaml]
+    ref: main
+    refresh: 0s  # always pull, comment out for caching
+ 
+# vim: set tabstop=2 shiftwidth=2 expandtab:

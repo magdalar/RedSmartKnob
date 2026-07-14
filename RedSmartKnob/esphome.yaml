@@ -1,0 +1,10 @@
+esphome:
+  friendly_name: "${friendly_name}"
+  name: "${name}"
+  comment: "${comment}"
+  min_version: 2026.6.0
+  project:
+    name: magdalar.RedSmartKnob
+    version: ${project_version}
+
+# vim: set tabstop=2 shiftwidth=2 expandtab:

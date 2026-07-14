@@ -1,22 +1,15 @@
 wifi:
-  ssid: !secret wifi_ssid
-  password: !secret wifi_password
-  #power_save_mode: none
-  #power_save_mode: HIGH
-  # Consider fast_connect, but then also likely bssid and manual_ip.
-  #fast_connect: true
-  #manual_ip:
-  #  static_ip: 192.168.X.X
-  #  gateway: 192.168.X.1
-  #  subnet: 255.255.255.0
-  #  dns1: 192.168.X.X
+  # Wifi ssdi & password established at outer layer.
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
     ssid: "${friendly_name} Fallback"
-    password: !secret wifi_api_fallback_password
+    password: "fallback"
 
 captive_portal:
+
+# Supports flashing generic firmware, establishing wifi info via webserial.
+improv_serial:
 
 text_sensor:
   - platform: wifi_info

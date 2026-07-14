@@ -1,0 +1,8 @@
+# Empty / barebones script definitions for device-specific actions
+
+script:
+  # Called by the UI when soft user feedback is desired, such as during page
+  # navigation, or to confirm pressing of a button.
+  - id: haptic_pulse
+    mode: single
+    then: []  # Do nothing

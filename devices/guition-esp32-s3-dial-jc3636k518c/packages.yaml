@@ -1,0 +1,33 @@
+substitutions:
+  ### These are not user-configurable.
+  imagewidth: 120
+  imageheight: 120
+  screenwidth: 360
+  screenheight: 360
+
+  # Where to pull image files from.
+  # Override this in the outer layer to use local files.
+  repo_base_uri: "https://raw.githubusercontent.com/magdalar/RedSmartKnob/main"
+
+  # Default theme. Override in caller.
+  theme: "white"
+
+  project_version: 2026.7.0
+
+packages:
+  # Core device and chip configuration
+  device: !include device.yaml
+  # Touchscreen display initialization.
+  display: !include device/display.yaml
+  # Battery status
+  battery: !include device/adc_battery.yaml
+  # Rotary Knob
+  rotary_knob: !include device/rotary_knob.yaml
+  # drv2605: haptic feedback.
+  drv2605: !include device/drv2605.yaml
+  # TODO: Add the sd card if needed, otherwise just leave it out...
+  #sd_card: !include device/sd_card.yaml
+  
+  app_main: !include ../../RedSmartKnob/main.yaml
+
+# vim: set tabstop=2 shiftwidth=2 expandtab:

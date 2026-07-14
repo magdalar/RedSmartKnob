@@ -1,23 +1,18 @@
-
 # Enable logging
 logger:
-  #level: VERY_VERBOSE
-  level: DEBUG
-  #level: INFO
-  #baud_rate: 0
+  level: INFO
 
 debug:
-  # was 5s
   update_interval: 60s
 
-# Enable Home Assistant API
+# Enable Home Assistant API.
+# Top-level config should establish an encryption key.
 api:
-  encryption:
-    key: !secret api_encryption_key
 
+# Enable OTA updates.
+# Top-level config should establish an ota password.
 ota:
   - platform: esphome
-    password: !secret ota_password
 
 time:
   - platform: homeassistant
