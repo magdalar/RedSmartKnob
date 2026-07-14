@@ -23,6 +23,7 @@ Follow the Instructions links to proceed.
 
 | Device Model | Description | Links |
 |---|:-:|:-:|
+| Guition JC3636W518C | 1.8" ESP32-S3 Silver Puck | [Instructions](devices/guition-esp32-s3-puck-jc3636w518c/README.md) |
 | Guition JC3636K518C | 1.8" ESP32-S3+ESP32 Rotary Knob, Red | [Instructions](devices/guition-esp32-s3-dial-jc3636k518c/README.md) |
 | WaveShare ESP32-S3-Knob-Touch-LCD-1.8 | 1.8" ESP32-S3+ESP32 Rotary Knob, Blue or Black | [Instructions](devices/guition-esp32-s3-dial-jc3636k518c/README.md) |
 
