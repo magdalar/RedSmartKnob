@@ -14,11 +14,6 @@ esphome:
                 id: navigate_to
                 target: !lambda 'return id(idle_page_preference).current_option();'
 
-# TODO: If any runtime loads are needed, start them here.
-#wifi:
-#  on_connect:
-#    - delay: 1s
-
 api:
   on_client_connected:
     - logger.log:

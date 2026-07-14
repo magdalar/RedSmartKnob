@@ -92,4 +92,10 @@ light:
       then:
         - lvgl.resume:
 
+lvgl:
+  displays:
+    - main_display
+  touchscreens:
+    - my_touchscreen
+
 # vim: set tabstop=2 shiftwidth=2 expandtab:

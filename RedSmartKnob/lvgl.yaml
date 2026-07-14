@@ -36,13 +36,8 @@ image:
     transparency: alpha_channel
 
 lvgl:
-  id: my_lvgl
-  displays:
-    - main_display
-  touchscreens:
-    - my_touchscreen
+  # Display & touchscreen bindings happen in the device configs.
 
-  # Add color depth specification - Arduino uses 16-bit
   color_depth: 16
   default_font: theme_font_normal
 

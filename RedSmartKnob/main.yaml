@@ -11,6 +11,11 @@ substitutions:
   project_version: 2026.7.0
 
 packages:
+  app_esphome: !include esphome.yaml
+  app_wifi: !include wifi.yaml
+  # Logic for startup / boot time.
+  app_startup: !include startup.yaml
+
   ######### SENDSPIN MODE ###########
   app_sendspin: !include ${ "sendspin.yaml" if enable_sendspin else "disabled.yaml" }
   app_album_art_sendspin: !include ${ "album_art_sendspin.yaml" if enable_sendspin else "disabled.yaml" }
@@ -21,12 +26,9 @@ packages:
   app_album_art_url: !include ${ "disabled.yaml" if enable_sendspin else "album_art_url.yaml" }
   ######### END REMOTE MEDIAPLAYER MODE ###########
 
-  app_esphome: !include esphome.yaml
-  app_wifi: !include wifi.yaml
-  app_ha_config: !include ha-config.yaml
-  # Logic for startup / boot time.
-  app_startup: !include startup.yaml
+  # User settings, exposed via Home Assistant
   app_user_settings: !include settings.yaml
+
   # UI font and icon definitions.
   app_fonts: !include fonts.yaml
 
