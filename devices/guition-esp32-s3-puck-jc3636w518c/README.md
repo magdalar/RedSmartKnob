@@ -1,6 +1,6 @@
 # Guition 1.8" Silver Puck v2
 
-![Device image]("Yes, this is running off a QI charger" device.jpg)
+![Device image](device.jpg)
 
 This directory supports an ESPHome configuration for a Guition JC3636W518C\_I\_Y silver 1.8" puck with an ESP32-S3 chip.
 
