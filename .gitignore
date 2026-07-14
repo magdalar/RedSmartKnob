@@ -3,3 +3,5 @@ secrets.yaml
 /venv/
 .kopiaignore
 .ackrc
+# my example configs
+esphome.*.yaml
