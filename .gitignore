@@ -1,7 +1,5 @@
-/.esphome/
-/secrets.yaml
-/fonts/
+.esphome
+secrets.yaml
 /venv/
 .kopiaignore
 .ackrc
-red-smartknob.*.yaml
