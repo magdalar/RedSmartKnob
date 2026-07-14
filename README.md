@@ -6,23 +6,25 @@ and optionally also having this device _be_ the sendspin media player via local
 audio AUX output. This was inspired heavily by
 https://github.com/RealDeco/sendspin-guition.
 
+## Screenshots
 
-This repository supports an ESPHome configuration for a WaveShare ESP32-S3
-1.8inch Knob Display or Guition JC3636K518C-I-YR1 - Knob-ESP32S3. That is, the
-"V1" referred to by
-which that repo does not support at the time of writing.
+![Example](devices/guition-esp32-s3-dial-jc3636k518c/device.jpg)
 
-## How to use this
+## Expectations
 
-TODO: Update this following the refactor.
+This firmware expects use of ESPHome, Home Assistant and Music Assistant. Note
+that any configuration requesting an HA Media Player should provide the entity
+id pointing to the Music Assistant variant of that media player for best
+results.
 
-1. Edit `red-smartknob.yaml` to set your device names, home assistant entities, and local vs remote mediplayer choice.
-1. Copy `secrets.yaml.example` to `secrets.yaml` and edit it as appropriate for your setup.
-1. Compile and flash your device: `esphome run red-smartknob.yaml`
-1. Add the device in Home Assistant
-1. If using sendspin, then you should already see your device in Music Assistant too. Play some music!
+## Supported Devices
 
-NOTE: If using TTS announcements, remember to use the Music Assistant `media_player` entity within Home Assistant, rather than the device directly. MA will handle the audio stream format mismatches much more gracefully.
+Follow the Instructions links to proceed.
+
+| Device Model | Description | Links |
+|---|:-:|:-:|
+| Guition JC3636K518C | 1.8" ESP32-S3+ESP32 Rotary Knob, Red | [Instructions](devices/guition-esp32-s3-dial-jc3636k518c/README.md) |
+| WaveShare ESP32-S3-Knob-Touch-LCD-1.8 | 1.8" ESP32-S3+ESP32 Rotary Knob, Blue or Black | [Instructions](devices/guition-esp32-s3-dial-jc3636k518c/README.md) |
 
 ## References and Inspirations
 
