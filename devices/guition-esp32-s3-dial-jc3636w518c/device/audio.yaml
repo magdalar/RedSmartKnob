@@ -1,0 +1,41 @@
+switch:
+  - platform: gpio
+    name: Speaker Enable
+    icon: "mdi:speaker"
+    entity_category: config
+    pin: GPIO48
+    restore_mode: RESTORE_DEFAULT_ON
+
+i2s_audio:
+  - id: i2s_microphone
+    i2s_lrclk_pin:
+      number: GPIO45
+      ignore_strapping_warning: true
+    i2s_bclk_pin:  GPIO42
+
+  - id: i2s_output_id
+    i2s_lrclk_pin: GPIO16
+    i2s_bclk_pin:  GPIO18
+    i2s_mclk_pin:  GPIO21
+
+microphone:
+  - platform: i2s_audio
+    id: microphone_id
+    i2s_audio_id: i2s_microphone
+    i2s_din_pin:
+      number: GPIO46
+      ignore_strapping_warning: true
+    adc_type: external
+    channel: left
+    pdm: true
+    sample_rate: 16000
+    bits_per_sample: 16bit
+
+speaker:
+  - platform: i2s_audio
+    id: i2s_audio_speaker
+    i2s_audio_id: i2s_output_id
+    i2s_dout_pin: GPIO17
+    dac_type: external
+    buffer_duration: 300ms
+    channel: stereo

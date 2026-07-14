@@ -33,15 +33,15 @@ USB cable.
 
   - Red round case
     - Also available from WaveShare in blue.
-  - 1.8" 360x360 display (`JC3636W518V2`)
+  - 1.8" 360x360 TFT LCD display (`JC3636W518V2`, driver chip `ST77916`, touchscreen `CST816`)
   - an ESP32-S3 chip driving the majority
+    - 240MHz, 520KB SRAM, 448KB ROM, 8M PSRAM, 16M Flash
   - an ESP32 chip driving the DAC
+  - USB-C powered, plus inbuilt lithium battery (~3.5h runtime unoptimized)
   - PCM5100 DAC with 3.5mm AUX Audio Line Out ([details](https://community.home-assistant.io/t/display-knob/905249/16))
-  - USB-C powered
-  - Lithium battery (~3.5h runtime unoptimized)
   - Physical rotary knob (GPIO 8 + 7)
   - Haptic feedback (drv2605)
-  - Power switch
+  - Power toggle switch
   - TF / SD card 512MB, but not ejectable from case.
   - Microphone
 

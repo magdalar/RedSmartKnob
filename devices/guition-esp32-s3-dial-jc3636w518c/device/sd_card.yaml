@@ -1,0 +1,162 @@
+external_components:
+  - source:
+      type: git
+      url: https://github.com/KrX3D/esphome_sd_card
+      ref: main
+    #refresh: 0s
+    components: [sd_mmc_card]
+
+esp32:
+  framework:
+    advanced:
+      include_builtin_idf_components: ["fatfs", "spiffs"]
+      disable_vfs_support_termios: false
+      disable_vfs_support_select: false
+      disable_vfs_support_dir: false
+
+sd_mmc_card:
+  id: sd_card
+  # The SD card is connected in the 1-bit mode and connect the pins accordingly.
+  mode_1bit: false
+  format_if_mount_failed: true
+  clk_pin: GPIO3
+  cmd_pin: GPIO4
+  data0_pin: GPIO2
+  data1_pin: GPIO1
+  data2_pin: GPIO6
+  data3_pin: GPIO5
+
+sensor:
+  - platform: sd_mmc_card
+    type: total_space
+    name: "SD Total Space"
+    id: sd_total_space
+    unit_of_measurement: "MB"
+    accuracy_decimals: 2
+    filters:
+      - lambda: return sd_mmc_card::convertBytes(x, sd_mmc_card::MemoryUnits::MegaByte);
+
+  - platform: sd_mmc_card
+    type: used_space
+    name: "SD Used Space"
+    id: sd_used_space
+    unit_of_measurement: "MB"
+    accuracy_decimals: 2
+    filters:
+      - lambda: return sd_mmc_card::convertBytes(x, sd_mmc_card::MemoryUnits::MegaByte);
+
+  - platform: sd_mmc_card
+    type: free_space
+    name: "SD Free Space"
+    id: sd_free_space
+    unit_of_measurement: "MB"
+    accuracy_decimals: 2
+    filters:
+      - lambda: return sd_mmc_card::convertBytes(x, sd_mmc_card::MemoryUnits::MegaByte);
+
+  - platform: sd_mmc_card
+    type: file_size
+    path: "/test.txt"
+    name: "Test.txt Size"
+    id: test_file_size
+    unit_of_measurement: "B"
+    accuracy_decimals: 0
+    filters:
+      - lambda: |-
+          if (x > 1000000000.0f) return 0.0f;
+          return x;
+
+  - platform: sd_mmc_card
+    type: frequency
+    name: "SD Frequency"
+    unit_of_measurement: "kHz"
+    accuracy_decimals: 0
+
+text_sensor:
+  - platform: sd_mmc_card
+    sd_card_type:
+      name: "SD Card Type"
+      id: sd_card_type_sensor
+    fs_type:
+      name: "SD Filesystem"
+
+button:
+  - platform: template
+    name: "SD Write + Timestamp"
+    on_press:
+      then:
+        - sd_mmc_card.write_file:
+            path: "/test.txt"
+            data: !lambda |-
+              auto t = id(time_comp).now();
+              char buf[128];
+              snprintf(buf, sizeof(buf),
+                "Written at %04d-%02d-%02d %02d:%02d:%02d\n",
+                t.year, t.month, t.day_of_month,
+                t.hour, t.minute, t.second);
+              std::string s(buf);
+              return std::vector<uint8_t>(s.begin(), s.end());
+
+  - platform: template
+    name: "SD Read"
+    on_press:
+      then:
+        - lambda: |-
+            auto content = id(sd_card)->read_file("/test.txt");
+            std::string out(content.begin(), content.end());
+            ESP_LOGI("sd_card", "Read: %s", out.c_str());
+
+  - platform: template
+    name: "SD Append to File"
+    on_press:
+      then:
+        - sd_mmc_card.append_file:
+            path: "/test.txt"
+            data: !lambda |-
+              std::string s("\nAppended line");
+              return std::vector<uint8_t>(s.begin(), s.end());
+
+  - platform: template
+    name: "SD Delete File"
+    on_press:
+      then:
+        - sd_mmc_card.delete_file:
+            path: "/test.txt"
+
+  - platform: template
+    name: "SD Create Directory"
+    on_press:
+      then:
+        - sd_mmc_card.create_directory:
+            path: "/testdir"
+
+  - platform: template
+    name: "SD Remove Directory"
+    on_press:
+      then:
+        - sd_mmc_card.remove_directory:
+            path: "/testdir"
+
+  - platform: template
+    name: "SD List Files"
+    on_press:
+      then:
+        - lambda: |-
+            auto files = id(sd_card)->list_directory_file_info("/", 2);
+            ESP_LOGI("sd_card", "Files found: %d", files.size());
+            for (const auto &f : files) {
+              std::string p = f.path;
+              if (p.size() > 1 && p[0] == '/' && p[1] == '/')
+                p = p.substr(1);
+              ESP_LOGI("sd_card", "  %s (%s, %d bytes)",
+                p.c_str(), f.is_directory ? "DIR" : "FILE", f.size);
+            }
+
+  - platform: template
+    name: "SD Format Card"
+    on_press:
+      then:
+        - sd_mmc_card.format_card:
+            id: sd_card
+
+# vim: set tabstop=2 shiftwidth=2 expandtab:

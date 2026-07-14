@@ -1,0 +1,14 @@
+# Device: Guition JC3636W518C-I-Y
+
+esp32:
+  variant: esp32s3
+  flash_size: 16MB
+  framework:
+    type: esp-idf
+
+psram:
+  mode: octal
+  speed: 80MHz
+  ignore_not_found: false
+
+# vim: set tabstop=2 shiftwidth=2 expandtab:
