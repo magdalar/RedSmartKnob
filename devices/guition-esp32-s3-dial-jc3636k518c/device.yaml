@@ -1,3 +1,5 @@
+# Device: Guition JC3636K518C-I-YR1
+
 esphome:
   platformio_options:
     board_build.flash_mode: dio

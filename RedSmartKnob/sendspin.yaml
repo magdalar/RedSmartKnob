@@ -1,38 +1,16 @@
-# Started from from https://community.home-assistant.io/t/display-knob/905249/15 user trinitytest
-# Switched to a sendspin player based on https://github.com/RealDeco/sendspin-guition/blob/main/Guition_Knob_v2.yaml
 # TODO: If coming from a stopped/idle state, art, position and track duration stay unknown.
 # TODO: Pausing goes to on_idle immediately.
 
 substitutions:
-  i2c_id: internal_i2c
-  i2s_mclk_multiple: 256
-  i2s_bps_speaker: 16bit
-  #i2s_bps_mic: 16bit
-  i2s_sample_rate_speaker: 16000
-  #i2s_sample_rate_mic: 16000 # must be 16000 for voice_assistant to work(?)
-  i2s_use_apll: true
-  # Run the stack in psram -- required.
+  output_speaker_id: output_speaker_not_configured
+  sample_rate_speaker: 16000
   task_stack_in_psram: True
 
-i2s_audio:
-  - id: i2s_output_id
-    i2s_lrclk_pin: GPIO40
-    i2s_bclk_pin: GPIO39
-
 speaker:
-  - platform: i2s_audio
-    id: i2s_audio_speaker
-    i2s_dout_pin: GPIO41
-    i2s_audio_id: i2s_output_id
-    dac_type: external
-    timeout: never
-    buffer_duration: 100ms
-    channel: stereo
-
   - platform: mixer
     id: mixing_speaker
     task_stack_in_psram: ${task_stack_in_psram}
-    output_speaker: i2s_audio_speaker
+    output_speaker: ${output_speaker_id}
     num_channels: 2
     source_speakers:
       - id: announcement_speaker_mixer_input
@@ -137,7 +115,7 @@ media_player:
     announcement_pipeline:
       speaker: announcement_speaker_mixer_input
       format: FLAC
-      sample_rate: ${i2s_sample_rate_speaker}
+      sample_rate: ${sample_rate_speaker}
       num_channels: 1
       sources:
         - audio_file_announcement_source
@@ -145,7 +123,7 @@ media_player:
 
     media_pipeline:
       format: FLAC
-      sample_rate: ${i2s_sample_rate_speaker}
+      sample_rate: ${sample_rate_speaker}
       speaker: media_speaker_mixer_input
       num_channels: 2
       sources:

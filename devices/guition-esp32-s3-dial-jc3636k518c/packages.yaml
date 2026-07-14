@@ -5,6 +5,10 @@ substitutions:
   screenwidth: 360
   screenheight: 360
 
+  output_speaker_id: i2s_audio_speaker
+  sample_rate_speaker: 16000
+  task_stack_in_psram: True
+
   # Where to pull image files from.
   # Override this in the outer layer to use local files.
   repo_base_uri: "https://raw.githubusercontent.com/magdalar/RedSmartKnob/main"
@@ -12,11 +16,11 @@ substitutions:
   # Default theme. Override in caller.
   theme: "white"
 
-  project_version: 2026.7.0
-
 packages:
   # Core device and chip configuration
   device: !include device.yaml
+  # Speaker definition
+  audio: !include device/audio.yaml
   # Touchscreen display initialization.
   display: !include device/display.yaml
   # Battery status

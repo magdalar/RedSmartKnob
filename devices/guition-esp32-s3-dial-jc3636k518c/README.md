@@ -14,14 +14,22 @@ which that repo does not support at the time of writing.
  - [AliExpress](https://www.aliexpress.us/item/3256808637654546.html)
  - [WaveShare](https://www.waveshare.com/esp32-s3-knob-touch-lcd-1.8.htm?sku=31623)
 
+## How to use this
+
+1. Edit `esphome.yaml` to set your device names, home assistant entities, and local vs remote mediplayer choice.
+1. Copy `secrets.yaml.example` to `secrets.yaml` and edit it as appropriate for your setup.
+1. Compile and flash your device: `esphome run esphome.yaml`
+1. Add the device in Home Assistant
+1. If using sendspin, then you should already see your device in Music Assistant too. Play some music!
+
+NOTE: If using TTS announcements, remember to use the Music Assistant `media_player` entity within Home Assistant, rather than the device directly. MA will handle the audio stream format mismatches much more gracefully.
+
 ## Device Notes
 
 This device (GUITION `JC3636K518C_I_YR1`, red knob device) has two chips, an
 ESP32 and an ESP32-S3. The ESP32 has the DAC, the S3 has the rest. Rotate the
 USB-C connector by 180deg to flip between them; you'll want to use an A-to-C
 USB cable.
-
-https://devices.esphome.io/devices/esp32s3-18-inch-jc3636k518c/
 
   - Red round case
     - Also available from WaveShare in blue.
@@ -87,6 +95,7 @@ Flash voltage set by a strapping pin: 3.3V
     - https://pan.jczn1688.com/directlink/1/HMI%20display/JC3636K518CN_knob_EN.zip?lang=en
   - For this model
     - https://devices.esphome.io/devices/esp32s3-18-inch-jc3636k518c/
+      - Note: the i2s audio pins are wrong.
     - https://github.com/nkinnan/Waveshare-ESP32-S3-Knob-Touch-LCD-1.8_and_Guition-K5-Knob-Series-JC3636K518 - description of devices
     - https://github.com/VolosR/Knob18Meters - arduino project for RGB controls
     - https://github.com/KrX3D/WaveShare-Knob-ESp32S3 - esphome setup w/ display, HA media player.
