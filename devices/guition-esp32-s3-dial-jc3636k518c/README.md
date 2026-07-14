@@ -91,7 +91,8 @@ Flash voltage set by a strapping pin: 3.3V
 
 ## References
 
-  - Factory Supplied Examples
+  - Manufacturer References
+    - https://www.waveshare.com/wiki/ESP32-S3-Knob-Touch-LCD-1.8
     - https://pan.jczn1688.com/directlink/1/HMI%20display/JC3636K518CN_knob_EN.zip?lang=en
   - For this model
     - https://devices.esphome.io/devices/esp32s3-18-inch-jc3636k518c/
