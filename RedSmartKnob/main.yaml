@@ -8,8 +8,6 @@ substitutions:
   # Default theme. Override in caller.
   theme: "white"
 
-  project_version: 2026.7.0
-
 packages:
   app_esphome: !include esphome.yaml
   app_wifi: !include wifi.yaml
