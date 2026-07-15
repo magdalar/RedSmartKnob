@@ -5,7 +5,6 @@ esphome:
   min_version: 2026.6.0
   project:
     name: magdalar.RedSmartKnob
-    version: ${project_version}
 
 # Enable logging
 logger:
