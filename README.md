@@ -35,7 +35,7 @@ Follow the Instructions links to proceed.
   </thead>
   <tbody>
     <tr>
-      <td>Guition JC3636K518C<br>WaveShare ESP32-S3-Knob-Touch-LCD-1.8</tr>
+      <td>Guition JC3636K518C<br>WaveShare ESP32-S3-Knob-Touch-LCD-1.8</td>
       <td><img src="./devices/guition-redknob-jc3636k518c/device.jpg" width="100" alt="Red Smart Knob"></td>
       <td>1.8" ESP32-S3+ESP32 Rotary Knob<br>Seen in Red, Blue and Black</td>
       <td>[Instructions](devices/guition-redknob-jc3636k518c/README.md)</td>
