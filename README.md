@@ -21,7 +21,7 @@ results.
 
 ## Supported Devices
 
-Follow the Instructions links to proceed.
+Follow the Flash It links to install.
 
 <table>
   <thead>
@@ -29,7 +29,7 @@ Follow the Instructions links to proceed.
         <th>Device model</th>
         <th>Image</th>
         <th>Description</th>
-        <th>Instructions</th>
+        <th>Details</th>
         <th>Flash It!</th>
     </tr>
   </thead>
@@ -38,14 +38,14 @@ Follow the Instructions links to proceed.
       <td>Guition JC3636K518C<br>WaveShare ESP32-S3-Knob-Touch-LCD-1.8</td>
       <td><img src="./devices/guition-redknob-jc3636k518c/device.jpg" width="100" alt="Red Smart Knob"></td>
       <td>1.8" ESP32-S3+ESP32 Rotary Knob<br>Seen in Red, Blue and Black</td>
-      <td><a href="devices/guition-redknob-jc3636k518c/README.md">Instructions</a></td>
+      <td><a href="devices/guition-redknob-jc3636k518c/README.md">Details</a></td>
       <td><a href="https://magdalar.github.io/RedSmartKnob/guition-redknob-jc3636k518c/"><img src="https://img.shields.io/badge/FLASH-FIRMWARE-ff6b00?style=for-the-badge&labelColor=111827" alt="Open Installer"></a></td>
     </tr>
     <tr>
       <td>uition JC3636W518C</td>
       <td><img src="./devices/guition-silverpuck-jc3636w518c/device.jpg" width="100" alt="Silver Puck"></td>
       <td>1.8" ESP32-S3 Silver Puck</td>
-      <td><a href="devices/guition-silverpuck-jc3636w518c/README.md">Instructions</a></td>
+      <td><a href="devices/guition-silverpuck-jc3636w518c/README.md">Details</a></td>
       <td><a href="https://magdalar.github.io/RedSmartKnob/guition-silverpuck-jc3636w518c/"><img src="https://img.shields.io/badge/FLASH-FIRMWARE-ff6b00?style=for-the-badge&labelColor=111827" alt="Open Installer"></a></td>
     </tr>
   </tbody>
