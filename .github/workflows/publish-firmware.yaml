@@ -1,0 +1,45 @@
+name: Build and Publish Firmware
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # uv is an incredibly fast Python package manager
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v5
+
+      # Installing ESPHome locally stops ewt-gen from falling back to Docker,
+      # which significantly speeds up the build process.
+      - name: Install ESPHome
+        run: uv tool install esphome
+
+      - name: Generate Installer Site
+        run: |
+          # ewt-gen accepts a glob pattern, processes every matching YAML,
+          # compiles them, and outputs a complete static site to the 'public' folder
+          uvx ewt-gen devices/*/esphome.yaml --output public
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
