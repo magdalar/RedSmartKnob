@@ -1,8 +1,9 @@
-# Guition 1.8" Silver Puck, JC3636W518C_I_Y
+# Guition 1.8" Rotary Knob, Guition JC3636K518C-I-YR1
+# Also available as WaveShare ESP32-S3-Knob-Touch-LCD-1.8 (SKU 31623).
 substitutions:
-  name: "silver-puck"
-  friendly_name: "SilverPuck"
-  comment: "Guition 1.8in Silver Puck JC3636W518C_I_Y"
+  name: "red-smart-knob"
+  friendly_name: "RedSmartKnob"
+  comment: "Guition 1.8in Rotary Knob JC3636K518C-I-YR1"
   # Your weather entity in Home Assistant
   weather: weather.forecast
   # Your indoor temperature entity in Home Assistant
@@ -44,7 +45,7 @@ packages:
   # Otherwise, this will pull it from GitHub:
   setup:
     url: https://github.com/magdalar/RedSmartKnob
-    files: [devices/guition-esp32-s3-puck-jc3636w518c/packages.yaml]
+    files: [devices/guition-redknob-jc3636k518c/packages.yaml]
     refresh: 0s  # always pull, comment out for caching
  
 # vim: set tabstop=2 shiftwidth=2 expandtab:
