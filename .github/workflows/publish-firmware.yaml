@@ -53,6 +53,7 @@ jobs:
           commit_date="$(git show -s --format=%cs HEAD)"
           version="${commit_date//-/.}.${GITHUB_RUN_NUMBER}"
           echo "version=$version" >> "$GITHUB_OUTPUT"
+          sed -i "s/firmware_version: .*/firmware_version: \"$version\"/g" RedSmartKnob/esphome.yaml
           echo "Firmware version: $version"
 
       - name: Generate sites with ewt-gen

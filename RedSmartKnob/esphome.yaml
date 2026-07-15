@@ -1,8 +1,14 @@
+substitutions:
+  firmware_version: "dev"
+
 esphome:
   friendly_name: "${friendly_name}"
   name: "${name}"
   comment: "${comment}"
   min_version: 2026.6.0
+  project:
+    project: magdalar.RedSmartKnob
+    version: ${firmware_version}
 
 # Enable logging
 logger:
