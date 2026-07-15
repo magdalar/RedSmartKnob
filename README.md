@@ -8,7 +8,8 @@ https://github.com/RealDeco/sendspin-guition.
 
 ## Screenshots
 
-![Example](devices/guition-esp32-s3-dial-jc3636k518c/device.jpg)
+<img src="./devices/guition-esp32-s3-dial-jc3636k518c/device.jpg" width="250" height="250" alt="Red Smart Knob">
+<img src="./devices/guition-esp32-s3-puck-jc3636w518c/device.jpg" width="250" height="250" alt="Silver Puck">
 
 ## Expectations
 
