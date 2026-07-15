@@ -16,6 +16,8 @@ which that repo does not support at the time of writing.
 
 ## How to use this
 
+<a href="https://magdalar.github.io/RedSmartKnob/guition-redknob-jc3636k518c/"><img src="https://img.shields.io/badge/FLASH-FIRMWARE-ff6b00?style=for-the-badge&labelColor=111827" alt="Open Installer"></a>
+
 1. Edit `esphome.yaml` to set your device names, home assistant entities, and local vs remote mediplayer choice.
 1. Copy `secrets.yaml.example` to `secrets.yaml` and edit it as appropriate for your setup.
 1. Compile and flash your device: `esphome run esphome.yaml`
