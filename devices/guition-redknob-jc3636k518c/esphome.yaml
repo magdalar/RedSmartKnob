@@ -1,7 +1,7 @@
 # Guition 1.8" Rotary Knob, Guition JC3636K518C-I-YR1
 # Also available as WaveShare ESP32-S3-Knob-Touch-LCD-1.8 (SKU 31623).
 substitutions:
-  name: "red-smart-knob"
+  name: "guition-redknob-jc3636k518c"
   friendly_name: "RedSmartKnob"
   comment: "Guition 1.8in Rotary Knob JC3636K518C-I-YR1"
   # Your weather entity in Home Assistant
@@ -23,6 +23,10 @@ substitutions:
 
   # Uncomment to pull images from the local deployment (vs github main)
   #repo_base_uri: "../../RedSmartKnob"
+
+# Duplicated for the sake of ewt-gen
+esphome:
+  name: "${name}"
 
 logger:
   level: DEBUG

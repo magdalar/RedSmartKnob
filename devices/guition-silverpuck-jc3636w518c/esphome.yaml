@@ -1,6 +1,6 @@
 # Guition 1.8" Silver Puck, JC3636W518C_I_Y
 substitutions:
-  name: "silver-puck"
+  name: "guition-silverpuck-jc3636w518c"
   friendly_name: "SilverPuck"
   comment: "Guition 1.8in Silver Puck JC3636W518C_I_Y"
   # Your weather entity in Home Assistant
@@ -22,6 +22,10 @@ substitutions:
 
   # Uncomment to pull images from the local deployment (vs github main)
   #repo_base_uri: "../../RedSmartKnob"
+
+# Duplicated for the sake of ewt-gen
+esphome:
+  name: "${name}"
 
 logger:
   level: DEBUG
