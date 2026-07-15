@@ -6,6 +6,7 @@ esphome:
   name: "${name}"
   comment: "${comment}"
   min_version: 2026.6.0
+  name_add_mac_suffix: true
   project:
     name: magdalar.RedSmartKnob
     version: ${firmware_version}
