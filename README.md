@@ -8,8 +8,9 @@ https://github.com/RealDeco/sendspin-guition.
 
 ## Screenshots
 
-<img src="./devices/guition-esp32-s3-dial-jc3636k518c/device.jpg" width="250" height="250" alt="Red Smart Knob">
-<img src="./devices/guition-esp32-s3-puck-jc3636w518c/device.jpg" width="250" height="250" alt="Silver Puck">
+| <img src="./devices/guition-esp32-s3-dial-jc3636k518c/device.jpg" width="250" alt="Red Smart Knob"> | <img src="./devices/guition-esp32-s3-puck-jc3636w518c/device.jpg" width="250" alt="Silver Puck"> |
+|:---:|:---:|
+| *Red Smart Knob, the repo's namesake.* | *Silver Puck, running off a QI charger.* |
 
 ## Expectations
 
@@ -24,9 +25,9 @@ Follow the Instructions links to proceed.
 
 | Device Model | Description | Links |
 |---|:-:|:-:|
-| Guition JC3636W518C | 1.8" ESP32-S3 Silver Puck | [Instructions](devices/guition-esp32-s3-puck-jc3636w518c/README.md) |
-| Guition JC3636K518C | 1.8" ESP32-S3+ESP32 Rotary Knob, Red | [Instructions](devices/guition-esp32-s3-dial-jc3636k518c/README.md) |
-| WaveShare ESP32-S3-Knob-Touch-LCD-1.8 | 1.8" ESP32-S3+ESP32 Rotary Knob, Blue or Black | [Instructions](devices/guition-esp32-s3-dial-jc3636k518c/README.md) |
+| Guition JC3636K518C | <img src="./devices/guition-esp32-s3-dial-jc3636k518c/device.jpg" width="250" alt="Red Smart Knob"><br>1.8" ESP32-S3+ESP32 Rotary Knob, Red | [Instructions](devices/guition-esp32-s3-dial-jc3636k518c/README.md) |
+| WaveShare ESP32-S3-Knob-Touch-LCD-1.8 | 1.8" ESP32-S3+ESP32 Rotary Knob, Blue or Black<br>Same as the Guition JC3636K518C. | [Instructions](devices/guition-esp32-s3-dial-jc3636k518c/README.md) |
+| Guition JC3636W518C | <img src="./devices/guition-esp32-s3-puck-jc3636w518c/device.jpg" width="250" alt="Silver Puck"><br>1.8" ESP32-S3 Silver Puck | [Instructions](devices/guition-esp32-s3-puck-jc3636w518c/README.md) |
 
 ## References and Inspirations
 
