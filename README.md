@@ -45,7 +45,9 @@ Follow the Flash It links to install.
       <td><a href="https://magdalar.github.io/RedSmartKnob/guition-redknob-jc3636k518c/"><img src="https://img.shields.io/badge/FLASH-FIRMWARE-ff6b00?style=for-the-badge&labelColor=111827" alt="Open Installer"></a></td>
     </tr>
     <tr>
-      <td>Guition JC3636W518C</td>
+      <td><ul>
+        <li>Guition JC3636W518C</li>
+      </ul></td>
       <td><img src="./devices/guition-silverpuck-jc3636w518c/device.jpg" width="100" alt="Silver Puck"></td>
       <td>1.8" ESP32-S3 Silver Puck</td>
       <td><a href="devices/guition-silverpuck-jc3636w518c/README.md">Details</a></td>
