@@ -25,9 +25,9 @@ Follow the Instructions links to proceed.
 
 | Device Model | Image | Description | Links |
 |---|:-:|:-:|:-:|
-| Guition JC3636K518C | <img src="./devices/guition-redknob-jc3636k518c/device.jpg" width="100" alt="Red Smart Knob"> | 1.8" ESP32-S3+ESP32 Rotary Knob, Red | [Instructions](devices/guition-redknob-jc3636k518c/README.md) |
-| WaveShare ESP32-S3-Knob-Touch-LCD-1.8 | N/A | 1.8" ESP32-S3+ESP32 Rotary Knob, Blue or Black<br>Same as the Guition JC3636K518C. | [Instructions](devices/guition-redknob-jc3636k518c/README.md) |
-| Guition JC3636W518C | <img src="./devices/guition-silverpuck-jc3636w518c/device.jpg" width="100" alt="Silver Puck"> | 1.8" ESP32-S3 Silver Puck | [Instructions](devices/guition-silverpuck-jc3636w518c/README.md) |
+| Guition JC3636K518C | <img src="./devices/guition-redknob-jc3636k518c/device.jpg" width="100" alt="Red Smart Knob"> | 1.8" ESP32-S3+ESP32 Rotary Knob, Red | <ul><li>[Instructions](devices/guition-redknob-jc3636k518c/README.md) </li><li><a href="https://magdalar.github.io/RedSmartKnob/guition-redknob-jc3636k518c/"><img src="https://img.shields.io/badge/FLASH-FIRMWARE-ff6b00?style=for-the-badge&labelColor=111827" alt="Open Installer"></a></li></ul> |
+| WaveShare ESP32-S3-Knob-Touch-LCD-1.8 | N/A | 1.8" ESP32-S3+ESP32 Rotary Knob, Blue or Black<br>Same as the Guition JC3636K518C. | <ul><li>[Instructions](devices/guition-redknob-jc3636k518c/README.md) </li><li><a href="https://magdalar.github.io/RedSmartKnob/guition-redknob-jc3636k518c/"><img src="https://img.shields.io/badge/FLASH-FIRMWARE-ff6b00?style=for-the-badge&labelColor=111827" alt="Open Installer"></a></li></ul> |
+| Guition JC3636W518C | <img src="./devices/guition-silverpuck-jc3636w518c/device.jpg" width="100" alt="Silver Puck"> | 1.8" ESP32-S3 Silver Puck | <ul><li>[Instructions](devices/guition-silverpuck-jc3636w518c/README.md)</li><li><a href="https://magdalar.github.io/RedSmartKnob/guition-silverpuck-jc3636w518c/"><img src="https://img.shields.io/badge/FLASH-FIRMWARE-ff6b00?style=for-the-badge&labelColor=111827" alt="Open Installer"></a></li></ul> |
 
 ## References and Inspirations
 
