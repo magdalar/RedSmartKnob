@@ -1,7 +1,8 @@
+# Guition 1.8" Silver Puck, JC3636W518C_I_Y
 substitutions:
-  name: "guition-esp32-s3-puck-jc3636w518c"
-  friendly_name: "SilverKnob"
-  comment: ESP Smart Knob
+  name: "silver-puck"
+  friendly_name: "SilverPuck"
+  comment: "Guition 1.8in Silver Puck JC3636W518C_I_Y"
   # Your weather entity in Home Assistant
   weather: weather.forecast
   # Your indoor temperature entity in Home Assistant
