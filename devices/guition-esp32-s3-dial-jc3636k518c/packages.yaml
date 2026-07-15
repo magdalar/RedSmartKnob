@@ -9,10 +9,6 @@ substitutions:
   sample_rate_speaker: 16000
   task_stack_in_psram: True
 
-  # Where to pull image files from.
-  # Override this in the outer layer to use local files.
-  repo_base_uri: "https://raw.githubusercontent.com/magdalar/RedSmartKnob/main"
-
   # Default theme. Override in caller.
   theme: "white"
 
