@@ -1,5 +1,5 @@
 substitutions:
-  name: "redsmartknob"
+  name: "guition-esp32-s3-dial-jc3636k518c"
   friendly_name: "RedSmartKnob"
   comment: ESP Smart Knob
   # Your weather entity in Home Assistant
