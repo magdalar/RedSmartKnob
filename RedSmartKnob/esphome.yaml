@@ -7,7 +7,7 @@ esphome:
   comment: "${comment}"
   min_version: 2026.6.0
   project:
-    project: magdalar.RedSmartKnob
+    name: magdalar.RedSmartKnob
     version: ${firmware_version}
 
 # Enable logging
