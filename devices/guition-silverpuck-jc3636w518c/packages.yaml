@@ -1,5 +1,5 @@
 substitutions:
-  dev_has_battery: "true"
+  dev_has_battery: "false"
 
   ### These are not user-configurable.
   screenwidth: 360
