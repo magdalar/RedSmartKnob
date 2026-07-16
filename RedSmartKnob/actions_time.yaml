@@ -1,4 +1,6 @@
 # This unit provides the logic for the `time` page.
+substitutions:
+  dev_has_battery: false
 
 globals:
   - id: batt_percent
@@ -106,6 +108,15 @@ esphome:
               id(indoor_temperature)->set_entity_id(new_entity.c_str());
               id(preference_indoor_temp_entity).publish_state(new_entity);
             }
+        # Show battery widgets if there's a battery
+        - if:
+            condition:
+              - lambda: 'return ${dev_has_battery};'
+            then:
+              - lvgl.widget.show:
+                - batt_arc
+                - batt_icon
+                - batt_text
 
 script:
   - id: handle_battery_update

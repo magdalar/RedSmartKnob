@@ -75,6 +75,7 @@ lvgl:
         # Enhanced battery arc with better positioning
         - arc:
             id: batt_arc
+            hidden: true
             align: CENTER
             y: -120
             width: 80
@@ -88,6 +89,7 @@ lvgl:
         # Battery icon, placed to the left of the percentage text
         - label:
             id: batt_icon
+            hidden: true
             text_font: font_mdi_time
             text_color: ${theme_font_color}
             align: CENTER
@@ -97,6 +99,7 @@ lvgl:
 
         - label:
             id: batt_text
+            hidden: true
             text_color: ${theme_font_color}
             align: CENTER
             x: 10

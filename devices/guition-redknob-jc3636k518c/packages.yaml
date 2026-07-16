@@ -1,4 +1,6 @@
 substitutions:
+  dev_has_battery: true
+
   ### These are not user-configurable.
   screenwidth: 360
   screenheight: 360
@@ -20,7 +22,7 @@ packages:
   # Touchscreen display initialization.
   display: !include device/display.yaml
   # Battery status
-  battery: !include device/adc_battery.yaml
+  battery: !include ${ "device/adc_battery.yaml" if dev_has_battery else "../../RedSmartKnob/disabled.yaml" }
   # Rotary Knob
   rotary_knob: !include device/rotary_knob.yaml
   # drv2605: haptic feedback.
