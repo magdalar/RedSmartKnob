@@ -19,8 +19,8 @@ substitutions:
   enable_sendspin: true
   # The media player entity to control. If using `enable_sendspin`, this should
   # refer to the Music Assistant version of the entity, not the device
-  # directly.
-  mediaplayer: media_player.office
+  # directly. This can be set via HA config.
+  mediaplayer: media_player.not_set_yet
 
   # Uncomment to pull images from the local deployment (vs github main)
   #repo_base_uri: "../../RedSmartKnob"
@@ -30,7 +30,7 @@ esphome:
   name: "${name}"
 
 logger:
-  level: DEBUG
+  level: INFO
 
 # Uncomment this section to use credentials stored in secrets.yaml; otherwise,
 # this is set up for webserial installs and improv.

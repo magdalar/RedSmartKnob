@@ -7,6 +7,22 @@ globals:
     type: float
     initial_value: '0.0'
 
+esphome:
+  on_boot:
+    # HA sensors setup runs at AFTER_CONNECTION (100). So long as we run after
+    # DATA (600), we should be good.
+    - priority: 300
+      then:
+        # Media Player Entity
+        - lambda: |-
+            // Static as set_entity_id takes the c_str pointer.
+            static const std::string new_entity = id(preference_media_player_entity).state;
+            if (!new_entity.empty()) {
+              ESP_LOGI("actions_time", "Updating media player entity: %s", new_entity.c_str());
+              id(outdoor_temperature)->set_entity_id(new_entity.c_str());
+              id(preference_media_player_entity).publish_state(new_entity);
+            }
+
 # Add API connection event to initialize everything when HA is connected
 api:
   on_client_connected:
@@ -21,7 +37,7 @@ api:
           - homeassistant.service:
               service: homeassistant.update_entity
               data:
-                entity_id: $mediaplayer
+                entity_id: !lambda 'return id(preference_media_player_entity).state;'
 
 text_sensor:
   - platform: homeassistant
@@ -30,7 +46,7 @@ text_sensor:
     internal: true
     on_value:
       - lambda: |-
-          ESP_LOGD("media", "Music state changed to: %s", x.c_str());
+          ESP_LOGD("mediaplayer", "Music state changed to: %s", x.c_str());
       - if:
           condition:
             lambda: 'return x == "playing";'
@@ -129,7 +145,7 @@ sensor:
     internal: true
     on_value:
       - lambda: |-
-          ESP_LOGD("media", "Position sync: %.1f", x);
+          ESP_LOGD("mediaplayer", "Position sync: %.1f", x);
           id(local_track_position) = x;
 
   # Add media duration sensor for better seeking
@@ -140,14 +156,36 @@ sensor:
     internal: true
     on_value:
       - lambda: |-
-          ESP_LOGD("media", "Track duration updated: %.1f", x);
+          ESP_LOGD("mediaplayer", "Track duration updated: %.1f", x);
           id(local_track_duration) = x;
 
 script:
+  # This is called by actions_media.yaml on_boot to apply preference_media_player_entity
+  - id: set_mediaplayer_entity_id
+    parameters:
+      new_media_player_id: std::string
+    then:
+      lambda: |-
+        // We need to cache it for the lifetime of the process, as set_entity_id takes the ptr.
+        // This can only be called once on_boot, so this should be safe.
+        static const std::string new_entity = new_media_player_id;
+        ESP_LOGI("mediaplayer", "Updating media player entity: %s", new_entity.c_str());
+        id(music_state)->set_entity_id(new_entity.c_str());
+        id(track_name)->set_entity_id(new_entity.c_str());
+        id(track_artist)->set_entity_id(new_entity.c_str());
+        id(track_album)->set_entity_id(new_entity.c_str());
+        id(media_thumbnail)->set_entity_id(new_entity.c_str());
+        id(media_is_muted)->set_entity_id(new_entity.c_str());
+        id(media_player_volume)->set_entity_id(new_entity.c_str());
+        id(media_position)->set_entity_id(new_entity.c_str());
+        id(media_duration)->set_entity_id(new_entity.c_str());
+
   - id: set_media_volume
     parameters:
         new_vol: float
     then:
+      - lambda: |-
+          ESP_LOGI("mediaplayer", "set_media_volume[%.2f] triggered.", new_vol);
       - if:
           condition:
             lambda: 'return id(api_ready);'
@@ -155,7 +193,7 @@ script:
             - homeassistant.action:
                 action: media_player.volume_set
                 data:
-                  entity_id: $mediaplayer
+                  entity_id: !lambda 'return id(preference_media_player_entity).state;'
                   volume_level: !lambda |-
                     if (new_vol < 0.0) new_vol = 0.0;
                     if (new_vol > 100.0) new_vol = 100.0;
@@ -163,6 +201,8 @@ script:
 
   - id: set_media_volume_mute
     then:
+      - lambda: |-
+          ESP_LOGI("mediaplayer", "set_media_volume_mute triggered.");
       - if:
           condition:
             lambda: 'return id(api_ready);'
@@ -170,11 +210,13 @@ script:
             - homeassistant.action:
                 action: media_player.volume_mute
                 data:
-                  entity_id: $mediaplayer
                   is_volume_muted: "true"
+                  entity_id: !lambda 'return id(preference_media_player_entity).state;'
 
   - id: set_media_volume_unmute
     then:
+      - lambda: |-
+          ESP_LOGI("mediaplayer", "set_media_volume_unmute triggered.");
       - if:
           condition:
             lambda: 'return id(api_ready);'
@@ -182,11 +224,13 @@ script:
             - homeassistant.action:
                 action: media_player.volume_mute
                 data:
-                  entity_id: $mediaplayer
                   is_volume_muted: "false"
+                  entity_id: !lambda 'return id(preference_media_player_entity).state;'
 
   - id: set_media_play_pause
     then:
+      - lambda: |-
+          ESP_LOGI("mediaplayer", "set_media_play_pause triggered.");
       - if:
           condition:
             lambda: 'return id(api_ready);'
@@ -194,10 +238,12 @@ script:
             - homeassistant.action:
                 action: media_player.media_play_pause
                 data:
-                  entity_id: $mediaplayer
+                  entity_id: !lambda 'return id(preference_media_player_entity).state;'
 
   - id: set_media_next
     then:
+      - lambda: |-
+          ESP_LOGI("mediaplayer", "set_media_next triggered.");
       - if:
           condition:
             lambda: 'return id(api_ready);'
@@ -205,10 +251,12 @@ script:
             - homeassistant.action:
                 action: media_player.media_next_track
                 data:
-                  entity_id: $mediaplayer
+                  entity_id: !lambda 'return id(preference_media_player_entity).state;'
 
   - id: set_media_previous
     then:
+      - lambda: |-
+          ESP_LOGI("mediaplayer", "set_media_previous triggered.");
       - if:
           condition:
             lambda: 'return id(api_ready);'
@@ -216,7 +264,7 @@ script:
             - homeassistant.action:
                 action: media_player.media_previous_track
                 data:
-                  entity_id: $mediaplayer
+                  entity_id: !lambda 'return id(preference_media_player_entity).state;'
 
 # Provide real-time playback position (dead reckoning)
 interval:

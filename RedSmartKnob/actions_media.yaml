@@ -17,6 +17,47 @@ globals:
     type: int
     initial_value: '-1'
 
+text:
+  - platform: template
+    name: "Music Assistant Media Player Entity"
+    id: preference_media_player_entity
+    entity_category: config
+    mode: text
+    initial_value: "${mediaplayer}"
+    restore_value: true
+    set_action:
+      - lambda: |-
+          if (x.empty() || x == id(preference_media_player_entity).state) {
+            // It's good, but nothing needs to change.
+            id(preference_media_player_entity).publish_state(x);
+            return;
+          }
+          if (!x.starts_with("media_player.")) {
+            // It's bad, reject it. Don't need to reboot.
+            ESP_LOGW("actions_time", "Rejecting invalid media_player entity; must start with \"media_player.\"; found: %s", x.c_str());
+            id(preference_media_player_entity).publish_state(id(preference_media_player_entity).state);
+            return;
+          }
+          // New value accepted, ask for a reboot.
+          id(preference_media_player_entity).publish_state(x);
+          ESP_LOGI("actions_media", "New media_player entity: %s. Will request reboot.", x.c_str());
+          id(slow_trigger_reboot_sequence)->execute();
+
+esphome:
+  on_boot:
+    # HA sensors setup runs at AFTER_CONNECTION (100). So long as we run after
+    # DATA (600), we should be good.
+    - priority: 300
+      then:
+        # Media Player Entity
+        - lambda: |-
+            // Static as set_entity_id takes the c_str pointer.
+            static const std::string new_entity = id(preference_media_player_entity).state;
+            if (!new_entity.empty()) {
+              id(set_mediaplayer_entity_id)->execute(new_entity.c_str());
+              id(preference_media_player_entity).publish_state(new_entity);
+            }
+
 script:
   - id: handle_media_album_art_display_placeholder
     then:
@@ -191,11 +232,8 @@ script:
       - homeassistant.service:
           service: media_player.shuffle_set
           data:
-            entity_id: "${mediaplayer}"
-          data_template:
-            shuffle: "{{ shuffle_var }}"
-          variables:
-            shuffle_var: return shuffle;
+            entity_id: !lambda 'return id(preference_media_player_entity).state;'
+            shuffle: !lambda 'return shuffle;'
 
   - id: play_playlist
     parameters:
@@ -215,12 +253,9 @@ script:
             - homeassistant.service:
                 service: music_assistant.play_media
                 data:
-                  entity_id: "${mediaplayer}"
+                  entity_id: !lambda 'return id(preference_media_player_entity).state;'
+                  media_id: !lambda 'return media_id.c_str();'
                   media_type: playlist
                   enqueue: replace
-                data_template:
-                  media_id: "{{ media_id_var }}"
-                variables:
-                  media_id_var: return media_id.c_str();
 
 # vim: set tabstop=2 shiftwidth=2 expandtab:

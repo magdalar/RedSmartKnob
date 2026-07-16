@@ -159,6 +159,17 @@ media_player:
       - script.execute: handle_media_announcement
 
 script:
+  # This is called by actions_media.yaml on_boot to apply preference_media_player_entity
+  - id: set_mediaplayer_entity_id
+    parameters:
+      new_media_player_id: std::string
+    then:
+      lambda: |-
+        // We need to cache it for the lifetime of the process, as set_entity_id takes the ptr.
+        // This can only be called once on_boot, so this should be safe.
+        static const std::string new_entity = new_media_player_id;
+        ESP_LOGI("sendspin", "[No-op] Updating media player entity: %s", new_entity.c_str());
+
   - id: set_media_volume
     parameters:
         new_vol: float
