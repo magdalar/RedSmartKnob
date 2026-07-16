@@ -14,7 +14,7 @@ script:
       url: std::string
     then:
       - lambda: |-
-          ESP_LOGI("album_art_sendspin", "Unexpected call: sendspin handle_media_album_url: %s", url);
+          ESP_LOGI("album_art_sendspin", "Unexpected call: sendspin handle_media_album_url: %s", url.c_str());
       - script.execute:
           id: handle_media_album_art_display_placeholder
 
