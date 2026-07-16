@@ -8,7 +8,8 @@ substitutions:
   # Your indoor temperature entity in Home Assistant. You can configure it via HA.
   indoor_temp_entity: sensor.indoor_temp_not_set_yet
   # HomeAssistant base URI. This will be used when fetching non-sendspin album art.
-  homeassistant_base_uri: "https://homeassistant.example.com"
+  # Can be overridden in HA.
+  homeassistant_base_uri: "http://homeassistant.local"
   # The UI theme to use.
   # Options include: blue, orange, green & white.
   theme: "blue"

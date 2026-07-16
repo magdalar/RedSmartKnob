@@ -2,6 +2,13 @@
 substitutions:
   dev_has_battery: "false"
 
+time:
+  - id: !extend ha_time
+    on_time:
+      - seconds: /1
+        then:
+          - script.execute: update_time_labels
+
 globals:
   - id: batt_percent
     type: int
@@ -34,6 +41,18 @@ sensor:
             text: !lambda 'char b[16]; snprintf(b, sizeof(b), "%.1f°C", x); return std::string(b);'
 
 text:
+  - platform: template
+    name: "Time Format"
+    id: setting_time_format
+    optimistic: true
+    entity_category: config
+    icon: "mdi:calendar-clock"
+    mode: text
+    initial_value: "%a %d %b\\n%H:%M:%S"
+    restore_value: true
+    on_value:
+      - script.execute: update_time_format
+
   - platform: template
     name: "Weather Entity"
     id: preference_weather_entity
@@ -90,6 +109,7 @@ esphome:
     # DATA (600), we should be good.
     - priority: 300
       then:
+        - script.execute: update_time_format
         # Weather Entity
         - lambda: |-
             // Static as set_entity_id takes the c_str pointer.

@@ -2,6 +2,21 @@
 # Calls handle_media_album_art_display or handle_media_album_art_display_placeholder
 # Trigger it by hooking up to script handle_media_album_url
 
+substitutions:
+  # HomeAssistant base URI. This will be used when fetching non-sendspin album art.
+  homeassistant_base_uri: "http://homeassistant.local"
+
+text:
+  - platform: template
+    name: "HomeAssistant Base URI"
+    id: setting_homeassistant_uri
+    optimistic: true
+    entity_category: config
+    icon: "mdi:cloud-arrow-down"
+    mode: text
+    initial_value: "${homeassistant_base_uri}"
+    restore_value: true
+
 image:
   - platform: online_image
     id: online_image_album_art
@@ -36,4 +51,4 @@ script:
                 ESP_LOGD("uri_album_art", "New album cover URL: %s", url.c_str());
             - online_image.set_url:
                 id: online_image_album_art
-                url: !lambda 'return "${homeassistant_base_uri}" + url;'
+                url: !lambda 'return id(setting_homeassistant_uri).state + url;'

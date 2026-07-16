@@ -32,28 +32,6 @@ number:
       - script.execute: reset_idle_timer
 
 text:
-  # This seems nice, but gets confusing since it can drift from $mediaplayer
-  #- platform: template
-  #  name: "Target MA Media Player Entity"
-  #  id: target_media_player
-  #  optimistic: true
-  #  entity_category: config
-  #  mode: text
-  #  initial_value: "${mediaplayer}"
-  #  restore_value: true
-
-  - platform: template
-    name: "Time Format"
-    id: setting_time_format
-    optimistic: true
-    entity_category: config
-    icon: "mdi:calendar-clock"
-    mode: text
-    initial_value: "%a %d %b\\n%H:%M:%S"
-    restore_value: true
-    on_value:
-      - script.execute: update_time_format
-
   - platform: template
     name: "Playlist 1"
     id: setting_playlist_1
