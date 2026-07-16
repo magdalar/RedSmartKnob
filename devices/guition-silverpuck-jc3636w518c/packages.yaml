@@ -1,4 +1,6 @@
 substitutions:
+  dev_has_battery: "true"
+
   ### These are not user-configurable.
   screenwidth: 360
   screenheight: 360

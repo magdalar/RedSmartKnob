@@ -1,6 +1,6 @@
 # This unit provides the logic for the `time` page.
 substitutions:
-  dev_has_battery: false
+  dev_has_battery: "false"
 
 globals:
   - id: batt_percent
