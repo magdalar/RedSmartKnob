@@ -4,23 +4,9 @@ substitutions:
   name: "guition-redknob"
   friendly_name: "RedSmartKnob"
   comment: "Guition 1.8in Rotary Knob JC3636K518C-I-YR1"
-  # Your weather entity in Home Assistant. You can configure it via HA.
-  weather: weather.not_set_yet
-  # Your indoor temperature entity in Home Assistant. You can configure it via HA.
-  indoor_temp_entity: sensor.indoor_temp_not_set_yet
-  # HomeAssistant base URI. This will be used when fetching non-sendspin album art.
-  # Can be overridden in HA.
-  homeassistant_base_uri: "http://homeassistant.local"
-  # The UI theme to use.
-  # Options include: blue, orange, green & white.
-  theme: "blue"
 
   # Set to true if you want a local sendspin client, rather than controlling a remote mediaplayer.
   enable_sendspin: true
-  # The media player entity to control. If using `enable_sendspin`, this should
-  # refer to the Music Assistant version of the entity, not the device
-  # directly. This can be set via HA config.
-  mediaplayer: media_player.not_set_yet
 
   # Uncomment to pull images from the local deployment (vs github main)
   #repo_base_uri: "../../RedSmartKnob"

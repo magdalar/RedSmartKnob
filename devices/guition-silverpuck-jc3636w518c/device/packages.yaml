@@ -10,9 +10,6 @@ substitutions:
   sample_rate_speaker: 48000
   task_stack_in_psram: True
 
-  # Default theme. Override in caller.
-  theme: "white"
-
 packages:
   # Core device and chip configuration
   device: !include device.yaml

@@ -1,12 +1,25 @@
 substitutions:
   enable_sendspin: false
 
+  # Your weather entity in Home Assistant. You can configure it via HA.
+  weather: weather.not_set_yet
+  # Your indoor temperature entity in Home Assistant. You can configure it via HA.
+  indoor_temp_entity: sensor.indoor_temp_not_set_yet
+  # HomeAssistant base URI. This will be used when fetching non-sendspin album art.
+  # Can be overridden in HA.
+  homeassistant_base_uri: "http://homeassistant.local"
+  # The media player entity to control. If using `enable_sendspin`, this should
+  # refer to the Music Assistant version of the entity, not the device
+  # directly. This can be set via HA config.
+  mediaplayer: media_player.not_set_yet
+
   # Where to pull image files from.
   # Override this in the outer layer to "./" to use local files.
   repo_base_uri: "https://raw.githubusercontent.com/magdalar/RedSmartKnob/main/RedSmartKnob"
 
   # Default theme. Override in caller.
-  theme: "white"
+  # Available options: blue, green, orange, white
+  theme: "blue"
 
 packages:
   app_esphome: !include esphome.yaml
