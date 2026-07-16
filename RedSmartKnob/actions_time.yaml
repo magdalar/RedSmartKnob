@@ -31,6 +31,82 @@ sensor:
             # TODO: The C should come from HA too.
             text: !lambda 'char b[16]; snprintf(b, sizeof(b), "%.1f°C", x); return std::string(b);'
 
+text:
+  - platform: template
+    name: "Weather Entity"
+    id: preference_weather_entity
+    entity_category: config
+    mode: text
+    initial_value: "${weather}"
+    restore_value: true
+    set_action:
+      - lambda: |-
+          if (x.empty() || x == id(preference_weather_entity).state) {
+            // It's good, but nothing needs to change.
+            id(preference_weather_entity).publish_state(x);
+            return;
+          }
+          if (!x.starts_with("weather.")) {
+            // It's bad, reject it. Don't need to reboot.
+            ESP_LOGW("actions_time", "Rejecting invalid weather entity; must start with \"weather.\"; found: %s", x.c_str());
+            id(preference_weather_entity).publish_state(id(preference_weather_entity).state);
+            return;
+          }
+          // New value accepted, ask for a reboot.
+          id(preference_weather_entity).publish_state(x);
+          ESP_LOGI("actions_time", "New weather entity: %s. Will request reboot.", x.c_str());
+          id(slow_trigger_reboot_sequence)->execute();
+
+  - platform: template
+    name: "Indoor Temperature Entity"
+    id: preference_indoor_temp_entity
+    entity_category: config
+    mode: text
+    initial_value: "${indoor_temp_entity}"
+    restore_value: true
+    set_action:
+      - lambda: |-
+          if (x.empty() || x == id(preference_indoor_temp_entity).state) {
+            // It's good, but nothing needs to change.
+            id(preference_indoor_temp_entity).publish_state(x);
+            return;
+          }
+          if (!x.starts_with("sensor.")) {
+            // It's bad, reject it. Don't need to reboot.
+            ESP_LOGW("actions_time", "Rejecting invalid indoor temperature entity; must start with \"sensor.\"; found: %s", x.c_str());
+            id(preference_indoor_temp_entity).publish_state(id(preference_indoor_temp_entity).state);
+            return;
+          }
+          // New value accepted, ask for a reboot.
+          id(preference_indoor_temp_entity).publish_state(x);
+          ESP_LOGI("actions_time", "New indoor temperature entity: %s. Will request reboot.", x.c_str());
+          id(slow_trigger_reboot_sequence)->execute();
+
+esphome:
+  on_boot:
+    # HA sensors setup runs at AFTER_CONNECTION (100). So long as we run after
+    # DATA (600), we should be good.
+    - priority: 300
+      then:
+        # Weather Entity
+        - lambda: |-
+            // Static as set_entity_id takes the c_str pointer.
+            static const std::string new_entity = id(preference_weather_entity).state;
+            if (!new_entity.empty()) {
+              ESP_LOGI("actions_time", "Updating weather entity: %s", new_entity.c_str());
+              id(outdoor_temperature)->set_entity_id(new_entity.c_str());
+              id(preference_weather_entity).publish_state(new_entity);
+            }
+        # Indoor Temperature Entity
+        - lambda: |-
+            // Static as set_entity_id takes the c_str pointer.
+            static const std::string new_entity = id(preference_indoor_temp_entity).state;
+            if (!new_entity.empty()) {
+              ESP_LOGI("actions_time", "Updating indoor temperature entity: %s", new_entity.c_str());
+              id(indoor_temperature)->set_entity_id(new_entity.c_str());
+              id(preference_indoor_temp_entity).publish_state(new_entity);
+            }
+
 script:
   - id: handle_battery_update
     parameters:

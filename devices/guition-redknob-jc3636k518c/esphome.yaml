@@ -4,10 +4,10 @@ substitutions:
   name: "guition-redknob-jc3636k518c"
   friendly_name: "RedSmartKnob"
   comment: "Guition 1.8in Rotary Knob JC3636K518C-I-YR1"
-  # Your weather entity in Home Assistant
-  weather: weather.forecast
-  # Your indoor temperature entity in Home Assistant
-  indoor_temp_entity: sensor.indoor_temperature
+  # Your weather entity in Home Assistant. You can configure it via HA.
+  weather: weather.not_set_yet
+  # Your indoor temperature entity in Home Assistant. You can configure it via HA.
+  indoor_temp_entity: sensor.indoor_temp_not_set_yet
   # HomeAssistant base URI. This will be used when fetching non-sendspin album art.
   homeassistant_base_uri: "https://homeassistant.example.com"
   # The UI theme to use.
