@@ -22,14 +22,16 @@ substitutions:
 
 image:
   # Local file paths are relative to the top-level yaml, not this file.
-  - id: bg_image_file
+  - platform: file
+    id: bg_image_file
     file: ${repo_base_uri}/themes/${theme}/bg_360x360.png
     type: RGB565
     resize: ${screenheight}x${screenheight}
     transparency: alpha_channel
 
   # Add a static album cover placeholder
-  - id: album_placeholder
+  - platform: file
+    id: album_placeholder
     file: ${repo_base_uri}/themes/${theme}/album_360x360.png
     type: RGB565
     resize: ${screenheight}x${screenheight}
