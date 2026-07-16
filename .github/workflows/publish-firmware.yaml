@@ -92,6 +92,7 @@ jobs:
 
             # Point the includes to the local copy, rather than the github branch.
             sed -i \
+              -e 's/^  #repo_base_uri:/  repo_base_uri:/' \
               -e 's|^  setup:.*|  setup: !include device/packages.yaml|' \
               -e '/^    url:.*/d' \
               -e '/^    files:.*/d' \
