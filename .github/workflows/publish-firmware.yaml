@@ -28,22 +28,25 @@ jobs:
     steps:
       - name: Checkout Code
         # fetch-depth: 0 is required so git has the commit history to check
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
 
       # uv is an incredibly fast Python package manager
-      - name: Setup uv
-        uses: astral-sh/setup-uv@v6
+      - id: setup-uv
+        name: Setup uv
+        uses: astral-sh/setup-uv@v8.3.2
         with:
           enable-cache: false
 
       # Installing ESPHome locally stops ewt-gen from falling back to Docker,
       # which significantly speeds up the build process.
       - name: Install ESPHome
-        run: uv tool install esphome
+        run: uv tool install esphome==2026.7.0
 
       - name: Compute firmware version
         id: version
@@ -87,7 +90,7 @@ jobs:
             echo "Output: site/$name"
             echo "Publish URL: ${PAGES_BASE_URL%/}/$name"
 
-            if uvx ewt-gen "$config" \
+            if uvx ewt-gen==1.5.2 "$config" \
               -t "$name" \
               -o "site/$name" \
               --publish-url "${PAGES_BASE_URL%/}/$name" \
