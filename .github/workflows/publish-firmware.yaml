@@ -90,6 +90,14 @@ jobs:
             echo "Output: site/$name"
             echo "Publish URL: ${PAGES_BASE_URL%/}/$name"
 
+            # Point the includes to the local copy, rather than the github branch.
+            sed -i \
+              -e 's|^  setup:.*|  setup: !include device/packages.yaml|' \
+              -e '/^    url:.*/d' \
+              -e '/^    files:.*/d' \
+              -e '/^    refresh:.*/d' \
+               "${config}"
+
             if uvx ewt-gen==1.5.2 "$config" \
               -t "$name" \
               -o "site/$name" \
