@@ -18,18 +18,18 @@ packages:
   # Core device and chip configuration
   device: !include device.yaml
   # Speaker definition
-  audio: !include device/audio.yaml
+  audio: !include audio.yaml
   # Touchscreen display initialization.
-  display: !include device/display.yaml
+  display: !include display.yaml
   # Battery status
-  battery: !include ${ "device/adc_battery.yaml" if dev_has_battery else "../../RedSmartKnob/disabled.yaml" }
+  battery: !include ${ "adc_battery.yaml" if dev_has_battery else "../../RedSmartKnob/disabled.yaml" }
   # Rotary Knob
-  rotary_knob: !include device/rotary_knob.yaml
+  rotary_knob: !include rotary_knob.yaml
   # drv2605: haptic feedback.
-  drv2605: !include device/drv2605.yaml
+  drv2605: !include drv2605.yaml
   # TODO: Add the sd card if needed, otherwise just leave it out...
-  #sd_card: !include device/sd_card.yaml
+  #sd_card: !include sd_card.yaml
   
-  app_main: !include ../../RedSmartKnob/main.yaml
+  app_main: !include ../../../RedSmartKnob/main.yaml
 
 # vim: set tabstop=2 shiftwidth=2 expandtab:

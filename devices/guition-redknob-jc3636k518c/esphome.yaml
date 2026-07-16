@@ -46,11 +46,11 @@ logger:
 
 packages:
   # For local development, use:
-  #setup: !include packages.yaml
+  #setup: !include device/packages.yaml
   # Otherwise, this will pull it from GitHub:
   setup:
     url: https://github.com/magdalar/RedSmartKnob
-    files: [devices/guition-redknob-jc3636k518c/packages.yaml]
+    files: [devices/guition-redknob-jc3636k518c/device/packages.yaml]
     refresh: 0s  # always pull, comment out for caching
  
 # vim: set tabstop=2 shiftwidth=2 expandtab:
