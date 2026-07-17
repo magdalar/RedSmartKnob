@@ -18,8 +18,8 @@ which that repo does not support at the time of writing.
 
 This firmware comes in two modes:
 
-  - Sendspin mode: the device _is_ the media player (e.g. use the AUX out) <a href="https://magdalar.github.io/RedSmartKnob/redknob-sendspin/"><img src="https://img.shields.io/badge/FLASH-Sendspin-brightgreen?style=for-the-badge" alt="Open Installer for Sendspin mode"></a>
-  - Controls mode: the device controls a remote Music Assistant Media Player <a href="https://magdalar.github.io/RedSmartKnob/redknob-controls/"><img src="https://img.shields.io/badge/FLASH-Controls-blue?style=for-the-badge" alt="Open Installer for Controls mode"></a>
+  - Sendspin mode: the device _is_ the media player (e.g. use the AUX out) <a href="https://magdalar.github.io/RedSmartKnob/redknob.sendspin/"><img src="https://img.shields.io/badge/FLASH-Sendspin-brightgreen?style=for-the-badge" alt="Open Installer for Sendspin mode"></a>
+  - Controls mode: the device controls a remote Music Assistant Media Player <a href="https://magdalar.github.io/RedSmartKnob/redknob.controls/"><img src="https://img.shields.io/badge/FLASH-Controls-blue?style=for-the-badge" alt="Open Installer for Controls mode"></a>
 
 There are also two `*.dev.yaml` files for local development, or to assign passwords and encryption via `secrets.yaml`.
 

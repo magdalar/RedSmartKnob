@@ -59,7 +59,7 @@ Follow the Flash links to install.
       <td><img src="./devices/guition-redknob-jc3636k518c/device.jpg" width="100" alt="Red Smart Knob"></td>
       <td>1.8" ESP32-S3 Rotary Knob (Red, Blue or Black)</td>
       <td><a href="devices/guition-redknob-jc3636k518c/README.md">Details</a></td>
-      <td><a href="https://magdalar.github.io/RedSmartKnob/redknob-sendspin/"><img src="https://img.shields.io/badge/FLASH-Sendspin-brightgreen?style=for-the-badge" alt="Open Installer for Sendspin mode"></a><br><a href="https://magdalar.github.io/RedSmartKnob/redknob-controls/"><img src="https://img.shields.io/badge/FLASH-Controls-blue?style=for-the-badge" alt="Open Installer for Controls mode"></a>
+      <td><a href="https://magdalar.github.io/RedSmartKnob/redknob.sendspin/"><img src="https://img.shields.io/badge/FLASH-Sendspin-brightgreen?style=for-the-badge" alt="Open Installer for Sendspin mode"></a><br><a href="https://magdalar.github.io/RedSmartKnob/redknob.controls/"><img src="https://img.shields.io/badge/FLASH-Controls-blue?style=for-the-badge" alt="Open Installer for Controls mode"></a>
     </tr>
     <tr>
       <td><ul>
@@ -68,7 +68,7 @@ Follow the Flash links to install.
       <td><img src="./devices/guition-silverpuck-jc3636w518c/device.jpg" width="100" alt="Silver Puck"></td>
       <td>1.8" ESP32-S3 Silver Puck</td>
       <td><a href="devices/guition-silverpuck-jc3636w518c/README.md">Details</a></td>
-      <td><a href="https://magdalar.github.io/RedSmartKnob/silverpuck-sendspin/"><img src="https://img.shields.io/badge/FLASH-Sendspin-brightgreen?style=for-the-badge" alt="Open Installer for Sendspin mode"></a><br><a href="https://magdalar.github.io/RedSmartKnob/silverpuck-controls/"><img src="https://img.shields.io/badge/FLASH-Controls-blue?style=for-the-badge" alt="Open Installer for Controls mode"></a>
+      <td><a href="https://magdalar.github.io/RedSmartKnob/silverpuck.sendspin/"><img src="https://img.shields.io/badge/FLASH-Sendspin-brightgreen?style=for-the-badge" alt="Open Installer for Sendspin mode"></a><br><a href="https://magdalar.github.io/RedSmartKnob/silverpuck.controls/"><img src="https://img.shields.io/badge/FLASH-Controls-blue?style=for-the-badge" alt="Open Installer for Controls mode"></a>
     </tr>
   </tbody>
 </table>
