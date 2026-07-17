@@ -69,6 +69,12 @@ script:
     mode: restart
     then:
       - logger.log: "Reboot requested. Waiting a minute for further updates..."
+      # Sync immediately, in case the user tries to power cycle.
+      - lambda: |-
+          global_preferences->sync();
+      - lvgl.label.update:
+          id: top_reboot_label
+          hidden: false
       - delay: 60s
       - script.execute: trigger_reboot_sequence
 
