@@ -16,9 +16,19 @@ esp32:
       CONFIG_ESP32S3_DEFAULT_CPU_FREQ_240: "y"
       CONFIG_ESP32S3_DATA_CACHE_64KB: "y"
       CONFIG_ESP32S3_DATA_CACHE_LINE_64B: "y"
+    advanced:
+      # These should perform better with i2s audio in iram.
+      freertos_in_iram: true
+      ringbuf_in_iram: true
 
 psram:
   mode: octal
   speed: 80MHz
+  ignore_not_found: false
+
+wifi:
+  # ESP32-S3 has known silicon and ESP-IDF framework limitations when combining
+  # Octal PSRAM, I2S Audio DMA, and Light Sleep
+  power_save_mode: NONE
 
 # vim: set tabstop=2 shiftwidth=2 expandtab:
