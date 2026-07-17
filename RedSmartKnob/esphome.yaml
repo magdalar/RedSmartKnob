@@ -19,11 +19,6 @@ logger:
 # Top-level config should establish an encryption key.
 api:
 
-# Enable OTA updates.
-# Top-level config should establish an ota password.
-ota:
-  - platform: esphome
-
 time:
   - platform: homeassistant
     id: ha_time
