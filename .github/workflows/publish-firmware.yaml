@@ -56,78 +56,17 @@ jobs:
           commit_date="$(git show -s --format=%cs HEAD)"
           version="${commit_date//-/.}.${GITHUB_RUN_NUMBER}"
           echo "version=$version" >> "$GITHUB_OUTPUT"
-          sed -i "s/firmware_version: .*/firmware_version: \"$version\"/g" RedSmartKnob/esphome.yaml
           echo "Firmware version: $version"
 
-      - name: Generate sites with ewt-gen
-        shell: bash
-        env:
-          PAGES_BASE_URL: ${{ steps.pages.outputs.base_url }}
-          FW_VERSION: ${{ steps.version.outputs.version }}
+      - name: Prepare configuration for CI
+        run: ./scripts/prepare-ci.sh -f ${{ steps.version.outputs.version }}
+
+      - name: Build the firmware
         run: |
-          set -uo pipefail
-          shopt -s nullglob
-
-          echo "Pages base URL: $PAGES_BASE_URL"
-          echo "Firmware version: $FW_VERSION"
-
-          configs=(devices/*/esphome.yaml)
-          if [ ${#configs[@]} -eq 0 ]; then
-            echo "No firmware config files found."
-            exit 1
-          fi
-
-          echo "Found configs:"
-          printf ' - %s\n' "${configs[@]}"
-
-          mkdir -p site
-          failed=0
-
-          for config in "${configs[@]}"; do
-            name="$(basename $(dirname "${config}"))"
-            echo "::group::Generating page for $config"
-            echo "Config: $config"
-            echo "Output: site/$name"
-            echo "Publish URL: ${PAGES_BASE_URL%/}/$name"
-
-            # Point the includes to the local copy, rather than the github branch.
-            sed -i \
-              -e 's/^  #repo_base_uri:/  repo_base_uri:/' \
-              -e 's|^  setup:.*|  setup: !include device/packages.yaml|' \
-              -e '/^    url:.*/d' \
-              -e '/^    files:.*/d' \
-              -e '/^    refresh:.*/d' \
-               "${config}"
-
-            if uvx ewt-gen==1.5.2 "$config" \
-              -t "$name" \
-              -o "site/$name" \
-              --publish-url "${PAGES_BASE_URL%/}/$name" \
-              --fw-version "$FW_VERSION"; then
-              echo "OK: $config"
-            else
-              echo "::error::FAILED: $config"
-              failed=1
-            fi
-
-            echo "::endgroup::"
-          done
-
-          {
-            echo '<!doctype html>'
-            echo '<html><head><meta charset="utf-8"><title>Firmware pages</title><meta name="viewport" content="width=device-width"><style>li { margin: 4px 0 }</style></head><body>'
-            echo '<h1>Firmware pages</h1><ul>'
-            for config in "${configs[@]}"; do
-              name="$(basename $(dirname "${config}"))"
-              echo "<li><a href=\"./$name/\">$name</a></li>"
-            done
-            echo '</ul></body></html>'
-          } > site/index.html
-
-          if [ "$failed" -ne 0 ]; then
-            echo "One or more configs failed."
-            exit 1
-          fi
+          ./scripts/build-firmware.sh \
+            -f "${{steps.version.outputs.version}}" \
+            -p "${{steps.pages.outputs.base_url}}" \
+            -o site
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

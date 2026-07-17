@@ -72,5 +72,4 @@ script:
       - delay: 60s
       - script.execute: trigger_reboot_sequence
 
-
 # vim: set tabstop=2 shiftwidth=2 expandtab:

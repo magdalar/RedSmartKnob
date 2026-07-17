@@ -1,0 +1,27 @@
+# Guition 1.8" Rotary Knob, Guition JC3636K518C-I-YR1
+# Also available as WaveShare ESP32-S3-Knob-Touch-LCD-1.8 (SKU 31623).
+substitutions:
+  name: "redknob-sendspin"
+  friendly_name: "RedKnob"
+  comment: "Sendspin-mode Guition 1.8in Rotary Knob JC3636K518C-I-YR1"
+
+  # Provide a local sendspin client. Media controls will control that, not a
+  # remote player.
+  enable_sendspin: true
+
+  #repo_base_uri: "../../RedSmartKnob"
+
+# Duplicated for the sake of ewt-gen
+esphome:
+  name: "${name}"
+
+logger:
+  level: INFO
+
+packages:
+  setup:
+    url: https://github.com/magdalar/RedSmartKnob
+    files: [devices/guition-redknob-jc3636k518c/device/packages.yaml]
+    refresh: 0s  # always pull, comment out for caching
+ 
+# vim: set tabstop=2 shiftwidth=2 expandtab:

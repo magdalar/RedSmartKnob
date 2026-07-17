@@ -1,0 +1,26 @@
+# Guition 1.8" Silver Puck, JC3636W518C_I_Y
+substitutions:
+  name: "silverpuck-controls"
+  friendly_name: "SilverPuck"
+  comment: "Controls-mode Guition 1.8in Silver Puck JC3636W518C_I_Y"
+
+  # Use silverpuck.sendspin.yaml for sendspin-mode. This file is for
+  # controls-only mode, e.g. to control a remote mediaplayer.
+  enable_sendspin: false
+
+  #repo_base_uri: "../../RedSmartKnob"
+
+# Duplicated for the sake of ewt-gen
+esphome:
+  name: "${name}"
+
+logger:
+  level: INFO
+
+packages:
+  setup:
+    url: https://github.com/magdalar/RedSmartKnob
+    files: [devices/guition-silverpuck-jc3636w518c/device/packages.yaml]
+    refresh: 0s  # always pull, comment out for caching
+ 
+# vim: set tabstop=2 shiftwidth=2 expandtab:

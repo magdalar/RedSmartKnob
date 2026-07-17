@@ -1,6 +1,7 @@
 .esphome
 secrets.yaml
 /venv/
+/fwsite/
 .kopiaignore
 .ackrc
 # my example configs

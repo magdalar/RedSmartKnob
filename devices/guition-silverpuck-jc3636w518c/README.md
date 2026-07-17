@@ -10,13 +10,18 @@ This directory supports an ESPHome configuration for a Guition JC3636W518C\_I\_Y
 
 ## How to use this
 
-<a href="https://magdalar.github.io/RedSmartKnob/guition-silverpuck-jc3636w518c/"><img src="https://img.shields.io/badge/FLASH-FIRMWARE-ff6b00?style=for-the-badge&labelColor=111827" alt="Open Installer"></a>
+This firmware comes in two modes:
 
-1. Edit `esphome.yaml` to set your device names, home assistant entities, and local vs remote mediplayer choice.
-1. Copy `secrets.yaml.example` to `secrets.yaml` and edit it as appropriate for your setup.
-1. Compile and flash your device: `esphome run esphome.yaml`
-1. Add the device in Home Assistant
-1. If using sendspin, then you should already see your device in Music Assistant too. Play some music!
+  - Sendspin mode: the device _is_ the media player (e.g. use the AUX out) <a href="https://magdalar.github.io/RedSmartKnob/silverpuck-sendspin/"><img src="https://img.shields.io/badge/FLASH-Sendspin-brightgreen?style=for-the-badge" alt="Open Installer for Sendspin mode"></a>
+  - Controls mode: the device controls a remote Music Assistant Media Player <a href="https://magdalar.github.io/RedSmartKnob/silverpuck-controls/"><img src="https://img.shields.io/badge/FLASH-Controls-blue?style=for-the-badge" alt="Open Installer for Controls mode"></a>
+
+There are also two `*.dev.yaml` files for local development, or to assign passwords and encryption via `secrets.yaml`.
+
+Once flashed, be sure to:
+
+  - Add the device in Home Assistant
+  - Enable "Allow the device to perform Home Assistant actions" from the ESPHome integration overview. [Screenshot](../../screenshots/homeassistant-perform-actions.png)
+  - Configure the device in Home Assistant, to set the relevant entity ids. The device will reboot to enact the changes.
 
 NOTE: If using TTS announcements, remember to use the Music Assistant `media_player` entity within Home Assistant, rather than the device directly. MA will handle the audio stream format mismatches much more gracefully.
 
