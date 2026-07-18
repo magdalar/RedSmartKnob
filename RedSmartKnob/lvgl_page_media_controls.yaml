@@ -2,6 +2,11 @@
 # Script references should be primarily in actions_media.yaml
 # This unit should _not_ reference $mediaplayer.
 
+.style.media_controls_button: &media_controls_button
+  styles: rsk_bg_accent
+  pressed:
+    styles: rsk_bg_accent_dark
+
 lvgl:
   pages:
     - id: page_media_controls
@@ -19,6 +24,7 @@ lvgl:
 
         - button:
             id: controls_dismiss
+            <<: *media_controls_button
             align: top_mid
             y: 10
             width: 10%
@@ -28,7 +34,8 @@ lvgl:
               - script.execute: hide_popups
             widgets:
               - label:
-                  styles: rsk_label_large
+                  styles: rsk_font_color
+                  text_font: theme_font_large
                   text: "X"
 
 
@@ -39,7 +46,7 @@ lvgl:
             width: 100%
             height: 23%
             radius: 0
-            bg_color: ${theme_bg_color}
+            styles: rsk_page_bg
             bg_opa: 55%
             border_width: 0
             pad_all: 0
@@ -50,7 +57,8 @@ lvgl:
                   align: TOP_MID
                   width: 85%
                   y: 3%
-                  styles: rsk_label2_normal
+                  styles: rsk_font_color2
+                  text_font: theme_font_normal
                   long_mode: SCROLL_CIRCULAR
                   anim_duration: 8s
                   text: "Unknown Artist"
@@ -58,7 +66,8 @@ lvgl:
                   id: track_name_label_controls
                   align: CENTER
                   width: 90%
-                  styles: rsk_label_large
+                  styles: rsk_font_color
+                  text_font: theme_font_large
                   long_mode: SCROLL_CIRCULAR
                   anim_duration: 8s
                   text: "Unknown Track"
@@ -67,7 +76,8 @@ lvgl:
                   align: BOTTOM_MID
                   y: -5%
                   width: 95%
-                  styles: rsk_label2_small
+                  styles: rsk_font_color2
+                  text_font: theme_font_small
                   long_mode: SCROLL_CIRCULAR
                   anim_duration: 8s
                   text: "Unknown Album"
@@ -85,8 +95,7 @@ lvgl:
             widgets:
               - button:
                   id: controls_previous
-                  width: 20%
-                  height: 100%
+                  <<: *media_controls_button
                   on_click:
                     - script.execute: set_media_previous
                   widgets:
@@ -95,8 +104,7 @@ lvgl:
                         text_font: font_mdi_media
               - button:
                   id: controls_toggle_button
-                  width: 20%
-                  height: 100%
+                  <<: *media_controls_button
                   on_click:
                     - script.execute: set_media_play_pause
                   widgets:
@@ -105,8 +113,7 @@ lvgl:
                         text_font: font_mdi_media
               - button:
                   id: controls_next
-                  width: 20%
-                  height: 100%
+                  <<: *media_controls_button
                   on_click:
                     - script.execute: set_media_next
                   widgets:
@@ -147,7 +154,7 @@ lvgl:
             id: volume_text
             align: CENTER
             y: 32%
-            text_color: ${theme_font_color}
+            styles: rsk_font_color
             text_font: theme_font_normal
             text: "XX%"
 

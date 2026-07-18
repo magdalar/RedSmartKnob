@@ -9,13 +9,14 @@ lvgl:
         - script.execute: navigate_right
       on_swipe_left:
         - script.execute: navigate_left
-      on_swipe_top:
-        - script.execute:
-            id: show_media_controls_popup
+      # TODO: One, or both, of these is causing the pop-up when swiping out of
+      # overlay. Need to cancel clicks on swipes...
+      #on_swipe_top:
+      #  - script.execute:
+      #      id: show_media_controls_popup
       on_click:
         - script.execute:
             id: show_media_controls_popup
-      bg_color: ${theme_bg_color}
       widgets:
         - image:
             id: album_cover_image_overlay
@@ -39,9 +40,9 @@ lvgl:
             max_value: 100
             value: 0
             arc_width: 6
-            arc_color: ${theme_accent_dark_color}
+            styles: rsk_arc_accent_dark
             indicator:
-              arc_color: ${theme_accent_color}
+              styles: rsk_arc_accent
               arc_width: 10
             bg_main_opa: 40%
             clickable: false
@@ -55,7 +56,7 @@ lvgl:
             width: 100%
             height: 33%
             radius: 0
-            bg_color: ${theme_bg_color}
+            styles: rsk_page_bg
             bg_opa: 55%
             border_width: 0
             pad_all: 0
@@ -68,7 +69,7 @@ lvgl:
                   long_mode: SCROLL_CIRCULAR
                   anim_duration: 8s
                   text_align: CENTER
-                  text_color: ${theme_font_color2}
+                  styles: rsk_font_color2
                   text_font: theme_font_normal
                   text: "Unknown Artist"
               - label:
@@ -79,7 +80,7 @@ lvgl:
                   long_mode: SCROLL_CIRCULAR
                   anim_duration: 8s
                   text_align: CENTER
-                  text_color: ${theme_font_color}
+                  styles: rsk_font_color
                   text_font: theme_font_large
                   text: "Unknown Track"
               - label:
@@ -90,7 +91,7 @@ lvgl:
                   long_mode: SCROLL_CIRCULAR
                   anim_duration: 8s
                   text_align: CENTER
-                  text_color: ${theme_font_color2}
+                  styles: rsk_font_color2
                   text_font: theme_font_small
                   text: "Unknown Album"
               - label:
@@ -98,7 +99,7 @@ lvgl:
                   align: TOP_MID
                   y: 65%
                   text_align: CENTER
-                  text_color: ${theme_font_color2}
+                  styles: rsk_font_color2
                   text_font: theme_font_small
                   text: "00:00 / 99:99"
 

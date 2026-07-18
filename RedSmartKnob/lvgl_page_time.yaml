@@ -8,7 +8,7 @@ lvgl:
         - script.execute: navigate_right
       on_swipe_left:
         - script.execute: navigate_left
-      bg_color: ${theme_bg_color}
+      styles: rsk_page_bg
       widgets:
         # Add background as first widget in each page
         - image:
@@ -22,8 +22,7 @@ lvgl:
         - label:
             id: clock_icon
             text_font: font_mdi_time
-            text_color: ${theme_font_color}
-            align: CENTER
+            styles: rsk_font_color
             y: -40
             x: -100
             text: "${icon_clock}"
@@ -31,8 +30,7 @@ lvgl:
         - label:
             id: date_time_widget
             text_font: theme_font_large
-            text_color: ${theme_font_color}
-            align: CENTER
+            styles: rsk_font_color
             y: -40
             long_mode: WRAP
             text_align: CENTER
@@ -42,8 +40,7 @@ lvgl:
         - label:
             id: outdoor_temp_icon
             text_font: font_mdi_time
-            text_color: ${theme_font_color}
-            align: CENTER
+            styles: rsk_font_color
             y: 25
             x: -100
             text: "${icon_thermo_outside}"
@@ -51,16 +48,14 @@ lvgl:
         - label:
             id: outdoor_temp_label
             text_font: theme_font_large
-            text_color: ${theme_font_color}
-            align: CENTER
+            styles: rsk_font_color
             y: 25
             text: "–"
 
         - label:
             id: indoor_temp_icon
             text_font: font_mdi_time
-            text_color: ${theme_font_color}
-            align: CENTER
+            styles: rsk_font_color
             y: 55
             x: -100
             text: "${icon_thermo_inside}"
@@ -68,8 +63,7 @@ lvgl:
         - label:
             id: indoor_temp_label
             text_font: theme_font_large
-            text_color: ${theme_font_color}
-            align: CENTER
+            styles: rsk_font_color
             y: 55
             text: "–"
 
@@ -92,8 +86,7 @@ lvgl:
             id: batt_icon
             hidden: true
             text_font: font_mdi_time
-            text_color: ${theme_font_color}
-            align: CENTER
+            styles: rsk_font_color
             x: -20
             y: -120
             text: "${icon_battery}"
@@ -101,8 +94,7 @@ lvgl:
         - label:
             id: batt_text
             hidden: true
-            text_color: ${theme_font_color}
-            align: CENTER
+            styles: rsk_font_color
             x: 10
             y: -120
             text: "0%"
