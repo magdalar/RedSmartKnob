@@ -42,14 +42,9 @@ lvgl:
   style_definitions:
     - id: rsk_page_bg
       bg_color: ${theme_bg_color}
-      # TODO: this didn't work, though opa:COVER might be the reason
-      #bg_image_src: album_placeholder
-      #bg_image_recolor_opa: COVER
-      #bg_image_recolor: ${theme_accent_dark_color}
-
-    - id: rsk_bg_image
-      image_recolor_opa: 55%
-      image_recolor: ${theme_accent_dark_color}
+      bg_image_src: album_placeholder
+      bg_image_recolor_opa: 55%
+      bg_image_recolor: ${theme_accent_dark_color}
 
     - id: rsk_opacity_bg
       bg_color: ${theme_bg_color}
@@ -257,11 +252,7 @@ script:
       - lvgl.style.update:
           id: rsk_page_bg
           bg_color: !lambda 'return lv_color_hex(id(palette_bg));'
-          #bg_image_recolor: !lambda 'return lv_color_hex(id(palette_accent_dark));'
-
-      - lvgl.style.update:
-          id: rsk_bg_image
-          image_recolor: !lambda 'return lv_color_hex(id(palette_accent_dark));'
+          bg_image_recolor: !lambda 'return lv_color_hex(id(palette_accent_dark));'
 
       - lvgl.style.update:
           id: rsk_opacity_bg

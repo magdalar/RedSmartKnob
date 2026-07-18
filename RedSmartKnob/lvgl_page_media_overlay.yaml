@@ -21,7 +21,7 @@ lvgl:
         - image:
             id: album_cover_image_overlay
             src: album_placeholder
-            # NOTE: not styles: rsk_bg_image, as we don't want recolor on the album art.
+            # NOTE: not using a recolor style: we don't to recolor the album art.
             x: 0%
             y: 0%
             width: 100%

@@ -10,15 +10,6 @@ lvgl:
         - script.execute: navigate_left
       styles: rsk_page_bg
       widgets:
-        # Add background as first widget in each page
-        - image:
-            id: bg_image_time
-            src: bg_image_file
-            styles: rsk_bg_image
-            align: CENTER
-            width: 100%
-            height: 100%
-
         # Clock icon, placed just above the date/time label
         - label:
             id: clock_icon
