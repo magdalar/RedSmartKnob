@@ -9,14 +9,13 @@ lvgl:
         - script.execute: navigate_right
       on_swipe_left:
         - script.execute: navigate_left
-      # TODO: One, or both, of these is causing the pop-up when swiping out of
-      # overlay. Need to cancel clicks on swipes...
-      #on_swipe_top:
-      #  - script.execute:
-      #      id: show_media_controls_popup
-      on_click:
+      on_swipe_top:
         - script.execute:
             id: show_media_controls_popup
+      # TODO: on_click causes the swipes to also trigger the click
+      #on_click:
+      #  - script.execute:
+      #      id: show_media_controls_popup
       widgets:
         - image:
             id: album_cover_image_overlay
