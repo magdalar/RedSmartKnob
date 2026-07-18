@@ -8,7 +8,6 @@ lvgl:
       skip: true
       on_swipe_bottom:
         - script.execute: hide_popups
-      bg_color: ${theme_bg_color}
       widgets:
         # Add background as first widget in each page
         - image:
@@ -25,24 +24,12 @@ lvgl:
             width: 10%
             height: 10%
             ext_click_area: 20
-            bg_color: ${theme_button_bg_color}
-            bg_opa: COVER
-            radius: ${ui_radius}
-            border_color: ${theme_button_border_color}
-            border_width: ${ui_border}
-            pressed:
-              bg_color: ${theme_button_pressed_bg_color}
-              border_color: ${theme_button_pressed_border_color}
-              border_width: ${ui_border_pressed}
-            gesture_bubble: true
             on_click:
               - script.execute: hide_popups
             widgets:
               - label:
-                  align: CENTER
+                  styles: rsk_label_large
                   text: "X"
-                  text_color: ${theme_font_color}
-                  text_font: theme_font_large
 
 
         # Translucent caption band across the top-middle, below the dismissal.
@@ -63,32 +50,26 @@ lvgl:
                   align: TOP_MID
                   width: 85%
                   y: 3%
+                  styles: rsk_label2_normal
                   long_mode: SCROLL_CIRCULAR
                   anim_duration: 8s
-                  text_align: CENTER
-                  text_color: ${theme_font_color2}
-                  text_font: theme_font_normal
                   text: "Unknown Artist"
               - label:
                   id: track_name_label_controls
                   align: CENTER
                   width: 90%
+                  styles: rsk_label_large
                   long_mode: SCROLL_CIRCULAR
                   anim_duration: 8s
-                  text_align: CENTER
-                  text_color: ${theme_font_color}
-                  text_font: theme_font_large
                   text: "Unknown Track"
               - label:
                   id: track_album_label_controls
                   align: BOTTOM_MID
                   y: -5%
                   width: 95%
+                  styles: rsk_label2_small
                   long_mode: SCROLL_CIRCULAR
                   anim_duration: 8s
-                  text_align: CENTER
-                  text_color: ${theme_font_color2}
-                  text_font: theme_font_small
                   text: "Unknown Album"
 
         - obj:
@@ -106,67 +87,31 @@ lvgl:
                   id: controls_previous
                   width: 20%
                   height: 100%
-                  bg_color: ${theme_button_bg_color}
-                  bg_opa: COVER
-                  radius: ${ui_radius}
-                  border_color: ${theme_button_border_color}
-                  border_width: ${ui_border}
-                  pressed:
-                    bg_color: ${theme_button_pressed_bg_color}
-                    border_color: ${theme_button_pressed_border_color}
-                    border_width: ${ui_border_pressed}
-                  gesture_bubble: true
                   on_click:
                     - script.execute: set_media_previous
                   widgets:
                     - label:
-                        align: CENTER
                         text: ${icon_previous}
-                        text_color: ${theme_font_color}
                         text_font: font_mdi_media
               - button:
                   id: controls_toggle_button
                   width: 20%
                   height: 100%
-                  bg_color: ${theme_button_bg_color}
-                  bg_opa: COVER
-                  radius: ${ui_radius}
-                  border_color: ${theme_button_border_color}
-                  border_width: ${ui_border}
-                  pressed:
-                    bg_color: ${theme_button_pressed_bg_color}
-                    border_color: ${theme_button_pressed_border_color}
-                    border_width: ${ui_border_pressed}
-                  gesture_bubble: true
                   on_click:
                     - script.execute: set_media_play_pause
                   widgets:
                     - label:
-                        align: CENTER
                         text: ${icon_play_pause}
-                        text_color: ${theme_font_color}
                         text_font: font_mdi_media
               - button:
                   id: controls_next
                   width: 20%
                   height: 100%
-                  bg_color: ${theme_button_bg_color}
-                  bg_opa: COVER
-                  radius: ${ui_radius}
-                  border_color: ${theme_button_border_color}
-                  border_width: ${ui_border}
-                  pressed:
-                    bg_color: ${theme_button_pressed_bg_color}
-                    border_color: ${theme_button_pressed_border_color}
-                    border_width: ${ui_border_pressed}
-                  gesture_bubble: true
                   on_click:
                     - script.execute: set_media_next
                   widgets:
                     - label:
-                        align: CENTER
                         text: ${icon_next}
-                        text_color: ${theme_font_color}
                         text_font: font_mdi_media
 
         # Volume control
@@ -176,15 +121,15 @@ lvgl:
             y: 25%
             width: 60%
             height: 4%
-            bg_color: ${theme_accent_dark_color}
+            styles: rsk_bg_accent_dark
             indicator:
-              bg_color: ${theme_accent_color}
+              styles: rsk_bg_accent
               user_1:
-                arc_color: ${theme_warning_color}
+                styles: rsk_bg_warning
             knob:
-              bg_color: ${theme_accent_color}
+              styles: rsk_bg_accent
               user_1:
-                arc_color: ${theme_warning_color}
+                styles: rsk_bg_warning
             gesture_bubble: true
             # on_value causes a loop when the value is updated from e.g. sendspin.
             # on_release only does it on user release.

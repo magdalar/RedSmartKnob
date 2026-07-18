@@ -1,27 +1,5 @@
 # LVGL Page definition for Playlist shortcuts.
 
-.style.playlist_button_style: &playlist_button_style
-  bg_color: ${theme_button_bg_color}
-  bg_opa: COVER
-  radius: ${ui_radius}
-  border_color: ${theme_button_border_color}
-  border_width: ${ui_border}
-  pressed:
-    bg_color: ${theme_button_pressed_bg_color}
-    border_color: ${theme_button_pressed_border_color}
-    border_width: ${ui_border_pressed}
-  gesture_bubble: true
-
-.style.playlist_button: &playlist_button
-  <<: *playlist_button_style
-  width: 100%
-
-.style.playlist_label: &playlist_label
-  align: CENTER
-  text_align: CENTER
-  text_color: ${theme_font_color}
-  text_font: theme_font_normal
-
 lvgl:
   pages:
     - id: page_media_playlists
@@ -41,7 +19,7 @@ lvgl:
 
         - obj:
             align: CENTER
-            width: 80%
+            width: 60%
             height: 70%
             y: 3%
             bg_opa: TRANSP
@@ -51,8 +29,8 @@ lvgl:
             gesture_bubble: true
             widgets:
               - button:
-                  <<: *playlist_button
                   id: button_playlist1
+                  width: 100%
                   on_click:
                     - script.execute:
                         id: play_playlist
@@ -60,12 +38,12 @@ lvgl:
                         shuffle: !lambda 'return id(setting_playlist_shuffle).state;'
                   widgets:
                     - label:
-                        <<: *playlist_label
                         id: playlist_1_label
+                        align: CENTER
                         text: !lambda 'return "Playlist 1:\n" + id(setting_playlist_1).state;'
               - button:
-                  <<: *playlist_button
                   id: button_playlist2
+                  width: 100%
                   on_click:
                     - script.execute:
                         id: play_playlist
@@ -73,12 +51,12 @@ lvgl:
                         shuffle: !lambda 'return id(setting_playlist_shuffle).state;'
                   widgets:
                     - label:
-                        <<: *playlist_label
                         id: playlist_2_label
+                        align: CENTER
                         text: !lambda 'return "Playlist 2:\n" + id(setting_playlist_2).state;'
               - button:
-                  <<: *playlist_button
                   id: button_playlist3
+                  width: 100%
                   on_click:
                     - script.execute:
                         id: play_playlist
@@ -86,12 +64,11 @@ lvgl:
                         shuffle: !lambda 'return id(setting_playlist_shuffle).state;'
                   widgets:
                     - label:
-                        <<: *playlist_label
                         id: playlist_3_label
+                        align: CENTER
                         text: !lambda 'return "Playlist 3:\n" + id(setting_playlist_3).state;'
 
         - button:
-            <<: *playlist_button_style
             id: button_playlist_shuffle
             align: top_mid
             y: 3%

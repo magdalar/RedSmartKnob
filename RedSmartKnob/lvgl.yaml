@@ -43,22 +43,83 @@ lvgl:
   color_depth: 16
   default_font: theme_font_normal
 
+  style_definitions:
+    - id: rsk_page_bg
+      bg_color: ${theme_bg_color}
+
+    - id: rsk_bg_accent_dark
+      bg_color: ${theme_accent_dark_color}
+    - id: rsk_bg_accent
+      bg_color: ${theme_accent_color}
+    - id: rsk_bg_warning
+      bg_color: ${theme_warning_color}
+
+    - id: rsk_button
+      bg_color: 0xff00 #${theme_button_bg_color}
+      border_color: 0x00ff00 #${theme_button_border_color}
+
+    - id: rsk_scroll_circular
+
+    - id: rsk_button_pressed
+      bg_color: ${theme_button_pressed_bg_color}
+      border_color: ${theme_button_border_color}
+
+    - id: rsk_label_icon
+      text_color: ${theme_font_color}
+    - id: rsk_label2_icon
+      text_color: ${theme_font_color2}
+
+    - id: rsk_label_small
+      text_color: ${theme_font_color}
+      text_font: theme_font_small
+    - id: rsk_label2_small
+      text_color: ${theme_font_color2}
+      text_font: theme_font_small
+
+    - id: rsk_label_normal
+      text_color: ${theme_font_color}
+      text_font: theme_font_normal
+    - id: rsk_label2_normal
+      text_color: ${theme_font_color2}
+      text_font: theme_font_normal
+
+    - id: rsk_label_large
+      text_color: ${theme_font_color}
+      text_font: theme_font_large
+    - id: rsk_label2_large
+      text_color: ${theme_font_color2}
+      text_font: theme_font_large
+
+  theme:
+    label:
+      styles: rsk_label_normal
+      align: CENTER
+      text_align: CENTER
+    button:
+      styles: rsk_button
+      bg_opa: COVER
+      radius: ${ui_radius}
+      border_width: ${ui_border}
+      gesture_bubble: true
+      pressed:
+        styles: rsk_button_pressed
+        border_width: ${ui_border_pressed}
+
+  styles: rsk_page_bg
+
   top_layer:
     widgets:
       - label:
           id: top_api_status_widget
+          styles: rsk_label2_icon
           text_font: font_mdi_top
           text: ${icon_wifi}
           hidden: true
           align: BOTTOM_MID
-          text_align: right
-          text_color: ${theme_font_color2}
       - label:
           id: top_reboot_label
-          text_font: theme_font_large
           text: "Reboot pending!"
           hidden: true
           align: TOP_MID
           y: 15%
-          text_align: center
-          text_color: ${theme_font_color}
+          styles: rsk_label_large
