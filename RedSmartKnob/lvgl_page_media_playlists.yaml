@@ -26,6 +26,7 @@ lvgl:
         - image:
             id: bg_image_media_playlists
             src: album_placeholder
+            styles: rsk_bg_image
             align: CENTER
             width: 100%
             height: 100%

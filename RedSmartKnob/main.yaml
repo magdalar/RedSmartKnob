@@ -19,7 +19,7 @@ substitutions:
 
   # Default theme. Override in caller.
   # Available options: blue, green, orange, white
-  theme: "blue"
+  theme: "white"
 
 packages:
   app_esphome: !include esphome.yaml

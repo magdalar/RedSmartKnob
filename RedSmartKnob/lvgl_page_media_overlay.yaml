@@ -16,10 +16,12 @@ lvgl:
       #on_click:
       #  - script.execute:
       #      id: show_media_controls_popup
+      styles: rsk_page_bg
       widgets:
         - image:
             id: album_cover_image_overlay
             src: album_placeholder
+            # NOTE: not styles: rsk_bg_image, as we don't want recolor on the album art.
             x: 0%
             y: 0%
             width: 100%
@@ -55,8 +57,7 @@ lvgl:
             width: 100%
             height: 33%
             radius: 0
-            styles: rsk_page_bg
-            bg_opa: 55%
+            styles: rsk_opacity_bg
             border_width: 0
             pad_all: 0
             scrollable: false

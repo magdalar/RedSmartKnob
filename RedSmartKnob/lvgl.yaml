@@ -38,9 +38,28 @@ lvgl:
   color_depth: 16
   default_font: theme_font_normal
 
+  # If you change these, change them in compute_and_apply_theme below too.
   style_definitions:
     - id: rsk_page_bg
       bg_color: ${theme_bg_color}
+      # TODO: this didn't work, though opa:COVER might be the reason
+      #bg_image_src: album_placeholder
+      #bg_image_recolor_opa: COVER
+      #bg_image_recolor: ${theme_accent_dark_color}
+
+    - id: rsk_bg_image
+      image_recolor_opa: 55%
+      image_recolor: ${theme_accent_dark_color}
+
+    - id: rsk_opacity_bg
+      bg_color: ${theme_bg_color}
+      bg_opa: 55%
+
+    - id: rsk_font_color
+      text_color: ${theme_font_color}
+
+    - id: rsk_font_color2
+      text_color: ${theme_font_color2}
 
     - id: rsk_bg_accent
       bg_color: ${theme_accent_color}
@@ -54,17 +73,15 @@ lvgl:
       bg_color: ${theme_warning_color}
       border_color: ${theme_accent_color}
 
+    - id: rsk_bg_success
+      bg_color: ${theme_success_color}
+      border_color: ${theme_accent_color}
+
     - id: rsk_arc_accent
       arc_color: ${theme_accent_color}
 
     - id: rsk_arc_accent_dark
       arc_color: ${theme_accent_dark_color}
-
-    - id: rsk_font_color
-      text_color: ${theme_font_color}
-
-    - id: rsk_font_color2
-      text_color: ${theme_font_color2}
 
   # NOTE: Ideally, styles listed in this `theme` section would apply the named
   # styles by default, but it seems to be silently ignored. So, each widget
@@ -86,8 +103,6 @@ lvgl:
         styles: rsk_bg_accent_dark
         border_width: ${ui_border_pressed}
 
-  styles: rsk_page_bg
-
   top_layer:
     widgets:
       - label:
@@ -106,15 +121,198 @@ lvgl:
           align: TOP_MID
           y: 15%
 
+globals:
+  # --- PICKED ACCENT COLORS ---
+  # These are populated by the `output:` attached to the `theme_color_picker`
+  - id: theme_r
+    type: float
+  - id: theme_g
+    type: float
+  - id: theme_b
+    type: float
+
+  # --- DERIVED PALETTE ---
+  - id: palette_accent
+    type: uint32_t
+  - id: palette_accent_dark
+    type: uint32_t
+  - id: palette_bg
+    type: uint32_t
+  - id: palette_font
+    type: uint32_t
+  - id: palette_font2
+    type: uint32_t
+  - id: palette_warning
+    type: uint32_t
+  - id: palette_success
+    type: uint32_t
+
+output:
+  - platform: template
+    id: dummy_theme_r
+    type: float
+    write_action:
+      - lambda: 'id(theme_r) = state;'
+      - script.execute: compute_and_apply_theme_debounced
+
+  - platform: template
+    id: dummy_theme_g
+    type: float
+    write_action:
+      - lambda: 'id(theme_g) = state;'
+      - script.execute: compute_and_apply_theme_debounced
+
+  - platform: template
+    id: dummy_theme_b
+    type: float
+    write_action:
+      - lambda: 'id(theme_b) = state;'
+      - script.execute: compute_and_apply_theme_debounced
+
+light:
+  - platform: rgb
+    id: theme_color_picker
+    name: "Theme Accent Color"
+    icon: "mdi:palette"
+    entity_category: config
+    red: dummy_theme_r
+    green: dummy_theme_g
+    blue: dummy_theme_b
+    restore_mode: RESTORE_DEFAULT_ON
+    default_transition_length: 0s
+    # Prevent the UI from turning completely black if the user clicks
+    # the light's power icon instead of the color wheel.
+    on_turn_off:
+      - light.turn_on: theme_color_picker
+
 script:
-  - id: apply_theme_colors
-    parameters:
-      font_color: int
-      font_color2: int
-      bg_color: int
-      accent_color: int
-      accent_dark_color: int
-      warning_color: int
-      success_color: int
-    # TODO: Fill this out.
-    then: []
+  - id: compute_and_apply_theme_debounced
+    mode: restart
+    then:
+      - delay: 40ms
+      - script.execute: compute_and_apply_theme
+
+  - id: compute_and_apply_theme
+    mode: restart
+    then:
+      # 1. Compute the palette
+      - lambda: |-
+          float r = id(theme_r);
+          float g = id(theme_g);
+          float b = id(theme_b);
+
+          // Calculate Perceived Brightness (0.0 to 1.0)
+          float luminance = (r * 0.299) + (g * 0.587) + (b * 0.114);
+
+          // Helper functions to keep the math clean
+          auto clamp = [](float val) -> int {
+              if (val > 255) return 255;
+              if (val < 0) return 0;
+              return (int)val;
+          };
+          auto rgb = [&](float red, float green, float blue) -> uint32_t {
+              return (clamp(red) << 16) | (clamp(green) << 8) | clamp(blue);
+          };
+
+          // The base accent color
+          id(palette_accent) = rgb(r*255, g*255, b*255);
+
+          // Branch based on whether the chosen color is Light or Dark
+          if (luminance > 0.6) {
+              // --- LIGHT THEME (White Background) ---
+              id(palette_bg) = 0xFFFFFF;
+
+              // Dark gray fonts, slightly tinted by the accent color
+              id(palette_font) = rgb(r*30 + 30, g*30 + 30, b*30 + 30);
+              id(palette_font2) = rgb(r*40 + 100, g*40 + 100, b*40 + 100);
+
+              // Secondary accent is always darker in light mode
+              id(palette_accent_dark) = rgb(r*150, g*150, b*150);
+
+              id(palette_warning) = 0xD64545;
+              id(palette_success) = 0x27AE60; // Clean, readable green for white backgrounds
+          } else {
+              // --- DARK THEME (Black Background) ---
+              id(palette_bg) = 0x000000;
+
+              // Off-white fonts, slightly tinted by the accent color
+              id(palette_font) = rgb(r*15 + 240, g*15 + 240, b*15 + 240);
+              id(palette_font2) = rgb(r*40 + 160, g*40 + 160, b*40 + 160);
+
+              // Secondary accent logic:
+              // If they picked a VERY dark color, lighten it so it doesn't turn black.
+              // Otherwise, darken it.
+              if (luminance < 0.2) {
+                  id(palette_accent_dark) = rgb(r*255 + (1-r)*80, g*255 + (1-g)*80, b*255 + (1-b)*80);
+              } else {
+                  id(palette_accent_dark) = rgb(r*120, g*120, b*120);
+              }
+
+              id(palette_warning) = 0xEB5757;
+              id(palette_success) = 0x6FCF97;
+          }
+
+      # 2. Apply to LVGL
+      - lvgl.style.update:
+          id: rsk_page_bg
+          bg_color: !lambda 'return lv_color_hex(id(palette_bg));'
+          #bg_image_recolor: !lambda 'return lv_color_hex(id(palette_accent_dark));'
+
+      - lvgl.style.update:
+          id: rsk_bg_image
+          image_recolor: !lambda 'return lv_color_hex(id(palette_accent_dark));'
+
+      - lvgl.style.update:
+          id: rsk_opacity_bg
+          bg_color: !lambda 'return lv_color_hex(id(palette_bg));'
+
+      - lvgl.style.update:
+          id: rsk_font_color
+          text_color: !lambda 'return lv_color_hex(id(palette_font));'
+
+      - lvgl.style.update:
+          id: rsk_font_color2
+          text_color: !lambda 'return lv_color_hex(id(palette_font2));'
+
+      - lvgl.style.update:
+          id: rsk_bg_accent
+          bg_color: !lambda 'return lv_color_hex(id(palette_accent));'
+          border_color: !lambda 'return lv_color_hex(id(palette_accent_dark));'
+
+      - lvgl.style.update:
+          id: rsk_bg_accent_dark
+          bg_color: !lambda 'return lv_color_hex(id(palette_accent_dark));'
+          border_color: !lambda 'return lv_color_hex(id(palette_accent));'
+
+      - lvgl.style.update:
+          id: rsk_bg_warning
+          bg_color: !lambda 'return lv_color_hex(id(palette_warning));'
+          border_color: !lambda 'return lv_color_hex(id(palette_accent));'
+
+      - lvgl.style.update:
+          id: rsk_bg_success
+          bg_color: !lambda 'return lv_color_hex(id(palette_success));'
+          border_color: !lambda 'return lv_color_hex(id(palette_accent));'
+
+      - lvgl.style.update:
+          id: rsk_arc_accent
+          arc_color: !lambda 'return lv_color_hex(id(palette_accent));'
+
+      - lvgl.style.update:
+          id: rsk_arc_accent_dark
+          arc_color: !lambda 'return lv_color_hex(id(palette_accent_dark));'
+
+      # 3. Force a complete UI redraw to prevent visual artifacts
+      - lambda: |-
+          // Invalidates the active screen, forcing a full top-to-bottom repaint
+          lv_obj_invalidate(lv_scr_act());
+
+          // Optional but recommended: Tell LVGL that global styles have shifted
+          lv_obj_report_style_change(nullptr);
+
+esphome:
+  on_boot:
+    priority: -100 # Runs after everything else is initialized
+    then:
+      - delay: 300ms
+      - script.execute: compute_and_apply_theme

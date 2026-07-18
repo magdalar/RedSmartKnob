@@ -14,6 +14,7 @@ lvgl:
         - image:
             id: bg_image_time
             src: bg_image_file
+            styles: rsk_bg_image
             align: CENTER
             width: 100%
             height: 100%
