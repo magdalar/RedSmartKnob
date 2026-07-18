@@ -5,6 +5,13 @@
 lvgl:
   pages:
     - id: page_media_overlay
+      on_swipe_right:
+        - script.execute: navigate_right
+      on_swipe_left:
+        - script.execute: navigate_left
+      on_swipe_top:
+        - script.execute:
+            id: show_media_controls_popup
       on_click:
         - script.execute:
             id: show_media_controls_popup

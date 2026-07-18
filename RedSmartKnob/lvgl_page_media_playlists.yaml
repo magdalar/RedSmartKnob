@@ -25,6 +25,10 @@
 lvgl:
   pages:
     - id: page_media_playlists
+      on_swipe_right:
+        - script.execute: navigate_right
+      on_swipe_left:
+        - script.execute: navigate_left
       bg_color: ${theme_bg_color}
       widgets:
         # Add background as first widget in each page

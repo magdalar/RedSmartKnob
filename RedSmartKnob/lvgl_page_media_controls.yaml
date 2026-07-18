@@ -6,6 +6,8 @@ lvgl:
   pages:
     - id: page_media_controls
       skip: true
+      on_swipe_bottom:
+        - script.execute: hide_popups
       bg_color: ${theme_bg_color}
       widgets:
         # Add background as first widget in each page

@@ -43,11 +43,6 @@ lvgl:
   color_depth: 16
   default_font: theme_font_normal
 
-  on_swipe_right:
-    - script.execute: navigate_right
-  on_swipe_left:
-    - script.execute: navigate_left
-
   top_layer:
     widgets:
       - label:

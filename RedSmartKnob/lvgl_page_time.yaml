@@ -4,9 +4,10 @@
 lvgl:
   pages:
     - id: page_time
-      #on_click:
-      #  then:
-      #    - script.execute: set_media_play_pause
+      on_swipe_right:
+        - script.execute: navigate_right
+      on_swipe_left:
+        - script.execute: navigate_left
       bg_color: ${theme_bg_color}
       widgets:
         # Add background as first widget in each page
