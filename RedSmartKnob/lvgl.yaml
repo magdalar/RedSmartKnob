@@ -83,24 +83,25 @@ lvgl:
     - id: rsk_arc_accent_dark
       arc_color: ${theme_accent_dark_color}
 
-  # NOTE: Ideally, styles listed in this `theme` section would apply the named
-  # styles by default, but it seems to be silently ignored. So, each widget
-  # must explicitly name the style still. I leave them here for documentation,
-  # and the hope of future success.
+  # NOTE: `theme:` is implemented as a per-widget implicit style, so we can't
+  # simply use `styles:` here (despite it being accepted by the schema), since
+  # they don't cascade like that. Instead, "fixed" parts of the style are
+  # applied here, and the dynamic (color) parts we use named styles for, so
+  # that compute_and_apply_theme can update them.
   theme:
     label:
-      styles: rsk_font_color
+      #styles: rsk_font_color
       text_font: theme_font_normal
       align: CENTER
       text_align: CENTER
     button:
-      styles: rsk_bg_accent
+      #styles: rsk_bg_accent
       bg_opa: COVER
       radius: ${ui_radius}
       border_width: ${ui_border}
       gesture_bubble: true
       pressed:
-        styles: rsk_bg_accent_dark
+        #styles: rsk_bg_accent_dark
         border_width: ${ui_border_pressed}
 
   top_layer:
