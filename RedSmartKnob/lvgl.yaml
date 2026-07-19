@@ -16,6 +16,11 @@ substitutions:
   ui_border: 2
   ui_border_pressed: 3
 
+external_components:
+  - source: github://pr#17678
+    components: [lvgl]
+    refresh: 1h
+
 image:
   # Local file paths are relative to the top-level yaml, not this file.
   #- platform: file
@@ -74,31 +79,28 @@ lvgl:
       bg_color: ${theme_success_color}
       border_color: ${theme_accent_color}
 
-    - id: rsk_arc_accent
-      arc_color: ${theme_accent_color}
-
-    - id: rsk_arc_accent_dark
-      arc_color: ${theme_accent_dark_color}
-
   # NOTE: `theme:` is implemented as a per-widget implicit style, so we can't
-  # simply use `styles:` here (despite it being accepted by the schema), since
-  # they don't cascade like that. Instead, "fixed" parts of the style are
-  # applied here, and the dynamic (color) parts we use named styles for, so
-  # that compute_and_apply_theme can update them.
+  # simply use `styles:` here, since they don't cascade like that. However, the
+  # colors can still be updated via lvgl.theme.update to provide defaults, and
+  # the other named styles can be used where needed for explicit overrides. See
+  # `compute_and_apply_theme` for the color updating logic.
+  # NOTE: colors are not listed here, only in `compute_and_apply_theme`, to
+  # reduce maintenance burden.
   theme:
     label:
-      #styles: rsk_font_color
       text_font: theme_font_normal
       align: CENTER
       text_align: CENTER
+    slider:
+      gesture_bubble: true
+    arc:
+      gesture_bubble: true
     button:
-      #styles: rsk_bg_accent
       bg_opa: COVER
       radius: ${ui_radius}
       border_width: ${ui_border}
       gesture_bubble: true
       pressed:
-        #styles: rsk_bg_accent_dark
         border_width: ${ui_border_pressed}
 
   top_layer:
@@ -112,7 +114,6 @@ lvgl:
           align: BOTTOM_MID
       - label:
           id: top_reboot_label
-          styles: rsk_font_color
           text_font: theme_font_large
           text: "Reboot pending!"
           hidden: true
@@ -288,15 +289,34 @@ script:
           bg_color: !lambda 'return lv_color_hex(id(palette_success));'
           border_color: !lambda 'return lv_color_hex(id(palette_accent));'
 
-      - lvgl.style.update:
-          id: rsk_arc_accent
-          arc_color: !lambda 'return lv_color_hex(id(palette_accent));'
+      # 3. LVGL Theme Updates
+      - lvgl.theme.update:
+          label:
+            text_color: !lambda 'return lv_color_hex(id(palette_font));'
+          slider:
+            bg_color: !lambda 'return lv_color_hex(id(palette_accent_dark));'
+            indicator:
+              bg_color: !lambda 'return lv_color_hex(id(palette_accent));'
+              user_1:
+                bg_color: !lambda 'return lv_color_hex(id(palette_warning));'
+            knob:
+              bg_color: !lambda 'return lv_color_hex(id(palette_accent));'
+              user_1:
+                bg_color: !lambda 'return lv_color_hex(id(palette_warning));'
+          arc:
+            arc_color: !lambda 'return lv_color_hex(id(palette_accent_dark));'
+            indicator:
+              arc_color: !lambda 'return lv_color_hex(id(palette_accent));'
+              user_1:
+                bg_color: !lambda 'return lv_color_hex(id(palette_warning));'
+          button:
+            bg_color: !lambda 'return lv_color_hex(id(palette_accent));'
+            border_color: !lambda 'return lv_color_hex(id(palette_accent_dark));'
+            pressed:
+              bg_color: !lambda 'return lv_color_hex(id(palette_accent_dark));'
+              border_color: !lambda 'return lv_color_hex(id(palette_accent));'
 
-      - lvgl.style.update:
-          id: rsk_arc_accent_dark
-          arc_color: !lambda 'return lv_color_hex(id(palette_accent_dark));'
-
-      # 3. Force a complete UI redraw to prevent visual artifacts
+      # 4. Force a complete UI redraw to prevent visual artifacts
       - lambda: |-
           // Invalidates the active screen, forcing a full top-to-bottom repaint
           lv_obj_invalidate(lv_scr_act());

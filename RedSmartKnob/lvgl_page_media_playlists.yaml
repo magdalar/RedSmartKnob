@@ -1,18 +1,5 @@
 # LVGL Page definition for Playlist shortcuts.
 
-.style.playlist_button_style: &playlist_button_style
-  styles: rsk_bg_accent
-  pressed:
-    styles: rsk_bg_accent_dark
-
-.style.playlist_button: &playlist_button
-  <<: *playlist_button_style
-  width: 100%
-
-.style.playlist_label: &playlist_label
-  styles: rsk_font_color
-  text_font: theme_font_normal
-
 lvgl:
   pages:
     - id: page_media_playlists
@@ -34,8 +21,8 @@ lvgl:
             gesture_bubble: true
             widgets:
               - button:
-                  <<: *playlist_button
                   id: button_playlist1
+                  width: 100%
                   on_click:
                     - script.execute:
                         id: play_playlist
@@ -43,12 +30,11 @@ lvgl:
                         shuffle: !lambda 'return id(setting_playlist_shuffle).state;'
                   widgets:
                     - label:
-                        <<: *playlist_label
                         id: playlist_1_label
                         text: !lambda 'return "Playlist 1:\n" + id(setting_playlist_1).state;'
               - button:
-                  <<: *playlist_button
                   id: button_playlist2
+                  width: 100%
                   on_click:
                     - script.execute:
                         id: play_playlist
@@ -56,12 +42,11 @@ lvgl:
                         shuffle: !lambda 'return id(setting_playlist_shuffle).state;'
                   widgets:
                     - label:
-                        <<: *playlist_label
                         id: playlist_2_label
                         text: !lambda 'return "Playlist 2:\n" + id(setting_playlist_2).state;'
               - button:
-                  <<: *playlist_button
                   id: button_playlist3
+                  width: 100%
                   on_click:
                     - script.execute:
                         id: play_playlist
@@ -69,12 +54,10 @@ lvgl:
                         shuffle: !lambda 'return id(setting_playlist_shuffle).state;'
                   widgets:
                     - label:
-                        <<: *playlist_label
                         id: playlist_3_label
                         text: !lambda 'return "Playlist 3:\n" + id(setting_playlist_3).state;'
 
         - button:
-            <<: *playlist_button_style
             id: button_playlist_shuffle
             align: top_mid
             y: 3%
@@ -88,7 +71,6 @@ lvgl:
             widgets:
               - label:
                   id: label_playlist_shuffle
-                  styles: rsk_font_color
                   text_font: font_mdi_media
                   text: "${icon_shuffle_disabled}"
 

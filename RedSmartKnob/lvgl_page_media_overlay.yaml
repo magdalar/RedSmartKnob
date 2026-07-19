@@ -41,9 +41,7 @@ lvgl:
             max_value: 100
             value: 0
             arc_width: 6
-            styles: rsk_arc_accent_dark
             indicator:
-              styles: rsk_arc_accent
               arc_width: 10
             bg_main_opa: 40%
             clickable: false

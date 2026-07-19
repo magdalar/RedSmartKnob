@@ -2,11 +2,6 @@
 # Script references should be primarily in actions_media.yaml
 # This unit should _not_ reference $mediaplayer.
 
-.style.media_controls_button: &media_controls_button
-  styles: rsk_bg_accent
-  pressed:
-    styles: rsk_bg_accent_dark
-
 lvgl:
   pages:
     - id: page_media_controls
@@ -17,7 +12,6 @@ lvgl:
       widgets:
         - button:
             id: controls_dismiss
-            <<: *media_controls_button
             align: top_mid
             y: 10
             width: 10%
@@ -27,7 +21,6 @@ lvgl:
               - script.execute: hide_popups
             widgets:
               - label:
-                  styles: rsk_font_color
                   text_font: theme_font_large
                   text: "X"
 
@@ -58,7 +51,6 @@ lvgl:
                   id: track_name_label_controls
                   align: CENTER
                   width: 90%
-                  styles: rsk_font_color
                   text_font: theme_font_large
                   long_mode: SCROLL_CIRCULAR
                   anim_duration: 8s
@@ -87,7 +79,6 @@ lvgl:
             widgets:
               - button:
                   id: controls_previous
-                  <<: *media_controls_button
                   on_click:
                     - script.execute: set_media_previous
                   widgets:
@@ -96,7 +87,6 @@ lvgl:
                         text_font: font_mdi_media
               - button:
                   id: controls_toggle_button
-                  <<: *media_controls_button
                   on_click:
                     - script.execute: set_media_play_pause
                   widgets:
@@ -105,7 +95,6 @@ lvgl:
                         text_font: font_mdi_media
               - button:
                   id: controls_next
-                  <<: *media_controls_button
                   on_click:
                     - script.execute: set_media_next
                   widgets:
@@ -120,15 +109,6 @@ lvgl:
             y: 25%
             width: 60%
             height: 4%
-            styles: rsk_bg_accent_dark
-            indicator:
-              styles: rsk_bg_accent
-              user_1:
-                styles: rsk_bg_warning
-            knob:
-              styles: rsk_bg_accent
-              user_1:
-                styles: rsk_bg_warning
             gesture_bubble: true
             # on_value causes a loop when the value is updated from e.g. sendspin.
             # on_release only does it on user release.
@@ -146,7 +126,6 @@ lvgl:
             id: volume_text
             align: CENTER
             y: 32%
-            styles: rsk_font_color
             text_font: theme_font_normal
             text: "XX%"
 
