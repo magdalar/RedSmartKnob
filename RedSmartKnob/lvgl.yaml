@@ -222,8 +222,8 @@ script:
               id(palette_bg) = 0xFFFFFF;
 
               // Dark gray fonts, slightly tinted by the accent color
-              id(palette_font) = rgb(r*30 + 30, g*30 + 30, b*30 + 30);
-              id(palette_font2) = rgb(r*40 + 100, g*40 + 100, b*40 + 100);
+              id(palette_font) = rgb(r*15 + 15, g*15 + 15, b*15 + 15);
+              id(palette_font2) = rgb(r*20 + 70, g*20 + 70, b*20 + 70);
 
               // Secondary accent is always darker in light mode
               id(palette_accent_dark) = rgb(r*150, g*150, b*150);
