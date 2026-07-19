@@ -1,14 +1,15 @@
 # The lvgl UI base
 
 substitutions:
-  # Defaults. Override in per-theme yaml.
-  theme_font_color: 0x888888
-  theme_font_color2: 0xff8888
-  theme_bg_color: 0xffffff
-  theme_accent_color: 0xFFFF00
-  theme_accent_dark_color: 0x66CCFF
-  theme_warning_color: 0xff0000
-  theme_success_color: 0x00ff00
+  # Defaults. These will be overridden by user selection via the HA Theme
+  # Accent Color picker.
+  theme_font_color: 0x212529
+  theme_font_color2: 0x6C7378
+  theme_bg_color: 0xFFFFFF
+  theme_accent_color: 0x2D6CDF
+  theme_accent_dark_color: 0x4A5560
+  theme_warning_color: 0xD64545
+  theme_success_color: 0x6C7378
 
   ui_padding: 4
   ui_radius: 52
@@ -17,17 +18,17 @@ substitutions:
 
 image:
   # Local file paths are relative to the top-level yaml, not this file.
-  - platform: file
-    id: bg_image_file
-    file: ${repo_base_uri}/themes/${theme}/bg_360x360.png
-    type: RGB565
-    resize: ${screenheight}x${screenheight}
-    transparency: alpha_channel
+  #- platform: file
+  #  id: bg_image_file
+  #  file: ${repo_base_uri}/themes/white/bg_360x360.png
+  #  type: RGB565
+  #  resize: ${screenheight}x${screenheight}
+  #  transparency: alpha_channel
 
   # Add a static album cover placeholder
   - platform: file
     id: album_placeholder
-    file: ${repo_base_uri}/themes/${theme}/album_360x360.png
+    file: ${repo_base_uri}/themes/white/album_360x360.png
     type: RGB565
     resize: ${screenheight}x${screenheight}
     transparency: alpha_channel
@@ -38,7 +39,8 @@ lvgl:
   color_depth: 16
   default_font: theme_font_normal
 
-  # If you change these, change them in compute_and_apply_theme below too.
+  # The majority of the actual style colors are set in compute_and_apply_theme
+  # below; keep these two in sync w.r.t. which style ids are used.
   style_definitions:
     - id: rsk_page_bg
       bg_color: ${theme_bg_color}

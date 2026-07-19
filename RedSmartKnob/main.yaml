@@ -17,10 +17,6 @@ substitutions:
   # Override this in the outer layer to "./" to use local files.
   repo_base_uri: "https://raw.githubusercontent.com/magdalar/RedSmartKnob/main/RedSmartKnob"
 
-  # Default theme. Override in caller.
-  # Available options: blue, green, orange, white
-  theme: "white"
-
 packages:
   app_esphome: !include esphome.yaml
   app_wifi: !include wifi.yaml
@@ -60,6 +56,3 @@ packages:
   # Device-specific empty script stubs. Thes should be '!extend'ed in the
   # device-specific configs as appropriate.
   app_script_stubs: !include script_stubs.yaml
-
-  # Theme modifications. Must come last.
-  app_theme: !include themes/${theme}/theme.yaml
