@@ -1,0 +1,148 @@
+# LVGL Page definition for Light/Fan controls.
+
+lvgl:
+  pages:
+    - id: page_light_fan
+      on_swipe_right:
+        - script.execute: navigate_right
+      on_swipe_left:
+        - script.execute: navigate_left
+      styles: rsk_page_bg
+      widgets:
+#        - obj:
+#            align: LEFT_MID
+#            width: 40%
+#            height: 70%
+#            y: 3%
+#            bg_opa: TRANSP
+#            border_opa: TRANSP
+#            layout: vertical
+#            pad_all: ${ui_padding}
+#            gesture_bubble: true
+#            widgets:
+#              - button:
+#                  #width: 100%
+#                  on_click:
+#                    - logger.log: "light button pressed."
+#                  widgets:
+#                    - label:
+#                        text: "Light"
+#        - obj:
+#            align: RIGHT_MID
+#            width: 40%
+#            height: 70%
+#            y: 3%
+#            bg_opa: TRANSP
+#            border_opa: TRANSP
+#            layout: vertical
+#            pad_all: ${ui_padding}
+#            gesture_bubble: true
+#            widgets:
+#              - button:
+#                  #width: 100%
+#                  on_click:
+#                    - logger.log: "Fan High button pressed."
+#                  widgets:
+#                    - label:
+#                        text: "Fan High"
+#              - button:
+#                  #width: 100%
+#                  on_click:
+#                    - logger.log: "Fan Med button pressed."
+#                  widgets:
+#                    - label:
+#                        text: "Fan Med"
+#              - button:
+#                  #width: 100%
+#                  on_click:
+#                    - logger.log: "Fan Low button pressed."
+#                  widgets:
+#                    - label:
+#                        text: "Fan Low"
+        - obj:
+            id: light_fan_backdrop
+            width: 100%
+            height: 100%
+            bg_opa: 0%
+            border_width: 0
+
+            widgets:
+              # ==========================================
+              #             LEFT SIDE (LIGHT)
+              # ==========================================
+
+              # 1. The Brightness Arc
+              - arc:
+                  id: light_brightness_arc
+                  align: CENTER
+                  width: 94%
+                  height: 94%
+                  start_angle: 135
+                  end_angle: 225
+                  min_value: 0
+                  max_value: 255
+                  value: 128
+                  arc_width: 15
+                  indicator:
+                    arc_width: 15
+                    arc_color: 0xFFA500 # Warm orange/yellow tint
+
+              # 2. The Light Toggle Button
+              - button:
+                  id: light_toggle_button
+                  align: CENTER
+                  x: -22%
+                  y: 0%
+                  width: 25%
+                  height: 25%
+                  bg_color: 0x333333
+                  radius: 1000  # perfect circle
+                  checkable: true
+                  checked:
+                    styles: rsk_bg_accent_dark
+                  widgets:
+                    - label:
+                        id: light_toggle_button_label
+                        text_font: font_mdi_light_fan
+                        text: ${icon_lightbulb}
+
+              # ==========================================
+              #             RIGHT SIDE (FAN)
+              # ==========================================
+
+              # 1. The Fan Speed Arc
+              - arc:
+                  id: fan_speed_arc
+                  align: CENTER
+                  width: 94%
+                  height: 94%
+                  # 360 - 45 => 315
+                  start_angle: 315
+                  end_angle: 45
+                  min_value: 0
+                  max_value: 100
+                  value: 50
+                  arc_width: 15
+                  indicator:
+                    arc_width: 15
+                    arc_color: 0x00BFFF
+
+              # 2. The Fan Toggle Button
+              - button:
+                  id: fan_toggle_button
+                  align: CENTER
+                  x: 22%  # Scaled from 80px
+                  y: 0%
+                  width: 25%
+                  height: 25%
+                  radius: 1000  # perfect circle
+                  bg_color: 0x333333
+                  checkable: true
+                  checked:
+                    styles: rsk_bg_accent_dark
+                  widgets:
+                    - label:
+                        text_font: font_mdi_light_fan
+                        text: ${icon_fan}
+
+# vim: set tabstop=2 shiftwidth=2 expandtab:

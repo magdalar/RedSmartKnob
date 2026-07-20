@@ -81,6 +81,9 @@ select:
     entity_category: config
     optimistic: true
     restore_value: true
+    # NOTE: Optional pages should judiciously be added here, as if they're
+    # disabled, the navigate_to logic will just confusingly default to the
+    # first page.
     options:
       - "time"
       - "media"

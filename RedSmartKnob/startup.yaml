@@ -4,14 +4,6 @@ globals:
     type: bool
     initial_value: 'false'
 
-esphome:
-    on_boot:
-        - priority: -100
-          then:
-            - script.execute:
-                id: navigate_to
-                target: !lambda 'return id(idle_page_preference).current_option();'
-
 api:
   on_client_connected:
     - logger.log:

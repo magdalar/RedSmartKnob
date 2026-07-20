@@ -1,0 +1,175 @@
+# Action bindings relating to the light_fan page.
+substitutions:
+  placeholder_id_light: "light.not_set_yet"
+  placeholder_id_fan: "fan.not_set_yet"
+
+binary_sensor:
+  # --- Light State (On/Off) ---
+  - platform: homeassistant
+    id: light_current_state
+    entity_id: ${placeholder_id_light}
+    trigger_on_initial_state: true
+    on_state:
+      then:
+        lvgl.widget.update:
+          id: light_toggle_button
+          state:
+            checked: !lambda return x;
+
+  # --- Fan State (On/Off) ---
+  - platform: homeassistant
+    id: fan_current_state
+    entity_id: ${placeholder_id_fan}
+    trigger_on_initial_state: true
+    on_state:
+      then:
+        lvgl.widget.update:
+          id: fan_toggle_button
+          state:
+            checked: !lambda return x;
+
+sensor:
+  # --- Light Brightness (0-255) ---
+  - platform: homeassistant
+    id: light_current_brightness
+    entity_id: ${placeholder_id_light}
+    attribute: brightness
+    on_value:
+      then:
+        lvgl.arc.update:
+          id: light_brightness_arc
+          # 0-255 -> 0-100%
+          value: !lambda 'return (int)(x / 2.55);'
+
+  # --- Fan Speed Percentage (0-100) ---
+  - platform: homeassistant
+    id: fan_current_speed
+    entity_id: ${placeholder_id_fan}
+    attribute: percentage
+    on_value:
+      then:
+        lvgl.arc.update:
+          id: fan_speed_arc
+          value: !lambda 'return (int)x;'
+
+text_sensor:
+  - platform: homeassistant
+    id: light_current_color
+    entity_id: ${placeholder_id_light}
+    attribute: rgb_color
+    on_value:
+      then:
+        - lvgl.label.update:
+            id: light_toggle_button_label
+            text_color: !lambda |-
+                int r = 255, g = 255, b = 255; // Default fallback
+                // HA stringifies lists as "[255, 100, 50]" or "(255, 100, 50)"
+                if (sscanf(x.c_str(), "[%d, %d, %d]", &r, &g, &b) == 3 ||
+                    sscanf(x.c_str(), "(%d, %d, %d)", &r, &g, &b) == 3) {
+                }
+                return Color(r, g, b);
+
+switch:
+  - platform: template
+    name: "Light⁄Fan Page: Enabled"
+    id: enable_light_fan_page
+    icon: "mdi:ceiling-fan-light"
+    entity_category: config
+    optimistic: true
+    restore_mode: RESTORE_DEFAULT_OFF
+    on_turn_on:
+      - script.execute: rebuild_ui_pages
+    on_turn_off:
+      - script.execute: rebuild_ui_pages
+
+text:
+  - platform: template
+    name: "Light⁄Fan Page: Light Entity"
+    id: target_light_entity
+    entity_category: config
+    mode: text
+    initial_value: ${placeholder_id_light}
+    restore_value: true
+    set_action:
+      - lambda: |-
+          if (x.empty() || x == id(target_light_entity).state) {
+            // It's good, but nothing needs to change.
+            id(target_light_entity).publish_state(x);
+            return;
+          }
+          if (!x.starts_with("light.")) {
+            // It's bad, reject it. Don't need to reboot.
+            ESP_LOGW("actions_light_fan", "Rejecting invalid light entity; must start with \"light.\"; found: %s", x.c_str());
+            id(target_light_entity).publish_state(id(target_light_entity).state);
+            return;
+          }
+          // New value accepted, ask for a reboot.
+          id(target_light_entity).publish_state(x);
+          ESP_LOGI("actions_light_fan", "New light entity: %s. Will request reboot.", x.c_str());
+          id(slow_trigger_reboot_sequence)->execute();
+
+  - platform: template
+    name: "Light⁄Fan Page: Fan Entity"
+    id: target_fan_entity
+    entity_category: config
+    mode: text
+    initial_value: ${placeholder_id_fan}
+    restore_value: true
+    set_action:
+      - lambda: |-
+          if (x.empty() || x == id(target_fan_entity).state) {
+            // It's good, but nothing needs to change.
+            id(target_fan_entity).publish_state(x);
+            return;
+          }
+          if (!x.starts_with("fan.")) {
+            // It's bad, reject it. Don't need to reboot.
+            ESP_LOGW("actions_light_fan", "Rejecting invalid fan entity; must start with \"fan.\"; found: %s", x.c_str());
+            id(target_fan_entity).publish_state(id(target_fan_entity).state);
+            return;
+          }
+          // New value accepted, ask for a reboot.
+          id(target_fan_entity).publish_state(x);
+          ESP_LOGI("actions_light_fan", "New fan entity: %s. Will request reboot.", x.c_str());
+          id(slow_trigger_reboot_sequence)->execute();
+
+esphome:
+  on_boot:
+    # HA sensors setup runs at AFTER_CONNECTION (100). So long as we run after
+    # DATA (600), we should be good.
+    - priority: 300
+      then:
+        # Light Entity
+        - lambda: |-
+            // Static as set_entity_id takes the c_str pointer.
+            static const std::string new_entity = id(target_light_entity).state;
+            if (!new_entity.empty()) {
+              ESP_LOGI("actions_light_fan", "Updating light entity: %s", new_entity.c_str());
+              id(light_current_state)->set_entity_id(new_entity.c_str());
+              id(light_current_brightness)->set_entity_id(new_entity.c_str());
+              id(light_current_color)->set_entity_id(new_entity.c_str());
+              id(target_light_entity).publish_state(new_entity);
+            }
+        # Fan Entity
+        - lambda: |-
+            // Static as set_entity_id takes the c_str pointer.
+            static const std::string new_entity = id(target_fan_entity).state;
+            if (!new_entity.empty()) {
+              ESP_LOGI("actions_light_fan", "Updating fan entity: %s", new_entity.c_str());
+              id(fan_current_state)->set_entity_id(new_entity.c_str());
+              id(fan_current_speed)->set_entity_id(new_entity.c_str());
+              id(target_fan_entity).publish_state(new_entity);
+            }
+
+#script:
+#  - id: light_set_color
+#    then:
+#      - homeassistant.service:
+#          service: light.turn_on
+#          data:
+#            entity_id: !lambda 'return id(target_light_entity).state;'
+#            rgb_color: !lambda |-
+#              // "[255, 100, 50]"
+#              return "[" + std::to_string(id(pending_r)) + ", " + 
+#                     std::to_string(id(pending_g)) + ", " + 
+#                     std::to_string(id(pending_b)) + "]";

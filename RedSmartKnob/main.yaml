@@ -45,6 +45,7 @@ packages:
   app_lvgl_page_media_overlay: !include lvgl_page_media_overlay.yaml
   app_lvgl_page_media_playlists: !include lvgl_page_media_playlists.yaml
   app_lvgl_page_media_controls: !include lvgl_page_media_controls.yaml
+  app_lvgl_page_light_fan: !include lvgl_page_light_fan.yaml
 
   # The main UI loop and navigation logic
   app_ui_loop: !include ui_loop.yaml
@@ -52,6 +53,7 @@ packages:
   app_actions_time: !include actions_time.yaml
   # Wiring between the lvgl UI and the mediaplayer.
   app_actions_media: !include actions_media.yaml
+  app_actions_light_fan: !include actions_light_fan.yaml
 
   # Device-specific empty script stubs. Thes should be '!extend'ed in the
   # device-specific configs as appropriate.

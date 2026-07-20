@@ -14,6 +14,10 @@ substitutions:
   icon_thermo_inside: "\U000F0F55"
   icon_battery: "\U000F0079"
 
+  # font_mdi_light_fan
+  icon_lightbulb: "\U000F0335"  # mdi-lightbulb
+  icon_fan: "\U000F0210"  # mdi-fan
+
   # font_mdi_media
   icon_play_pause: "\U000F040E"
   icon_previous: "\U000F04AE"
@@ -37,6 +41,13 @@ font:
       - "${icon_thermo_inside}"
       - "${icon_thermo_outside}"
       - "${icon_battery}"
+
+  - id: font_mdi_light_fan
+    file: ${icons_font}
+    size: 44
+    glyphs:
+      - "${icon_lightbulb}"
+      - "${icon_fan}"
 
   - id: font_mdi_media
     file: ${icons_font}

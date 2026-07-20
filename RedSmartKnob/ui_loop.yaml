@@ -1,19 +1,34 @@
 # The core UI loop and navigation
+# To add a new page:
+#   - define the lvgl page
+#   - add it to internal_navigate_to_animated
+#   - add it to current_page_enum
+#   - add it to rebuild_ui_pages
 globals:
   - id: ui_pages
     type: std::vector<std::string>
     initial_value: '{"time", "media", "playlists"}'
-    # TODO: Add HA shortcuts
+
+esphome:
+  on_boot:
+    priority: -100
+    then:
+      - script.execute: rebuild_ui_pages
+      - script.execute:
+          id: navigate_to
+          target: !lambda 'return id(idle_page_preference).current_option();'
 
 select:
   - platform: template
     id: current_page_enum
     internal: true
     optimistic: true
+    # All possible pages should be listed here.
     options:
       - "time"
       - "media"
       - "playlists"
+      - "light_fan"
     initial_option: "time"
     on_value:
       - text_sensor.template.publish:
@@ -48,6 +63,23 @@ text_sensor:
     entity_category: diagnostic
 
 script:
+  # Rebuild the navigation depending on what's enabled.
+  - id: rebuild_ui_pages
+    then:
+      - lambda: |-
+          std::vector<std::string>& pages = id(ui_pages);
+          pages.clear(); // Empty the array
+
+          // Add base pages
+          pages.push_back("time");
+          pages.push_back("media");
+          pages.push_back("playlists");
+
+          // Conditionally add optional pages
+          if (id(enable_light_fan_page).state) {
+            pages.push_back("light_fan");
+          }
+
   - id: api_connected
     then:
       - lvgl.widget.show: top_api_status_widget
@@ -149,6 +181,7 @@ script:
           if (target == "time") page_ptr = id(page_time).obj;
           else if (target == "media") page_ptr = id(page_media_overlay).obj;
           else if (target == "playlists") page_ptr = id(page_media_playlists).obj;
+          else if (target == "light_fan") page_ptr = id(page_light_fan).obj;
           // Popups are also supported in internal_navigate_to_animated
           else if (target == "media_controls") page_ptr = id(page_media_controls).obj;
           else ESP_LOGE("ui_loop", "Unknown navigate_to target: %s", target.c_str());
