@@ -86,6 +86,7 @@ text:
   - platform: template
     name: "Light⁄Fan Page: Light Entity"
     id: target_light_entity
+    icon: "mdi:lightbulb"
     entity_category: config
     mode: text
     initial_value: ${placeholder_id_light}
@@ -112,6 +113,7 @@ text:
     name: "Light⁄Fan Page: Fan Entity"
     id: target_fan_entity
     entity_category: config
+    icon: "mdi:fan"
     mode: text
     initial_value: ${placeholder_id_fan}
     restore_value: true
