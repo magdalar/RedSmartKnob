@@ -140,9 +140,7 @@ esphome:
               - lambda: 'return ${dev_has_battery};'
             then:
               - lvgl.widget.show:
-                - batt_arc
-                - batt_icon
-                - batt_text
+                - battery_backdrop
 
 script:
   - id: handle_battery_update
