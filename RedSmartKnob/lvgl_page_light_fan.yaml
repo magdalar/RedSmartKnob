@@ -4,9 +4,9 @@ lvgl:
   pages:
     - id: page_light_fan
       on_swipe_right:
-        - script.execute: navigate_right
+        - script.execute: navigate_right_swipe
       on_swipe_left:
-        - script.execute: navigate_left
+        - script.execute: navigate_left_swipe
       styles: rsk_page_bg
       widgets:
         - obj:

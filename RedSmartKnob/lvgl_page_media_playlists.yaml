@@ -4,9 +4,19 @@ lvgl:
   pages:
     - id: page_media_playlists
       on_swipe_right:
-        - script.execute: navigate_right
+        - script.execute: navigate_right_swipe
       on_swipe_left:
-        - script.execute: navigate_left
+        - script.execute: navigate_left_swipe
+      on_swipe_up:
+        - lambda: 'lv_indev_wait_release(lv_indev_get_act());'
+        - script.execute:
+            id: show_media_controls_popup
+            direction: "UP"
+      on_swipe_down:
+        - lambda: 'lv_indev_wait_release(lv_indev_get_act());'
+        - script.execute:
+            id: show_media_controls_popup
+            direction: "DOWN"
       styles: rsk_page_bg
       widgets:
         - obj:

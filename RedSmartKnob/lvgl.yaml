@@ -91,15 +91,25 @@ lvgl:
       text_font: theme_font_normal
       align: CENTER
       text_align: CENTER
+      gesture_bubble: true
+      press_lock: false
     slider:
       gesture_bubble: true
+      press_lock: false
     arc:
       gesture_bubble: true
+      press_lock: false
+    obj:
+      gesture_bubble: true
+      press_lock: false
     button:
       bg_opa: COVER
       radius: ${ui_radius}
       border_width: ${ui_border}
       gesture_bubble: true
+      # Allow clearing clicks on gestures.
+      # https://github.com/esphome/feature-requests/issues/3059#issuecomment-2689690573
+      press_lock: false
       pressed:
         border_width: ${ui_border_pressed}
 

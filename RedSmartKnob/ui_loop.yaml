@@ -247,6 +247,20 @@ script:
                   int prev_idx = (idx - 1 + pages.size()) % pages.size();
                   return pages[prev_idx];
 
+  - id: navigate_left_swipe
+    then:
+      # lv_indev_wait_release to clear clicks on gestures
+      # https://github.com/esphome/feature-requests/issues/3059#issuecomment-2689690573
+      - lambda: 'lv_indev_wait_release(lv_indev_get_act());'
+      - script.execute: navigate_left
+
+  - id: navigate_right_swipe
+    then:
+      # lv_indev_wait_release to clear clicks on gestures
+      # https://github.com/esphome/feature-requests/issues/3059#issuecomment-2689690573
+      - lambda: 'lv_indev_wait_release(lv_indev_get_act());'
+      - script.execute: navigate_right
+
   - id: show_media_controls_popup
     mode: restart
     parameters:

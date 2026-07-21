@@ -6,9 +6,17 @@ lvgl:
   pages:
     - id: page_media_controls
       skip: true
+      on_swipe_right:
+        - lambda: 'lv_indev_wait_release(lv_indev_get_act());'
+        - script.execute: hide_popups
+      on_swipe_left:
+        - lambda: 'lv_indev_wait_release(lv_indev_get_act());'
+        - script.execute: hide_popups
       on_swipe_up:
+        - lambda: 'lv_indev_wait_release(lv_indev_get_act());'
         - script.execute: hide_popups
       on_swipe_down:
+        - lambda: 'lv_indev_wait_release(lv_indev_get_act());'
         - script.execute: hide_popups
       styles: rsk_page_bg
       widgets:

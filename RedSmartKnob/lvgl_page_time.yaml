@@ -5,14 +5,16 @@ lvgl:
   pages:
     - id: page_time
       on_swipe_right:
-        - script.execute: navigate_right
+        - script.execute: navigate_right_swipe
       on_swipe_left:
-        - script.execute: navigate_left
+        - script.execute: navigate_left_swipe
       on_swipe_up:
+        - lambda: 'lv_indev_wait_release(lv_indev_get_act());'
         - script.execute:
             id: show_media_controls_popup
             direction: "UP"
       on_swipe_down:
+        - lambda: 'lv_indev_wait_release(lv_indev_get_act());'
         - script.execute:
             id: show_media_controls_popup
             direction: "DOWN"
@@ -32,7 +34,7 @@ lvgl:
             long_mode: WRAP
             align: TOP_MID
             y: 20%
-            x: -3%
+            x: -1%
             text_letter_space: 0
             text_font: font_7seg
             text: "--:--:--"
