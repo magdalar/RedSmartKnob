@@ -17,8 +17,13 @@ substitutions:
   icon_lightbulb: "\U000F0335"  # mdi-lightbulb
   icon_fan: "\U000F0210"  # mdi-fan
 
+  # font_mdi_media_large
+  icon_play: "\U000F040A"  # mdi:play
+  icon_pause: "\U000F03E4"  # mdi:pause
+  icon_stop: "\U000F04DB"  # mdi:stop
+
   # font_mdi_media
-  icon_play_pause: "\U000F040E"
+  icon_play_pause: "\U000F040E"  # mdi:play-pause
   icon_previous: "\U000F04AE"
   icon_next: "\U000F04AD"
   icon_shuffle: "\U000F049F"
@@ -51,6 +56,14 @@ font:
     glyphs:
       - "${icon_lightbulb}"
       - "${icon_fan}"
+
+  - id: font_mdi_media_large
+    file: ${icons_font}
+    size: 80
+    glyphs:
+      - "${icon_play}"
+      - "${icon_pause}"
+      - "${icon_stop}"
 
   - id: font_mdi_media
     file: ${icons_font}

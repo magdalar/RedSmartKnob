@@ -35,6 +35,17 @@ lvgl:
             width: 100%
             height: 100%
 
+        - label:
+            id: overlay_play_pause_indicator
+            align: TOP_MID
+            y: 33%
+            styles:
+              - rsk_opacity_bg
+              - rsk_font_color
+            text_font: font_mdi_media_large
+            text: "${icon_pause}"
+            hidden: true
+
         - arc:
             id: track_progress_arc_overlay
             x: 0%

@@ -9,7 +9,9 @@ globals:
   - id: current_volume
     type: float
     initial_value: '0.5'  # Default fallback volume
-
+  - id: is_media_playing
+    type: bool
+    initial_value: 'false'
   - id: last_posted_position_secs
     type: int
     initial_value: '-1'
@@ -124,22 +126,44 @@ script:
 
   - id: handle_media_playing
     then:
-      - lambda: 'ESP_LOGI("actions_media", "Media started playing.");'
-      #- lvgl.page.show: page_media_overlay
+      - lambda: |-
+          id(is_media_playing) = true;
+          ESP_LOGI("actions_media", "Media started playing.");
+      - lvgl.label.update:
+          id: overlay_play_pause_indicator
+          hidden: true
+      #- script.execute:
+      #    id: navigate_to
+      #    target: "media"
 
   - id: handle_media_announcement
     then:
-      - lambda: 'ESP_LOGI("actions_media", "An announcement is playing.");'
+      - lambda: |-
+          ESP_LOGI("actions_media", "An announcement is playing.");
 
   - id: handle_media_paused
     then:
-      - lambda: 'ESP_LOGI("actions_media", "Media paused playing.");'
-      # TODO: Display a paused icon overlay.
+      - lambda: |-
+          id(is_media_playing) = false;
+          ESP_LOGI("actions_media", "Media paused playing.");
+      # Display a paused icon overlay.
+      - lvgl.label.update:
+          id: overlay_play_pause_indicator
+          text: "${icon_pause}"
+          hidden: false
 
   - id: handle_media_stopped
     then:
-      - lambda: 'ESP_LOGI("actions_media", "Media stopped playing.");'
-      # TODO: Display a stopped icon overlay.
+      - lambda: |-
+          id(is_media_playing) = false;
+          ESP_LOGI("actions_media", "Media stopped playing.");
+      # Display a stopped icon overlay.
+      - lvgl.label.update:
+          id: overlay_play_pause_indicator
+          # Always use pause, as it typically says stopped even when pausing.
+          #text: "${icon_stop}"
+          text: "${icon_pause}"
+          hidden: false
 
   - id: handle_media_volume_muted
     then:

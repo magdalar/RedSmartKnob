@@ -119,6 +119,7 @@ select:
     # NOTE: Optional pages should judiciously be added here, as if they're
     # disabled, the navigate_to logic will just confusingly default to the
     # first page.
+    # TODO: Add a "time_or_media" option, e.g. if playing.
     options:
       - "time"
       - "media"
