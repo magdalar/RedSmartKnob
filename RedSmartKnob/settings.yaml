@@ -76,6 +76,41 @@ text:
 
 select:
   - platform: template
+    id: screen_rotation
+    name: Screen Rotation
+    icon: "mdi:rotate-left"
+    entity_category: config
+    optimistic: true
+    restore_value: true
+    options:
+      - "0°"
+      - "90°"
+      - "180°"
+      - "270°"
+    initial_option: "0°"
+    on_value:
+      - if:
+          condition:
+            lambda: 'return x == "0°";'
+          then:
+            - lvgl.display.set_rotation: 0
+      - if:
+          condition:
+            lambda: 'return x == "90°";'
+          then:
+            - lvgl.display.set_rotation: 90
+      - if:
+          condition:
+            lambda: 'return x == "180°";'
+          then:
+            - lvgl.display.set_rotation: 180
+      - if:
+          condition:
+            lambda: 'return x == "270°";'
+          then:
+            - lvgl.display.set_rotation: 270
+
+  - platform: template
     name: "Idle Page Preference"
     id: idle_page_preference
     entity_category: config
