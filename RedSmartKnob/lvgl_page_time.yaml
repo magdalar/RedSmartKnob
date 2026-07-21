@@ -10,22 +10,24 @@ lvgl:
         - script.execute: navigate_left
       styles: rsk_page_bg
       widgets:
-        # Clock icon, placed just above the date/time label
         - label:
-            id: clock_icon
-            text_font: font_mdi_time
-            y: -40
-            x: -100
-            text: "${icon_clock}"
-
-        - label:
-            id: date_time_widget
-            text_font: theme_font_large
-            y: -40
+            id: date_widget
+            align: TOP_MID
+            y: 8%
             long_mode: WRAP
             text_align: CENTER
-            # This will be overridden by actions_time.yaml
+            text_font: theme_font_large
             text: "<initializing>"
+
+        - label:
+            id: time_widget
+            long_mode: WRAP
+            align: TOP_MID
+            y: 20%
+            x: -3%
+            text_letter_space: 0
+            text_font: font_7seg
+            text: "--:--:--"
 
         - label:
             id: outdoor_temp_icon

@@ -13,9 +13,6 @@ globals:
   - id: batt_percent
     type: int
     initial_value: '0'
-  - id: time_format
-    type: std::string
-    initial_value: '"%Y-%m-%d\n%H:%M:%S"'
 
 sensor:
   - platform: homeassistant
@@ -42,16 +39,24 @@ sensor:
 
 text:
   - platform: template
-    name: "Time Format"
-    id: setting_time_format
+    name: "Date Format"
+    id: setting_date_format
     optimistic: true
     entity_category: config
     icon: "mdi:calendar-clock"
     mode: text
-    initial_value: "%a %d %b\\n%H:%M:%S"
+    initial_value: "%a %d %b"
     restore_value: true
-    on_value:
-      - script.execute: update_time_format
+
+  - platform: template
+    name: "Time Format"
+    id: setting_time_format
+    optimistic: true
+    entity_category: config
+    icon: "mdi:clock-outline"
+    mode: text
+    initial_value: "%H:%M:%S"
+    restore_value: true
 
   - platform: template
     name: "Weather Entity"
@@ -109,7 +114,6 @@ esphome:
     # DATA (600), we should be good.
     - priority: 300
       then:
-        - script.execute: update_time_format
         # Weather Entity
         - lambda: |-
             // Static as set_entity_id takes the c_str pointer.
@@ -173,24 +177,13 @@ script:
           id: batt_text
           text: !lambda 'return std::to_string(id(batt_percent)) + "%";'
 
-  - id: update_time_format
-    then:
-      - lambda: |-
-          // HA can't pass literal newlines, so accept the escaped newline, and
-          // convert it.
-          std::string tf = id(setting_time_format).state;
-          const std::string newline = "\\n";
-          std::string::size_type n = 0;
-          while ((n = tf.find(newline, n)) != std::string::npos) {
-            tf.replace(n, newline.size(), "\n");
-            n += 1;
-          }
-          id(time_format) = tf;
-
   - id: update_time_labels
     then:
       - lvgl.label.update:
-          id: date_time_widget
-          text: !lambda 'return id(ha_time).now().strftime(id(time_format).c_str());'
+          id: date_widget
+          text: !lambda 'return id(ha_time).now().strftime(id(setting_date_format).state.c_str());'
+      - lvgl.label.update:
+          id: time_widget
+          text: !lambda 'return id(ha_time).now().strftime(id(setting_time_format).state.c_str());'
 
 # vim: set tabstop=2 shiftwidth=2 expandtab:
