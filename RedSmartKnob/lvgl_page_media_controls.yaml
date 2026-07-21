@@ -6,7 +6,9 @@ lvgl:
   pages:
     - id: page_media_controls
       skip: true
-      on_swipe_bottom:
+      on_swipe_up:
+        - script.execute: hide_popups
+      on_swipe_down:
         - script.execute: hide_popups
       styles: rsk_page_bg
       widgets:

@@ -249,6 +249,8 @@ script:
 
   - id: show_media_controls_popup
     mode: restart
+    parameters:
+      direction: std::string
     then:
       - select.set:
           id: active_popup_enum
@@ -256,7 +258,7 @@ script:
       - script.execute:
           id: internal_navigate_to_animated
           target: "media_controls"
-          direction: "UP"
+          direction: !lambda 'return direction;'
 
   - id: hide_popups
     then:

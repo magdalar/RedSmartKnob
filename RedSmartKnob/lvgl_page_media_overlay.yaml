@@ -9,20 +9,27 @@ lvgl:
         - script.execute: navigate_right
       on_swipe_left:
         - script.execute: navigate_left
-      on_swipe_top:
+      on_swipe_up:
         - script.execute:
             id: show_media_controls_popup
+            direction: "UP"
+      on_swipe_down:
+        - script.execute:
+            id: show_media_controls_popup
+            direction: "DOWN"
       # on_single_click still gets tickled by swipes.
       #on_single_click:
       #  - script.execute:
       #      id: show_media_controls_popup
+      #      direction: "UP"
+      on_long_press:
+        - script.execute:
+            id: show_media_controls_popup
+            direction: "UP"
       on_double_click:
         - script.execute:
             id: show_media_controls_popup
-      on_triple_click:
-        - script.execute:
-            id: navigate_to
-            target: "playlists"
+            direction: "UP"
       styles: rsk_page_bg
       widgets:
         - image:
