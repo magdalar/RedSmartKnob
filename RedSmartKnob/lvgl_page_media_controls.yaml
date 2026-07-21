@@ -17,7 +17,7 @@ lvgl:
             width: 10%
             height: 10%
             ext_click_area: 20
-            on_click:
+            on_single_click:
               - script.execute: hide_popups
             widgets:
               - label:
@@ -79,7 +79,7 @@ lvgl:
             widgets:
               - button:
                   id: controls_previous
-                  on_click:
+                  on_single_click:
                     - script.execute: set_media_previous
                   widgets:
                     - label:
@@ -87,7 +87,7 @@ lvgl:
                         text_font: font_mdi_media
               - button:
                   id: controls_toggle_button
-                  on_click:
+                  on_single_click:
                     - script.execute: set_media_play_pause
                   widgets:
                     - label:
@@ -95,7 +95,7 @@ lvgl:
                         text_font: font_mdi_media
               - button:
                   id: controls_next
-                  on_click:
+                  on_single_click:
                     - script.execute: set_media_next
                   widgets:
                     - label:
