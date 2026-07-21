@@ -61,6 +61,7 @@ text:
   - platform: template
     name: "Weather Entity"
     id: preference_weather_entity
+    icon: "mdi:sun-thermometer-outline"
     entity_category: config
     mode: text
     initial_value: "${weather}"
@@ -86,6 +87,7 @@ text:
   - platform: template
     name: "Indoor Temperature Entity"
     id: preference_indoor_temp_entity
+    icon: "mdi:home-thermometer-outline"
     entity_category: config
     mode: text
     initial_value: "${indoor_temp_entity}"
