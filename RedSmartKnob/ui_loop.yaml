@@ -7,16 +7,20 @@
 globals:
   - id: ui_pages
     type: std::vector<std::string>
-    initial_value: '{"time", "media", "playlists"}'
+    initial_value: '{"time", "media", "playlists", "light_fan"}'
 
 esphome:
   on_boot:
-    priority: -100
-    then:
-      - script.execute: rebuild_ui_pages
-      - script.execute:
-          id: navigate_to
-          target: !lambda 'return id(idle_page_preference).current_option();'
+    # Run after HA Sensors (AFTER_CONNECTION 100)
+    - priority: 50
+      then:
+        - script.execute: rebuild_ui_pages
+
+    - priority: -100
+      then:
+        - script.execute:
+            id: navigate_to
+            target: !lambda 'return id(idle_page_preference).current_option();'
 
 select:
   - platform: template
@@ -214,9 +218,9 @@ script:
                   auto it = std::find(pages.begin(), pages.end(), current);
                   int idx = (it != pages.end()) ? std::distance(pages.begin(), it) : 0;
 
-                  // Move Left (Previous) and wrap around
-                  int prev_idx = (idx - 1 + pages.size()) % pages.size();
-                  return pages[prev_idx];
+                  // Move Left (Next) and wrap around
+                  int next_idx = (idx + 1) % pages.size();
+                  return pages[next_idx];
 
   - id: navigate_right
     then:
@@ -239,8 +243,8 @@ script:
                   auto it = std::find(pages.begin(), pages.end(), current);
                   int idx = (it != pages.end()) ? std::distance(pages.begin(), it) : 0;
 
-                  // Move Right (Next) and wrap around
-                  int prev_idx = (idx + 1) % pages.size();
+                  // Move Right (Previous) and wrap around
+                  int prev_idx = (idx - 1 + pages.size()) % pages.size();
                   return pages[prev_idx];
 
   - id: show_media_controls_popup

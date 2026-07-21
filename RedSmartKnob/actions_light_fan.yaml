@@ -34,6 +34,9 @@ sensor:
     id: light_current_brightness
     entity_id: ${placeholder_id_light}
     attribute: brightness
+    filters:
+      # Automatically drops 'None' updates from Home Assistant
+      - filter_out: NAN
     on_value:
       then:
         lvgl.arc.update:
@@ -46,6 +49,9 @@ sensor:
     id: fan_current_speed
     entity_id: ${placeholder_id_fan}
     attribute: percentage
+    filters:
+      # Automatically drops 'None' updates from Home Assistant
+      - filter_out: NAN
     on_value:
       then:
         lvgl.arc.update:
@@ -84,6 +90,31 @@ switch:
 
 text:
   - platform: template
+    name: "Light⁄Fan Page: Light Name (Optional)"
+    id: target_light_name
+    icon: "mdi:lightbulb"
+    entity_category: config
+    mode: text
+    optimistic: true
+    initial_value: ""
+    restore_value: true
+    on_value:
+      then:
+        if:
+          condition:
+            lambda: 'return x.empty();'
+          then:
+            - lvgl.label.update:
+                id: light_name_label
+                hidden: true
+                text: ""
+          else:
+            - lvgl.label.update:
+                id: light_name_label
+                hidden: false
+                text: !lambda 'return x;'
+
+  - platform: template
     name: "Light⁄Fan Page: Light Entity"
     id: target_light_entity
     icon: "mdi:lightbulb"
@@ -108,6 +139,31 @@ text:
           id(target_light_entity).publish_state(x);
           ESP_LOGI("actions_light_fan", "New light entity: %s. Will request reboot.", x.c_str());
           id(slow_trigger_reboot_sequence)->execute();
+
+  - platform: template
+    name: "Light⁄Fan Page: Fan Label (Optional)"
+    id: target_fan_name
+    icon: "mdi:fan"
+    entity_category: config
+    mode: text
+    optimistic: true
+    initial_value: ""
+    restore_value: true
+    on_value:
+      then:
+        if:
+          condition:
+            lambda: 'return x.empty();'
+          then:
+            - lvgl.label.update:
+                id: fan_name_label
+                hidden: true
+                text: ""
+          else:
+            - lvgl.label.update:
+                id: fan_name_label
+                hidden: false
+                text: !lambda 'return x;'
 
   - platform: template
     name: "Light⁄Fan Page: Fan Entity"

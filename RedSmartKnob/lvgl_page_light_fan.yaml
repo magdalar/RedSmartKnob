@@ -17,6 +17,7 @@ lvgl:
             border_width: 0
 
             widgets:
+
               # ==========================================
               #             LEFT SIDE (LIGHT)
               # ==========================================
@@ -52,11 +53,18 @@ lvgl:
                       else:
                         - script.execute: light_turn_off
 
+              - label:
+                  id: light_name_label
+                  align: CENTER
+                  x: -18%
+                  y: 16%
+                  hidden: true
+
               # 2. The Light Toggle Button
               - button:
                   id: light_toggle_button
                   align: CENTER
-                  x: -22%
+                  x: -18%
                   y: 0%
                   width: 25%
                   height: 25%
@@ -109,11 +117,18 @@ lvgl:
                       else:
                         - script.execute: fan_turn_off
 
+              - label:
+                  id: fan_name_label
+                  align: CENTER
+                  x: 18%
+                  y: 16%
+                  hidden: true
+
               # 2. The Fan Toggle Button
               - button:
                   id: fan_toggle_button
                   align: CENTER
-                  x: 22%  # Scaled from 80px
+                  x: 18%
                   y: 0%
                   width: 25%
                   height: 25%
