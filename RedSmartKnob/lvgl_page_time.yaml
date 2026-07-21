@@ -8,6 +8,14 @@ lvgl:
         - script.execute: navigate_right
       on_swipe_left:
         - script.execute: navigate_left
+      on_swipe_up:
+        - script.execute:
+            id: show_media_controls_popup
+            direction: "UP"
+      on_swipe_down:
+        - script.execute:
+            id: show_media_controls_popup
+            direction: "DOWN"
       styles: rsk_page_bg
       widgets:
         - label:
