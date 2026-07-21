@@ -163,7 +163,65 @@ esphome:
               id(target_fan_entity).publish_state(new_entity);
             }
 
-#script:
+script:
+  - id: fan_toggle
+    then:
+      - logger.log: "Fan toggled"
+      - homeassistant.service:
+          service: fan.toggle
+          data:
+            entity_id: !lambda 'return id(target_fan_entity).state;'
+
+  - id: fan_turn_on
+    parameters:
+      pct: int
+    then:
+      - logger.log:
+          format: "Fan turning on at %d%%."
+          args: [ 'pct' ]
+      - homeassistant.service:
+          service: fan.turn_on
+          data:
+            entity_id: !lambda 'return id(target_fan_entity).state;'
+            percentage: !lambda 'return pct;'
+
+  - id: fan_turn_off
+    then:
+      - logger.log: "Fan turning off"
+      - homeassistant.service:
+          service: fan.turn_off
+          data:
+            entity_id: !lambda 'return id(target_fan_entity).state;'
+
+  - id: light_toggle
+    then:
+      - logger.log: "Light toggled"
+      - homeassistant.service:
+          service: light.toggle
+          data:
+            entity_id: !lambda 'return id(target_light_entity).state;'
+
+  - id: light_turn_on
+    parameters:
+      pct: int
+    then:
+      - logger.log:
+          format: "Light turning on at %d%%."
+          args: [ 'pct' ]
+      - homeassistant.service:
+          service: light.turn_on
+          data:
+            entity_id: !lambda 'return id(target_light_entity).state;'
+            brightness_pct: !lambda 'return pct;'
+
+  - id: light_turn_off
+    then:
+      - logger.log: "Light turning off"
+      - homeassistant.service:
+          service: light.turn_off
+          data:
+            entity_id: !lambda 'return id(target_light_entity).state;'
+
 #  - id: light_set_color
 #    then:
 #      - homeassistant.service:

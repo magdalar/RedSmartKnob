@@ -87,6 +87,8 @@ select:
     options:
       - "time"
       - "media"
+      - "playlists"
+      - "light_fan"
     initial_option: "time"
     set_action:
       - script.execute: reset_idle_timer

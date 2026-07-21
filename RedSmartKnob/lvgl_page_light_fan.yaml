@@ -9,56 +9,6 @@ lvgl:
         - script.execute: navigate_left
       styles: rsk_page_bg
       widgets:
-#        - obj:
-#            align: LEFT_MID
-#            width: 40%
-#            height: 70%
-#            y: 3%
-#            bg_opa: TRANSP
-#            border_opa: TRANSP
-#            layout: vertical
-#            pad_all: ${ui_padding}
-#            gesture_bubble: true
-#            widgets:
-#              - button:
-#                  #width: 100%
-#                  on_click:
-#                    - logger.log: "light button pressed."
-#                  widgets:
-#                    - label:
-#                        text: "Light"
-#        - obj:
-#            align: RIGHT_MID
-#            width: 40%
-#            height: 70%
-#            y: 3%
-#            bg_opa: TRANSP
-#            border_opa: TRANSP
-#            layout: vertical
-#            pad_all: ${ui_padding}
-#            gesture_bubble: true
-#            widgets:
-#              - button:
-#                  #width: 100%
-#                  on_click:
-#                    - logger.log: "Fan High button pressed."
-#                  widgets:
-#                    - label:
-#                        text: "Fan High"
-#              - button:
-#                  #width: 100%
-#                  on_click:
-#                    - logger.log: "Fan Med button pressed."
-#                  widgets:
-#                    - label:
-#                        text: "Fan Med"
-#              - button:
-#                  #width: 100%
-#                  on_click:
-#                    - logger.log: "Fan Low button pressed."
-#                  widgets:
-#                    - label:
-#                        text: "Fan Low"
         - obj:
             id: light_fan_backdrop
             width: 100%
@@ -77,15 +27,30 @@ lvgl:
                   align: CENTER
                   width: 94%
                   height: 94%
+                  adjustable: true
+                  adv_hittest: true
+                  ext_click_area: 10
                   start_angle: 135
                   end_angle: 225
                   min_value: 0
-                  max_value: 255
+                  max_value: 100
                   value: 128
                   arc_width: 15
+                  knob:
+                    bg_color: 0xFFA500 # Warm orange/yellow tint
                   indicator:
                     arc_width: 15
                     arc_color: 0xFFA500 # Warm orange/yellow tint
+                  on_release:
+                    if:
+                      condition:
+                        lambda: 'return x > 0;'
+                      then:
+                        - script.execute:
+                            id: light_turn_on
+                            pct: !lambda 'return x;'
+                      else:
+                        - script.execute: light_turn_off
 
               # 2. The Light Toggle Button
               - button:
@@ -95,11 +60,13 @@ lvgl:
                   y: 0%
                   width: 25%
                   height: 25%
-                  bg_color: 0x333333
                   radius: 1000  # perfect circle
                   checkable: true
+                  styles: rsk_bg_accent_dark
                   checked:
-                    styles: rsk_bg_accent_dark
+                    styles: rsk_bg_accent
+                  on_single_click:
+                    - script.execute: light_toggle
                   widgets:
                     - label:
                         id: light_toggle_button_label
@@ -116,16 +83,31 @@ lvgl:
                   align: CENTER
                   width: 94%
                   height: 94%
-                  # 360 - 45 => 315
+                  adjustable: true
+                  adv_hittest: true
+                  ext_click_area: 10
+                  mode: reverse
                   start_angle: 315
                   end_angle: 45
                   min_value: 0
                   max_value: 100
                   value: 50
                   arc_width: 15
+                  knob:
+                    bg_color: 0x00BFFF
                   indicator:
                     arc_width: 15
                     arc_color: 0x00BFFF
+                  on_release:
+                    if:
+                      condition:
+                        lambda: 'return x > 0;'
+                      then:
+                        - script.execute:
+                            id: fan_turn_on
+                            pct: !lambda 'return x;'
+                      else:
+                        - script.execute: fan_turn_off
 
               # 2. The Fan Toggle Button
               - button:
@@ -136,10 +118,12 @@ lvgl:
                   width: 25%
                   height: 25%
                   radius: 1000  # perfect circle
-                  bg_color: 0x333333
                   checkable: true
+                  styles: rsk_bg_accent_dark
                   checked:
-                    styles: rsk_bg_accent_dark
+                    styles: rsk_bg_accent
+                  on_single_click:
+                    - script.execute: fan_toggle
                   widgets:
                     - label:
                         text_font: font_mdi_light_fan

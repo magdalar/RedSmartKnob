@@ -305,10 +305,14 @@ script:
                 bg_color: !lambda 'return lv_color_hex(id(palette_warning));'
           arc:
             arc_color: !lambda 'return lv_color_hex(id(palette_accent_dark));'
+            knob:
+              bg_color: !lambda 'return lv_color_hex(id(palette_accent));'
+              user_1:
+                bg_color: !lambda 'return lv_color_hex(id(palette_warning));'
             indicator:
               arc_color: !lambda 'return lv_color_hex(id(palette_accent));'
               user_1:
-                bg_color: !lambda 'return lv_color_hex(id(palette_warning));'
+                arc_color: !lambda 'return lv_color_hex(id(palette_warning));'
           button:
             bg_color: !lambda 'return lv_color_hex(id(palette_accent));'
             border_color: !lambda 'return lv_color_hex(id(palette_accent_dark));'
