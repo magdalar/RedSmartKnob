@@ -12,10 +12,16 @@ lvgl:
       on_swipe_top:
         - script.execute:
             id: show_media_controls_popup
-      # TODO: on_click causes the swipes to also trigger the click
-      #on_click:
-      #  - script.execute:
-      #      id: show_media_controls_popup
+      on_single_click:
+        - script.execute:
+            id: show_media_controls_popup
+      on_double_click:
+        - script.execute:
+            id: show_media_controls_popup
+      on_triple_click:
+        - script.execute:
+            id: navigate_to
+            target: "playlists"
       styles: rsk_page_bg
       widgets:
         - image:

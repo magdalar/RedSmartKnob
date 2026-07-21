@@ -23,7 +23,7 @@ lvgl:
               - button:
                   id: button_playlist1
                   width: 100%
-                  on_click:
+                  on_single_click:
                     - script.execute:
                         id: play_playlist
                         media_id: !lambda 'return id(setting_playlist_1).state;'
@@ -35,7 +35,7 @@ lvgl:
               - button:
                   id: button_playlist2
                   width: 100%
-                  on_click:
+                  on_single_click:
                     - script.execute:
                         id: play_playlist
                         media_id: !lambda 'return id(setting_playlist_2).state;'
@@ -47,7 +47,7 @@ lvgl:
               - button:
                   id: button_playlist3
                   width: 100%
-                  on_click:
+                  on_single_click:
                     - script.execute:
                         id: play_playlist
                         media_id: !lambda 'return id(setting_playlist_3).state;'
@@ -64,7 +64,7 @@ lvgl:
             width: 15%
             height: 15%
             ext_click_area: 20
-            on_click:
+            on_single_click:
               - switch.template.publish:
                   id: setting_playlist_shuffle
                   state: !lambda 'return !id(setting_playlist_shuffle).state;'
