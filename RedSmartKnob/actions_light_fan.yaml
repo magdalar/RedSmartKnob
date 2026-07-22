@@ -37,6 +37,8 @@ sensor:
     filters:
       # Automatically drops 'None' updates from Home Assistant
       - filter_out: NAN
+      # Drop the transient '0' during turn-on transitions.
+      - filter_out: 0.0
     on_value:
       then:
         lvgl.arc.update:
