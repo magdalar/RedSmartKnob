@@ -115,13 +115,29 @@ lvgl:
 
   top_layer:
     widgets:
-      - label:
-          id: top_api_status_widget
-          styles: rsk_font_color2
-          text_font: font_mdi_top
-          text: ${icon_wifi}
-          hidden: true
+      - obj:
+          id: top_status_icon_tray
           align: BOTTOM_MID
+          layout: horizontal
+          bg_opa: 0%
+          border_width: 0
+          height: 20
+          width: 40
+          pad_all: 0
+          scrollable: false
+          widgets:
+            - label:
+                id: status_icon_api_status
+                styles: rsk_font_color2
+                text_font: font_mdi_top
+                text: ${icon_wifi_disconnected}
+            - label:
+                id: status_icon_battery
+                styles: rsk_font_color2
+                text_font: font_mdi_top
+                text: "${icon_battery}"
+                # actions_battery will reveal it if present
+                hidden: true
       - label:
           id: top_reboot_label
           text_font: theme_font_large

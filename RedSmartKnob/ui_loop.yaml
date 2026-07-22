@@ -86,11 +86,15 @@ script:
 
   - id: api_connected
     then:
-      - lvgl.widget.show: top_api_status_widget
+      - lvgl.label.update:
+          id: status_icon_api_status
+          text: "${icon_wifi}"
 
   - id: api_disconnected
     then:
-      - lvgl.widget.hide: top_api_status_widget
+      - lvgl.label.update:
+          id: status_icon_api_status
+          text: "${icon_wifi_disconnected}"
 
   - id: standby_screen_activity
     mode: restart

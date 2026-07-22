@@ -1,0 +1,58 @@
+# This unit provides the logic for the battery status widgets.
+substitutions:
+  dev_has_battery: "false"
+
+globals:
+  - id: batt_percent
+    type: int
+    initial_value: '0'
+
+esphome:
+  on_boot:
+    # HA sensors setup runs at AFTER_CONNECTION (100). So long as we run after
+    # DATA (600), we should be good.
+    - priority: 300
+      then:
+        # Show battery widget if there's a battery
+        - if:
+            condition:
+              - lambda: 'return ${dev_has_battery};'
+            then:
+              - lvgl.widget.show:
+                - status_icon_battery
+
+script:
+  - id: handle_battery_update
+    parameters:
+        new_battery_level: float
+    then:
+      - lambda: |-
+          // guard against NaN/Inf from filters or template
+          if (std::isnan(new_battery_level) || std::isinf(new_battery_level)) {
+            id(batt_percent) = 0;
+            return;
+          }
+          // round and clamp to 0..100
+          int pct = (int)round(new_battery_level);
+          if (pct < 0) pct = 0;
+          if (pct > 100) pct = 100;
+          id(batt_percent) = pct;
+      - if:
+          condition:
+            lambda: 'return id(batt_percent) < 20.0;'
+          then:
+            - logger.log: "Warning: Battery is low!"
+      - lvgl.label.update:
+          id: status_icon_battery
+          text: !lambda |-
+            int pct = id(batt_percent);
+            if (pct == 100) return "${icon_battery_charging}";
+            else if (pct > 50) return "${icon_battery}";
+            else if (pct > 20) return "${icon_battery_50}";
+            else return "${icon_battery_20}";
+          text_color: !lambda |-
+            int pct = id(batt_percent);
+            if (pct < 20) return lv_color_hex(0xFF0000);
+            else return lv_color_hex(id(palette_font2));
+
+# vim: set tabstop=2 shiftwidth=2 expandtab:

@@ -49,6 +49,7 @@ packages:
 
   # The main UI loop and navigation logic
   app_ui_loop: !include ui_loop.yaml
+  app_actions_battery: !include actions_battery.yaml
   # Wiring for the `time` lvgl UI page.
   app_actions_time: !include actions_time.yaml
   # Wiring between the lvgl UI and the mediaplayer.

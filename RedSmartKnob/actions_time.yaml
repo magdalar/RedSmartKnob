@@ -1,6 +1,4 @@
 # This unit provides the logic for the `time` page.
-substitutions:
-  dev_has_battery: "false"
 
 time:
   - id: !extend ha_time
@@ -8,11 +6,6 @@ time:
       - seconds: /1
         then:
           - script.execute: update_time_labels
-
-globals:
-  - id: batt_percent
-    type: int
-    initial_value: '0'
 
 sensor:
   - platform: homeassistant
@@ -134,49 +127,8 @@ esphome:
               id(indoor_temperature)->set_entity_id(new_entity.c_str());
               id(preference_indoor_temp_entity).publish_state(new_entity);
             }
-        # Show battery widgets if there's a battery
-        - if:
-            condition:
-              - lambda: 'return ${dev_has_battery};'
-            then:
-              - lvgl.widget.show:
-                - battery_backdrop
 
 script:
-  - id: handle_battery_update
-    parameters:
-        new_battery_level: float
-    then:
-      - lambda: |-
-          // guard against NaN/Inf from filters or template
-          if (std::isnan(new_battery_level) || std::isinf(new_battery_level)) {
-            id(batt_percent) = 0;
-            return;
-          }
-          // round and clamp to 0..100
-          int pct = (int)round(new_battery_level);
-          if (pct < 0) pct = 0;
-          if (pct > 100) pct = 100;
-          id(batt_percent) = pct;
-      - if:
-          condition:
-            lambda: 'return id(batt_percent) < 20.0;'
-          then:
-            - logger.log: "Warning: Battery is low!"
-      # update the arc value and color
-      - lvgl.arc.update:
-          id: batt_arc
-          value: !lambda 'return id(batt_percent);'
-          arc_color: !lambda |-
-            int pct = id(batt_percent);
-            if (pct > 50) return lv_color_hex(0x00FF00);
-            else if (pct > 20) return lv_color_hex(0xFFA500);
-            else return lv_color_hex(0xFF0000);
-      # update percentage text
-      - lvgl.label.update:
-          id: batt_text
-          text: !lambda 'return std::to_string(id(batt_percent)) + "%";'
-
   - id: update_time_labels
     then:
       - lvgl.label.update:

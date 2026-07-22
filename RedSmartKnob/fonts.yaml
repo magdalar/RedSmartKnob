@@ -7,11 +7,15 @@ substitutions:
 
   # font_mdi_top
   icon_wifi: "\U000F05A9"
+  icon_wifi_disconnected: "\U000F092F" # mdi:wifi-strength-outline
+  icon_battery: "\U000F0079"           # mdi:battery
+  icon_battery_20: "\U000F007B"        # mdi:battery-20
+  icon_battery_50: "\U000F007E"        # mdi:battery-50
+  icon_battery_charging: "\U000F0084"  # mdi:battery-charging
 
   # font_mdi_time
-  icon_thermo_outside: "\U000F18D7"  # mdi:sun-thermometer-outline
-  icon_thermo_inside: "\U000F0F55"  # mdi:home-thermometer-outline
-  icon_battery: "\U000F0079"
+  icon_thermo_outside: "\U000F18D7"    # mdi:sun-thermometer-outline
+  icon_thermo_inside: "\U000F0F55"     # mdi:home-thermometer-outline
 
   # font_mdi_light_fan
   icon_lightbulb: "\U000F0335"  # mdi-lightbulb
@@ -41,6 +45,11 @@ font:
     size: 16
     glyphs:
       - "${icon_wifi}"
+      - "${icon_wifi_disconnected}"
+      - "${icon_battery}"
+      - "${icon_battery_20}"
+      - "${icon_battery_50}"
+      - "${icon_battery_charging}"
 
   - id: font_mdi_time
     file: ${icons_font}
@@ -48,7 +57,6 @@ font:
     glyphs:
       - "${icon_thermo_inside}"
       - "${icon_thermo_outside}"
-      - "${icon_battery}"
 
   - id: font_mdi_light_fan
     file: ${icons_font}
