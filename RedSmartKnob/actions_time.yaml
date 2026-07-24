@@ -16,8 +16,14 @@ sensor:
       then:
         - lvgl.label.update:
             id: outdoor_temp_label
-            # TODO: The C should come from HA too.
-            text: !lambda 'char b[16]; snprintf(b, sizeof(b), "%.1f°C", x); return std::string(b);'
+            text: !lambda |-
+              static char b[32];
+              const char *unit = id(temperature_unit).state.c_str();
+              if (unit[0] == '\0') {
+                unit = "\u00B0C";
+              }
+              snprintf(b, sizeof(b), "%.1f%s", x, unit);
+              return b;
 
   - platform: homeassistant
     id: indoor_temperature
@@ -27,8 +33,20 @@ sensor:
       then:
         - lvgl.label.update:
             id: indoor_temp_label
-            # TODO: The C should come from HA too.
-            text: !lambda 'char b[16]; snprintf(b, sizeof(b), "%.1f°C", x); return std::string(b);'
+            text: !lambda |-
+              static char b[32];
+              const char *unit = id(temperature_unit).state.c_str();
+              if (unit[0] == '\0') {
+                unit = "\u00B0C";
+              }
+              snprintf(b, sizeof(b), "%.1f%s", x, unit);
+              return b;
+
+text_sensor:
+  - platform: homeassistant
+    id: temperature_unit
+    attribute: temperature_unit
+    entity_id: $weather
 
 text:
   - platform: template
@@ -116,6 +134,7 @@ esphome:
             if (!new_entity.empty()) {
               ESP_LOGI("actions_time", "Updating weather entity: %s", new_entity.c_str());
               id(outdoor_temperature)->set_entity_id(new_entity.c_str());
+              id(temperature_unit)->set_entity_id(new_entity.c_str());
               id(preference_weather_entity).publish_state(new_entity);
             }
         # Indoor Temperature Entity
