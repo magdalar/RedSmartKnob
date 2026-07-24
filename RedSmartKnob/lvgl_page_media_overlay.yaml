@@ -36,7 +36,7 @@ lvgl:
             height: 100%
 
         - label:
-            id: overlay_play_pause_indicator
+            id: overlay_huge_play_pause_indicator
             align: TOP_MID
             y: 33%
             styles:
@@ -65,7 +65,6 @@ lvgl:
             bg_main_opa: 40%
             clickable: false
             adjustable: false
-        # TODO: Add a paused/muted indicator overlay
 
         # Translucent caption band across the lower third of the circle.
         - obj:
@@ -78,9 +77,10 @@ lvgl:
             border_width: 0
             pad_all: 0
             scrollable: false
+            clickable: false
             widgets:
               - label:
-                  id: track_artist_label_overlay
+                  id: overlay_track_artist_label
                   align: TOP_MID
                   width: 90%
                   long_mode: SCROLL_CIRCULAR
@@ -90,7 +90,7 @@ lvgl:
                   text_font: theme_font_normal
                   text: "Unknown Artist"
               - label:
-                  id: track_name_label_overlay
+                  id: overlay_track_name_label
                   align: TOP_MID
                   y: 18%
                   width: 85%
@@ -101,7 +101,7 @@ lvgl:
                   text_font: theme_font_large
                   text: "Unknown Track"
               - label:
-                  id: track_album_label_overlay
+                  id: overlay_track_album_label
                   align: TOP_MID
                   y: 46%
                   width: 80%
@@ -112,7 +112,16 @@ lvgl:
                   text_font: theme_font_small
                   text: "Unknown Album"
               - label:
-                  id: track_time_label_overlay
+                  id: overlay_play_pause_indicator_label
+                  align: TOP_MID
+                  y: 65%
+                  x: -15%
+                  text_align: CENTER
+                  styles: rsk_font_color2
+                  text_font: font_icons_small
+                  text: "${icon_pause}"
+              - label:
+                  id: overlay_track_time_label
                   align: TOP_MID
                   y: 65%
                   text_align: CENTER

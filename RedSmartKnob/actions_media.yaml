@@ -122,7 +122,9 @@ script:
                    pos_min, pos_sec, dur_min, dur_sec);
 
           // Push the formatted string to the LVGL label
-          lv_label_set_text(id(track_time_label_overlay), buffer);
+          lv_label_set_text(id(overlay_track_time_label), buffer);
+          lv_label_set_text(id(controls_track_time_label), buffer);
+          lv_label_set_text(id(time_track_time_label), buffer);
 
   - id: handle_media_playing
     then:
@@ -130,8 +132,16 @@ script:
           id(is_media_playing) = true;
           ESP_LOGI("actions_media", "Media started playing.");
       - lvgl.label.update:
-          id: overlay_play_pause_indicator
+          id:
+            - overlay_huge_play_pause_indicator
           hidden: true
+      - lvgl.label.update:
+          id:
+            - overlay_play_pause_indicator_label
+            - controls_play_pause_indicator_label
+            - time_play_pause_indicator_label
+          text: "${icon_play}"
+          hidden: false
       #- script.execute:
       #    id: navigate_to
       #    target: "media"
@@ -148,7 +158,11 @@ script:
           ESP_LOGI("actions_media", "Media paused playing.");
       # Display a paused icon overlay.
       - lvgl.label.update:
-          id: overlay_play_pause_indicator
+          id:
+            - overlay_huge_play_pause_indicator
+            - overlay_play_pause_indicator_label
+            - controls_play_pause_indicator_label
+            - time_play_pause_indicator_label
           text: "${icon_pause}"
           hidden: false
 
@@ -159,7 +173,11 @@ script:
           ESP_LOGI("actions_media", "Media stopped playing.");
       # Display a stopped icon overlay.
       - lvgl.label.update:
-          id: overlay_play_pause_indicator
+          id:
+            - overlay_huge_play_pause_indicator
+            - overlay_play_pause_indicator_label
+            - controls_play_pause_indicator_label
+            - time_play_pause_indicator_label
           # Always use pause, as it typically says stopped even when pausing.
           #text: "${icon_stop}"
           text: "${icon_pause}"
@@ -206,10 +224,10 @@ script:
       - lambda: |-
           ESP_LOGD("actions_media", "Music track: %s", track_name.c_str());
       - lvgl.label.update:
-          id: track_name_label_overlay
-          text: !lambda 'return track_name.empty() ? "Unknown Track" : track_name;'
-      - lvgl.label.update:
-          id: track_name_label_controls
+          id:
+            - overlay_track_name_label
+            - controls_track_name_label
+            - time_track_name_label
           text: !lambda 'return track_name.empty() ? "Unknown Track" : track_name;'
 
   - id: handle_media_artist_changed
@@ -219,10 +237,13 @@ script:
       - lambda: |-
           ESP_LOGD("actions_media", "Music artist: %s", artist_name.c_str());
       - lvgl.label.update:
-          id: track_artist_label_overlay
+          id:
+            - overlay_track_artist_label
+            - controls_track_artist_label
+            - time_track_artist_label
           text: !lambda 'return artist_name.empty() ? "Unknown Artist" : artist_name;'
       - lvgl.label.update:
-          id: track_artist_label_controls
+          id: controls_track_artist_label
           text: !lambda 'return artist_name.empty() ? "Unknown Artist" : artist_name;'
 
   - id: handle_media_album_changed
@@ -232,10 +253,10 @@ script:
       - lambda: |-
           ESP_LOGD("actions_media", "Music album: %s", album_name.c_str());
       - lvgl.label.update:
-          id: track_album_label_overlay
-          text: !lambda 'return album_name.empty() ? "Unknown Album" : album_name;'
-      - lvgl.label.update:
-          id: track_album_label_controls
+          id:
+            - overlay_track_album_label
+            - controls_track_album_label
+            - time_track_album_label
           text: !lambda 'return album_name.empty() ? "Unknown Album" : album_name;'
 
   - id: handle_playlist_shuffle

@@ -23,7 +23,7 @@ substitutions:
   icon_thermo_outside: "\U000F18D7"    # mdi:sun-thermometer-outline
   icon_thermo_inside: "\U000F0F55"     # mdi:home-thermometer-outline
 
-  # font_icons_huge
+  # font_icons_small & font_icons_huge
   icon_play: "\U000F040A"   # mdi:play
   icon_pause: "\U000F03E4"  # mdi:pause
   icon_stop: "\U000F04DB"   # mdi:stop
@@ -57,6 +57,9 @@ font:
       - "${icon_battery_20}"
       - "${icon_battery_50}"
       - "${icon_battery_charging}"
+      - "${icon_play}"
+      - "${icon_pause}"
+      - "${icon_stop}"
 
   - id: font_icons_large
     file: ${icons_font}

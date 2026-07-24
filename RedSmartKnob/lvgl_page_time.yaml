@@ -42,30 +42,101 @@ lvgl:
             text_font: font_7seg
             text: "--:--:--"
 
-        - label:
-            id: outdoor_temp_icon
-            text_font: font_icons_large
-            y: 25
-            x: -100
-            text: "${icon_thermo_outside}"
+        - obj:
+            id: temp_status_line
+            align: center
+            layout:  # horizontal-ish
+              type: flex
+              flex_flow: row
+              flex_align_main: center # space_evenly
+              flex_align_track: center
+              flex_align_cross: center
+            y: -7%
+            bg_opa: 0%
+            border_width: 0
+            height: 10%
+            width: 95%
+            pad_all: 0
+            scrollable: false
+            widgets:
+              - label:
+                  id: outdoor_temp_icon
+                  text_font: font_icons_large
+                  text: "${icon_thermo_outside}"
+              - label:
+                  id: outdoor_temp_label
+                  text_font: theme_font_large
+                  text: "–"
+              - label:
+                  id: indoor_temp_icon
+                  text_font: font_icons_large
+                  text: "${icon_thermo_inside}"
+              - label:
+                  id: indoor_temp_label
+                  text_font: theme_font_large
+                  text: "–"
 
-        - label:
-            id: outdoor_temp_label
-            text_font: theme_font_large
-            y: 25
-            text: "–"
-
-        - label:
-            id: indoor_temp_icon
-            text_font: font_icons_large
-            y: 55
-            x: -100
-            text: "${icon_thermo_inside}"
-
-        - label:
-            id: indoor_temp_label
-            text_font: theme_font_large
-            y: 55
-            text: "–"
+        # Translucent caption band across the lower third of the circle.
+        - obj:
+            x: 0%
+            y: 67%
+            width: 100%
+            height: 33%
+            radius: 0
+            styles: rsk_opacity_bg
+            border_width: 0
+            pad_all: 0
+            scrollable: false
+            clickable: false
+            widgets:
+              - label:
+                  id: time_track_artist_label
+                  align: TOP_MID
+                  width: 90%
+                  long_mode: SCROLL_CIRCULAR
+                  anim_duration: 8s
+                  text_align: CENTER
+                  styles: rsk_font_color2
+                  text_font: theme_font_normal
+                  text: "Unknown Artist"
+              - label:
+                  id: time_track_name_label
+                  align: TOP_MID
+                  y: 18%
+                  width: 85%
+                  long_mode: SCROLL_CIRCULAR
+                  anim_duration: 8s
+                  text_align: CENTER
+                  styles: rsk_font_color
+                  text_font: theme_font_large
+                  text: "Unknown Track"
+              - label:
+                  id: time_track_album_label
+                  align: TOP_MID
+                  y: 46%
+                  width: 80%
+                  long_mode: SCROLL_CIRCULAR
+                  anim_duration: 8s
+                  text_align: CENTER
+                  styles: rsk_font_color2
+                  text_font: theme_font_small
+                  text: "Unknown Album"
+              - label:
+                  id: time_play_pause_indicator_label
+                  align: TOP_MID
+                  y: 65%
+                  x: -15%
+                  text_align: CENTER
+                  styles: rsk_font_color2
+                  text_font: font_icons_small
+                  text: "${icon_pause}"
+              - label:
+                  id: time_track_time_label
+                  align: TOP_MID
+                  y: 65%
+                  text_align: CENTER
+                  styles: rsk_font_color2
+                  text_font: theme_font_small
+                  text: "00:00 / 99:99"
 
 # vim: set tabstop=2 shiftwidth=2 expandtab:

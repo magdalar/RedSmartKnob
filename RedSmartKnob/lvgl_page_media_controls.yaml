@@ -38,17 +38,18 @@ lvgl:
         # Translucent caption band across the top-middle, below the dismissal.
         - obj:
             x: 0%
-            y: 18%
+            y: 16%
             width: 100%
-            height: 23%
+            height: 28%
             radius: 0
             styles: rsk_opacity_bg
             border_width: 0
             pad_all: 0
             scrollable: false
+            clickable: false
             widgets:
               - label:
-                  id: track_artist_label_controls
+                  id: controls_track_artist_label
                   align: TOP_MID
                   width: 85%
                   y: 3%
@@ -58,23 +59,41 @@ lvgl:
                   anim_duration: 8s
                   text: "Unknown Artist"
               - label:
-                  id: track_name_label_controls
+                  id: controls_track_name_label
                   align: CENTER
+                  y: -10%
                   width: 90%
                   text_font: theme_font_large
                   long_mode: SCROLL_CIRCULAR
                   anim_duration: 8s
                   text: "Unknown Track"
               - label:
-                  id: track_album_label_controls
-                  align: BOTTOM_MID
-                  y: -5%
+                  id: controls_track_album_label
+                  align: CENTER
+                  y: 15%
                   width: 95%
                   styles: rsk_font_color2
                   text_font: theme_font_small
                   long_mode: SCROLL_CIRCULAR
                   anim_duration: 8s
                   text: "Unknown Album"
+              - label:
+                  id: controls_play_pause_indicator_label
+                  align: BOTTOM_MID
+                  y: -5%
+                  x: -15%
+                  text_align: CENTER
+                  styles: rsk_font_color2
+                  text_font: font_icons_small
+                  text: "${icon_pause}"
+              - label:
+                  id: controls_track_time_label
+                  align: BOTTOM_MID
+                  y: -5%
+                  text_align: CENTER
+                  styles: rsk_font_color2
+                  text_font: theme_font_small
+                  text: "00:00 / 99:99"
 
         - obj:
             align: CENTER
