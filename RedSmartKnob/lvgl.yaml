@@ -129,12 +129,12 @@ lvgl:
             - label:
                 id: status_icon_api_status
                 styles: rsk_font_color2
-                text_font: font_mdi_top
+                text_font: font_icons_small
                 text: ${icon_wifi_disconnected}
             - label:
                 id: status_icon_battery
                 styles: rsk_font_color2
-                text_font: font_mdi_top
+                text_font: font_icons_small
                 text: "${icon_battery}"
                 # actions_battery will reveal it if present
                 hidden: true

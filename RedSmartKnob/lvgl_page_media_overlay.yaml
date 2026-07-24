@@ -42,7 +42,7 @@ lvgl:
             styles:
               - rsk_opacity_bg
               - rsk_font_color
-            text_font: font_mdi_media_large
+            text_font: font_icons_huge
             text: "${icon_pause}"
             hidden: true
 

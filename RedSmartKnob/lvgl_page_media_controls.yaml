@@ -94,7 +94,7 @@ lvgl:
                   widgets:
                     - label:
                         text: ${icon_previous}
-                        text_font: font_mdi_media
+                        text_font: font_icons_button
               - button:
                   id: controls_toggle_button
                   on_single_click:
@@ -102,7 +102,7 @@ lvgl:
                   widgets:
                     - label:
                         text: ${icon_play_pause}
-                        text_font: font_mdi_media
+                        text_font: font_icons_button
               - button:
                   id: controls_next
                   on_single_click:
@@ -110,7 +110,7 @@ lvgl:
                   widgets:
                     - label:
                         text: ${icon_next}
-                        text_font: font_mdi_media
+                        text_font: font_icons_button
 
         # Volume control
         - slider:

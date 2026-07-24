@@ -18,6 +18,10 @@ lvgl:
         - script.execute:
             id: show_media_controls_popup
             direction: "DOWN"
+      on_click:
+        - script.execute:
+            id: show_media_controls_popup
+            direction: "UP"
       styles: rsk_page_bg
       widgets:
         - label:
@@ -40,7 +44,7 @@ lvgl:
 
         - label:
             id: outdoor_temp_icon
-            text_font: font_mdi_time
+            text_font: font_icons_large
             y: 25
             x: -100
             text: "${icon_thermo_outside}"
@@ -53,7 +57,7 @@ lvgl:
 
         - label:
             id: indoor_temp_icon
-            text_font: font_mdi_time
+            text_font: font_icons_large
             y: 55
             x: -100
             text: "${icon_thermo_inside}"

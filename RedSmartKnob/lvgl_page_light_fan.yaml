@@ -78,7 +78,7 @@ lvgl:
                   widgets:
                     - label:
                         id: light_toggle_button_label
-                        text_font: font_mdi_light_fan
+                        text_font: font_icons_button
                         text: ${icon_lightbulb}
 
               # ==========================================
@@ -141,7 +141,7 @@ lvgl:
                     - script.execute: fan_toggle
                   widgets:
                     - label:
-                        text_font: font_mdi_light_fan
+                        text_font: font_icons_button
                         text: ${icon_fan}
 
 # vim: set tabstop=2 shiftwidth=2 expandtab:

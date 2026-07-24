@@ -81,7 +81,7 @@ lvgl:
             widgets:
               - label:
                   id: label_playlist_shuffle
-                  text_font: font_mdi_media
+                  text_font: font_icons_button
                   text: "${icon_shuffle_disabled}"
 
 # vim: set tabstop=2 shiftwidth=2 expandtab:
