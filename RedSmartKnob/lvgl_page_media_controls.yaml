@@ -118,6 +118,7 @@ lvgl:
                   id: controls_toggle_button
                   on_single_click:
                     - script.execute: set_media_play_pause
+                    - script.execute: hide_popups
                   widgets:
                     - label:
                         text: ${icon_play_pause}
