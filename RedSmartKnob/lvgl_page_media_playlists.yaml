@@ -41,7 +41,7 @@ lvgl:
                   widgets:
                     - label:
                         id: playlist_1_label
-                        text: !lambda 'return "Playlist 1:\n" + id(setting_playlist_1).state;'
+                        text: !lambda 'return "Playlist 1\nPlaceholder";'
               - button:
                   id: button_playlist2
                   width: 100%
@@ -53,7 +53,7 @@ lvgl:
                   widgets:
                     - label:
                         id: playlist_2_label
-                        text: !lambda 'return "Playlist 2:\n" + id(setting_playlist_2).state;'
+                        text: !lambda 'return "Playlist 2\nPlaceholder";'
               - button:
                   id: button_playlist3
                   width: 100%
@@ -65,7 +65,7 @@ lvgl:
                   widgets:
                     - label:
                         id: playlist_3_label
-                        text: !lambda 'return "Playlist 3:\n" + id(setting_playlist_3).state;'
+                        text: !lambda 'return "Playlist 3\nPlaceholder";'
 
         - button:
             id: button_playlist_shuffle

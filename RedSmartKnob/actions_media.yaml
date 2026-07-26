@@ -59,6 +59,7 @@ esphome:
               id(set_mediaplayer_entity_id)->execute(new_entity.c_str());
               id(preference_media_player_entity).publish_state(new_entity);
             }
+        - script.execute: update_playlist_labels
 
 script:
   - id: handle_media_album_art_display_placeholder
@@ -280,6 +281,43 @@ script:
             entity_id: !lambda 'return id(preference_media_player_entity).state;'
             shuffle: !lambda 'return shuffle;'
 
+  - id: update_playlist_labels
+    then:
+      - if:
+          condition:
+            lambda: 'return id(setting_playlist_1_name).state.empty() || id(setting_playlist_1_name).state == " ";'
+          then:
+            - lvgl.label.update:
+                id: playlist_1_label
+                text: !lambda 'return id(setting_playlist_1).state;'
+          else:
+            - lvgl.label.update:
+                id: playlist_1_label
+                text: !lambda 'return id(setting_playlist_1_name).state;'
+      - if:
+          condition:
+            lambda: 'return id(setting_playlist_2_name).state.empty() || id(setting_playlist_2_name).state == " ";'
+          then:
+            - lvgl.label.update:
+                id: playlist_2_label
+                text: !lambda 'return id(setting_playlist_2).state;'
+          else:
+            - lvgl.label.update:
+                id: playlist_2_label
+                text: !lambda 'return id(setting_playlist_2_name).state;'
+      - if:
+          condition:
+            lambda: 'return id(setting_playlist_3_name).state.empty() || id(setting_playlist_3_name).state == " ";'
+          then:
+            - lvgl.label.update:
+                id: playlist_3_label
+                text: !lambda 'return id(setting_playlist_3).state;'
+          else:
+            - lvgl.label.update:
+                id: playlist_3_label
+                text: !lambda 'return id(setting_playlist_3_name).state;'
+
+
   - id: play_playlist
     parameters:
       media_id: std::string
@@ -287,20 +325,31 @@ script:
     then:
       - if:
           condition:
-            lambda: 'return !media_id.empty();'
+            lambda: 'return !media_id.empty() && media_id != " ";'
           then:
-            - script.execute:
-                id: handle_playlist_shuffle
-                shuffle: !lambda 'return id(setting_playlist_shuffle).state;'
-            - logger.log:
-                format: "Playing playlist: %s"
-                args: [ "media_id.c_str()" ]
-            - homeassistant.service:
-                service: music_assistant.play_media
-                data:
-                  entity_id: !lambda 'return id(preference_media_player_entity).state;'
-                  media_id: !lambda 'return media_id.c_str();'
-                  media_type: playlist
-                  enqueue: replace
+            if:
+              condition:
+                lambda: 'return media_id.starts_with("script.");'
+              then:
+                - logger.log:
+                    format: "Triggering script: %s"
+                    args: [ "media_id.c_str()" ]
+                - homeassistant.service:
+                    service: !lambda 'return media_id.c_str();'
+                    data: {}
+              else:
+                  - script.execute:
+                      id: handle_playlist_shuffle
+                      shuffle: !lambda 'return id(setting_playlist_shuffle).state;'
+                  - logger.log:
+                      format: "Playing playlist: %s"
+                      args: [ "media_id.c_str()" ]
+                  - homeassistant.service:
+                      service: music_assistant.play_media
+                      data:
+                        entity_id: !lambda 'return id(preference_media_player_entity).state;'
+                        media_id: !lambda 'return media_id.c_str();'
+                        media_type: playlist
+                        enqueue: replace
 
 # vim: set tabstop=2 shiftwidth=2 expandtab:

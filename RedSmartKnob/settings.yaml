@@ -42,9 +42,19 @@ text:
     initial_value: "My Awesome Playlist"
     restore_value: true
     on_value:
-      - lvgl.label.update:
-          id: playlist_1_label
-          text: !lambda 'return "Playlist 1:\n" + id(setting_playlist_1).state;'
+      - script.execute: update_playlist_labels
+
+  - platform: template
+    name: "Playlist 1 Name"
+    id: setting_playlist_1_name
+    optimistic: true
+    entity_category: config
+    icon: "mdi:playlist-music"
+    mode: text
+    initial_value: " "
+    restore_value: true
+    on_value:
+      - script.execute: update_playlist_labels
 
   - platform: template
     name: "Playlist 2"
@@ -56,9 +66,19 @@ text:
     initial_value: ""
     restore_value: true
     on_value:
-      - lvgl.label.update:
-          id: playlist_2_label
-          text: !lambda 'return "Playlist 2:\n" + id(setting_playlist_2).state;'
+      - script.execute: update_playlist_labels
+
+  - platform: template
+    name: "Playlist 2 Name"
+    id: setting_playlist_2_name
+    optimistic: true
+    entity_category: config
+    icon: "mdi:playlist-music"
+    mode: text
+    initial_value: " "
+    restore_value: true
+    on_value:
+      - script.execute: update_playlist_labels
 
   - platform: template
     name: "Playlist 3"
@@ -70,9 +90,19 @@ text:
     initial_value: ""
     restore_value: true
     on_value:
-      - lvgl.label.update:
-          id: playlist_3_label
-          text: !lambda 'return "Playlist 3:\n" + id(setting_playlist_3).state;'
+      - script.execute: update_playlist_labels
+
+  - platform: template
+    name: "Playlist 3 Name"
+    id: setting_playlist_3_name
+    optimistic: true
+    entity_category: config
+    icon: "mdi:playlist-music"
+    mode: text
+    initial_value: " "
+    restore_value: true
+    on_value:
+      - script.execute: update_playlist_labels
 
 select:
   - platform: template
