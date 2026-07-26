@@ -18,9 +18,7 @@ esphome:
 
     - priority: -100
       then:
-        - script.execute:
-            id: navigate_to
-            target: !lambda 'return id(idle_page_preference).current_option();'
+        - script.execute: navigate_to_idle
 
 select:
   - platform: template
@@ -67,6 +65,12 @@ text_sensor:
     entity_category: diagnostic
 
 script:
+  - id: navigate_to_idle
+    then:
+      - script.execute:
+          id: navigate_to
+          target: !lambda 'return id(idle_page_preference).current_option();'
+
   # Rebuild the navigation depending on what's enabled.
   - id: rebuild_ui_pages
     then:
@@ -130,9 +134,7 @@ script:
               return id(current_page_enum).current_option() != id(idle_page_preference).current_option();
           then:
             - logger.log: "Idle timeout reached, reverting to default page."
-            - script.execute:
-                id: navigate_to
-                target: !lambda 'return id(idle_page_preference).current_option();'
+            - script.execute: navigate_to_idle
 
   - id: navigate_to
     parameters:

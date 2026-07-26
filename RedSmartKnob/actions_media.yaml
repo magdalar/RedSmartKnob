@@ -378,5 +378,6 @@ script:
                         media_id: !lambda 'return media_id.c_str();'
                         media_type: playlist
                         enqueue: replace
+      - script.execute: navigate_to_idle
 
 # vim: set tabstop=2 shiftwidth=2 expandtab:
