@@ -149,15 +149,15 @@ select:
     # NOTE: Optional pages should judiciously be added here, as if they're
     # disabled, the navigate_to logic will just confusingly default to the
     # first page.
-    # TODO: Add a "time_or_media" option, e.g. if playing.
     options:
+      - "time_or_media"
       - "time"
       - "media"
       - "playlists"
       - "light_fan"
-    initial_option: "time"
+    initial_option: "time_or_media"
     set_action:
-      - script.execute: reset_idle_timer
+      - script.execute: navigate_to_idle
     on_value:
       - logger.log:
           format: "Display preference changed to: %s"

@@ -67,9 +67,25 @@ text_sensor:
 script:
   - id: navigate_to_idle
     then:
-      - script.execute:
-          id: navigate_to
-          target: !lambda 'return id(idle_page_preference).current_option();'
+      - if:
+          condition:
+            lambda: 'return id(idle_page_preference).current_option() == "time_or_media";'
+          then:
+            - if:
+                condition:
+                  lambda: 'return id(is_media_playing);'
+                then:
+                  - script.execute:
+                      id: navigate_to
+                      target: "media"
+                else:
+                  - script.execute:
+                      id: navigate_to
+                      target: "time"
+          else:
+            - script.execute:
+                id: navigate_to
+                target: !lambda 'return id(idle_page_preference).current_option();'
 
   # Rebuild the navigation depending on what's enabled.
   - id: rebuild_ui_pages
@@ -93,6 +109,8 @@ script:
       - lvgl.label.update:
           id: status_icon_api_status
           text: "${icon_wifi}"
+      - delay: 300ms
+      - script.execute: navigate_to_idle
 
   - id: api_disconnected
     then:
