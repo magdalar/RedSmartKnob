@@ -63,11 +63,14 @@ text_sensor:
           then:
             - script.execute: handle_media_stopped
 
+  # This must come first, so we can use it to clear state.
   - platform: homeassistant
     id: track_name
     entity_id: $mediaplayer
     attribute: media_title
     on_value:
+      - script.execute:
+          id: handle_reset_media_metadata
       - script.execute:
           id: handle_media_track_changed
           track_name: !lambda 'return x;'
@@ -102,7 +105,8 @@ text_sensor:
           condition:
             lambda: 'return !x.empty();'
           then:
-            - delay: 150ms  # give some room to breathe
+            - lambda: 'id(artwork_invalid) = true;'
+            - delay: 150ms  # give some room to breathe (memory pressure)
             - script.execute:
                 id: handle_media_album_url
                 url: !lambda 'return x;'
