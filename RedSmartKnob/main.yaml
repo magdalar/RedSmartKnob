@@ -46,6 +46,7 @@ packages:
   app_lvgl_page_media_playlists: !include lvgl_page_media_playlists.yaml
   app_lvgl_page_media_controls: !include lvgl_page_media_controls.yaml
   app_lvgl_page_light_fan: !include lvgl_page_light_fan.yaml
+  app_lvgl_page_menu: !include lvgl_page_menu.yaml
 
   # The main UI loop and navigation logic
   app_ui_loop: !include ui_loop.yaml

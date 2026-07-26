@@ -7,7 +7,7 @@
 globals:
   - id: ui_pages
     type: std::vector<std::string>
-    initial_value: '{"time", "media", "playlists", "light_fan"}'
+    initial_value: '{"menu", "time", "media", "playlists", "light_fan"}'
 
 esphome:
   on_boot:
@@ -29,6 +29,7 @@ select:
     optimistic: true
     # All possible pages should be listed here.
     options:
+      - "menu"  # move to popups
       - "time"
       - "media"
       - "playlists"
@@ -75,6 +76,7 @@ script:
           pages.clear(); // Empty the array
 
           // Add base pages
+          pages.push_back("menu");  // TODO: remove
           pages.push_back("time");
           pages.push_back("media");
           pages.push_back("playlists");
@@ -192,6 +194,7 @@ script:
           else if (target == "light_fan") page_ptr = id(page_light_fan).obj;
           // Popups are also supported in internal_navigate_to_animated
           else if (target == "media_controls") page_ptr = id(page_media_controls).obj;
+          else if (target == "menu") page_ptr = id(page_menu).obj;
           else ESP_LOGE("ui_loop", "Unknown navigate_to target: %s", target.c_str());
 
           // 3. Execute the transition

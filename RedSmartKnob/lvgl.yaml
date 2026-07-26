@@ -40,6 +40,10 @@ image:
 
 lvgl:
   # Display & touchscreen bindings happen in the device configs.
+  # TODO:
+  #encoders:
+  #  - group: knob_group
+  #    sensor: rotary_counter
 
   color_depth: 16
   default_font: theme_font_normal

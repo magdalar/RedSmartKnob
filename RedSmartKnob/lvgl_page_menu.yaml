@@ -1,0 +1,88 @@
+# LVGL Page definition for menu
+.style.menu_label: &menu_label_style
+  # TODO: Add to rotary encoder group
+  #group: knob_group
+  text_font: font_icons_button
+  ext_click_area: 30
+  styles:
+    - rsk_font_color2
+  focused:
+    styles:
+      - rsk_font_color
+
+lvgl:
+  pages:
+    - id: page_menu
+      styles: rsk_page_bg
+      widgets:
+        # 1. Background Decorative Ring
+        - arc:
+            align: CENTER
+            width: 340
+            height: 340
+            min_value: 0
+            max_value: 100
+            start_angle: 0
+            end_angle: 360
+            value: 100           # Draw a full circle
+            arc_width: 55
+            arc_color: 0x333333  # Dark gray background ring
+            indicator:
+              arc_width: 0        # Hide the indicator completely
+
+        # 2. Dynamic Center Text
+        - label:
+            id: center_text
+            text: "Lighting"     # Default text
+            align: CENTER
+
+        # 3. Top Icon (Lighting)
+        - label:
+            id: menu_icon_light
+            <<: *menu_label_style
+            align: TOP_MID
+            y: 15                # Push down from the top edge
+            text: "${icon_lightbulb}"
+            # Update center text when the knob turns to this icon
+            on_focus:
+              - lvgl.label.update:
+                  id: center_text
+                  text: "Lighting"
+
+        # 4. Right Icon (Music)
+        - label:
+            id: menu_icon_music
+            <<: *menu_label_style
+            text: "${icon_music}"
+            align: RIGHT_MID
+            x: -15               # Push left from the right edge
+            on_focus:
+              - lvgl.label.update:
+                  id: center_text
+                  text: "Music"
+
+        # 5. Bottom Icon (Playlists)
+        - label:
+            id: icon_media
+            <<: *menu_label_style
+            text: "${icon_playlist}"
+            align: BOTTOM_MID
+            y: -15               # Push up from the bottom edge
+            on_focus:
+              - lvgl.label.update:
+                  id: center_text
+                  text: "Playlists"
+
+        # 6. Left Icon (Time)
+        - label:
+            id: icon_settings
+            <<: *menu_label_style
+            text: "${icon_clock}"
+            align: LEFT_MID
+            x: 15                # Push right from the left edge
+            on_focus:
+              - lvgl.label.update:
+                  id: center_text
+                  text: "Settings"
+
+# vim: set tabstop=2 shiftwidth=2 expandtab:

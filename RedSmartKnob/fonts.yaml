@@ -29,6 +29,8 @@ substitutions:
   icon_stop: "\U000F04DB"   # mdi:stop
 
   # font_icons_button
+  icon_clock: "\U000F0150"       # mdi:clock-outline
+  icon_playlist: "\U000F0CB8"    # mdi:playlist-music
   icon_play_pause: "\U000F040E"  # mdi:play-pause
   icon_previous: "\U000F04AE"
   icon_next: "\U000F04AD"
@@ -83,6 +85,8 @@ font:
     size: ${font_size_button}
     bpp: 4
     glyphs:
+      - "${icon_clock}"
+      - "${icon_playlist}"
       - "${icon_play_pause}"
       - "${icon_previous}"
       - "${icon_next}"

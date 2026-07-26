@@ -121,6 +121,7 @@ select:
     # first page.
     # TODO: Add a "time_or_media" option, e.g. if playing.
     options:
+      - "menu"   # TODO: remove
       - "time"
       - "media"
       - "playlists"
