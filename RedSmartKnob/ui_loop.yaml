@@ -18,7 +18,7 @@ esphome:
 
     - priority: -100
       then:
-        - script.execute: navigate_to_idle
+        - script.execute: reset_idle_timer
 
 select:
   - platform: template
@@ -67,25 +67,42 @@ text_sensor:
 script:
   - id: navigate_to_idle
     then:
+      - select.set:
+          id: active_popup_enum
+          option: "none"
       - if:
           condition:
             lambda: 'return id(idle_page_preference).current_option() == "time_or_media";'
           then:
+            # NOTE: we must not use `navigate_to`, to avoid tickling
+            # reset_idle_timer and keeping the screen on.
             - if:
                 condition:
                   lambda: 'return id(is_media_playing);'
                 then:
+                  - select.set:
+                      id: current_page_enum
+                      option: "media"
                   - script.execute:
-                      id: navigate_to
+                      id: internal_navigate_to_animated
                       target: "media"
+                      direction: "NONE"
                 else:
+                  - select.set:
+                      id: current_page_enum
+                      option: "time"
                   - script.execute:
-                      id: navigate_to
+                      id: internal_navigate_to_animated
                       target: "time"
+                      direction: "NONE"
           else:
+            - select.set:
+                id: current_page_enum
+                option: !lambda 'return id(idle_page_preference).current_option();'
             - script.execute:
-                id: navigate_to
+                id: internal_navigate_to_animated
                 target: !lambda 'return id(idle_page_preference).current_option();'
+                direction: "NONE"
 
   # Rebuild the navigation depending on what's enabled.
   - id: rebuild_ui_pages
@@ -109,8 +126,7 @@ script:
       - lvgl.label.update:
           id: status_icon_api_status
           text: "${icon_wifi}"
-      - delay: 300ms
-      - script.execute: navigate_to_idle
+      - script.execute: reset_idle_timer
 
   - id: api_disconnected
     then:
@@ -137,19 +153,13 @@ script:
       - script.execute: standby_screen_activity
       - delay: !lambda |-
           return (uint32_t) (id(idle_timeout_seconds).state * 1000.0f);
-      # 1. First, hide any active popups
-      - if:
-          condition:
-            lambda: 'return id(active_popup_enum).current_option() != "none";'
-          then:
-            - script.execute: hide_popups
-
-      # 2. Then, check if we need to return to the default page
+      # Then, check if we need to return to the default page
       - if:
           condition:
             lambda: |-
-              // Compare current page to the HA select preference
-              return id(current_page_enum).current_option() != id(idle_page_preference).current_option();
+              return (id(active_popup_enum).current_option() != "none") ||
+                     // This will always trigger for "time_or_media"
+                     (id(current_page_enum).current_option() != id(idle_page_preference).current_option());
           then:
             - logger.log: "Idle timeout reached, reverting to default page."
             - script.execute: navigate_to_idle
@@ -175,6 +185,10 @@ script:
       - select.set:
           id: current_page_enum
           option: !lambda 'return target.c_str();'
+
+      # Restart the idle timer since navigation implies user activity
+      - script.execute: reset_idle_timer
+
       - script.execute:
           id: internal_navigate_to_animated
           target: !lambda 'return target;'
@@ -186,9 +200,7 @@ script:
       direction: std::string
     then:
       # 1. Caller must already update the current_page_enum and active_popup_enum.
-
-      # 2. Restart the idle timer since navigation implies user activity
-      - script.execute: reset_idle_timer
+      # 2. Caller must already reset the idle timer if appropriate.
 
       # Perform the navigation
       - lambda: |-
@@ -293,6 +305,7 @@ script:
       - select.set:
           id: active_popup_enum
           option: "media_controls"
+      # NOTE: current_page_enum is intentionally untouched
       - script.execute:
           id: internal_navigate_to_animated
           target: "media_controls"
