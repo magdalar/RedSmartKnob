@@ -2,8 +2,9 @@ name: Build and Publish Firmware
 
 on:
   ## On push:
-  #push:
-  #  branches: [ "main", "master" ]
+  push:
+    branches:
+      - main
   ## On Release:
   #release:
   #  types: [published]
@@ -22,12 +23,29 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  check-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.filter.outputs.should_run }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dorny/paths-filter@v4
+        id: filter
+        with:
+          filters: |
+            should_run:
+              - 'RedSmartKnob/**'
+              - 'devices/**'
+              - '!**/*.md'
+
   build:
+    needs: check-changes
+    # Run if changes are detected OR if triggered manually via workflow_dispatch
+    if: ${{ needs.check-changes.outputs.should_run == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     environment:
     steps:
       - name: Checkout Code
-        # fetch-depth: 0 is required so git has the commit history to check
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
