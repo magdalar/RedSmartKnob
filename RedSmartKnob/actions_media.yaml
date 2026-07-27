@@ -262,7 +262,8 @@ script:
             - overlay_track_name_label
             - controls_track_name_label
             - time_track_name_label
-          text: !lambda 'return track_name.empty() ? "Unknown Track" : track_name;'
+          text: !lambda |-
+            return track_name.empty() ? "Unknown Track" : track_name.substr(0, 80);
 
   - id: handle_media_artist_changed
     parameters:
@@ -275,7 +276,8 @@ script:
             - overlay_track_artist_label
             - controls_track_artist_label
             - time_track_artist_label
-          text: !lambda 'return artist_name.empty() ? "Unknown Artist" : artist_name;'
+          text: !lambda |-
+            return artist_name.empty() ? "Unknown Artist" : artist_name.substr(0, 80);
 
   - id: handle_media_album_changed
     parameters:
@@ -288,7 +290,8 @@ script:
             - overlay_track_album_label
             - controls_track_album_label
             - time_track_album_label
-          text: !lambda 'return album_name.empty() ? "Unknown Album" : album_name;'
+          text: !lambda |-
+            return album_name.empty() ? "Unknown Album" : album_name.substr(0, 80);
 
   - id: handle_playlist_shuffle
     parameters:
