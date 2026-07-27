@@ -34,9 +34,9 @@ jobs:
         with:
           filters: |
             should_run:
-              - 'RedSmartKnob/**'
-              - 'devices/**'
-              - '!**/*.md'
+              - 'scripts/**'
+              - 'RedSmartKnob/**/!(*.md)'
+              - 'devices/**/!(*.md)'
 
   build:
     needs: check-changes
