@@ -159,10 +159,8 @@ script:
             - time_play_pause_indicator_label
           text: "${icon_play}"
           hidden: false
-      # Reset the idle timer; the screen will wake up if it was off, and after
-      # a delay, we'll go to the appropriate idle page, unless the user does
-      # something else.
-      - script.execute: reset_idle_timer
+      # TODO: consider this, if we don't get triggered every track change
+      # - script.execute: reset_idle_timer
 
   - id: handle_media_announcement
     then:
