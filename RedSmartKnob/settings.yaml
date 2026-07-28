@@ -31,6 +31,38 @@ number:
     on_value:
       - script.execute: reset_idle_timer
 
+  - platform: template
+    id: preference_sleep_timer_audiobook_mins
+    name: "Sleep Timer: Audibook Auto-Pause After"
+    unit_of_measurement: "m"
+    icon: "mdi:bed-clock"
+    entity_category: config
+    optimistic: true
+    restore_value: true
+    mode: box
+    min_value: 0
+    max_value: 1440
+    step: 1
+    initial_value: 0
+    on_value:
+      - script.execute: handle_media_sleep_timer_maybe_restart
+
+  - platform: template
+    id: preference_sleep_timer_music_mins
+    name: "Sleep Timer: Music Auto-Pause After"
+    unit_of_measurement: "m"
+    icon: "mdi:bed-clock"
+    entity_category: config
+    optimistic: true
+    restore_value: true
+    mode: box
+    min_value: 0
+    max_value: 1440
+    step: 1
+    initial_value: 0
+    on_value:
+      - script.execute: handle_media_sleep_timer_maybe_restart
+
 text:
   - platform: template
     name: "Playlist 1"

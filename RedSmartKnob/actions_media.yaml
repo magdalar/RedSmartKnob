@@ -15,6 +15,9 @@ globals:
   - id: is_media_playing
     type: bool
     initial_value: 'false'
+  - id: is_media_audiobook
+    type: bool
+    initial_value: 'false'
   - id: last_posted_position_secs
     type: int
     initial_value: '-1'
@@ -153,8 +156,12 @@ script:
   - id: handle_media_playing
     then:
       - lambda: |-
+          bool was_playing = id(is_media_playing);
           id(is_media_playing) = true;
           ESP_LOGI("actions_media", "Media started playing.");
+          if (!was_playing) {  // don't reset if already playing
+            id(handle_media_sleep_timer_maybe_restart)->execute();
+          }
       - lvgl.label.update:
           id:
             - overlay_huge_play_pause_indicator
@@ -181,8 +188,9 @@ script:
   - id: handle_media_paused
     then:
       - lambda: |-
-          id(is_media_playing) = false;
           ESP_LOGI("actions_media", "Media paused playing.");
+          id(is_media_playing) = false;
+          id(media_sleep_timer)->stop();
       # Display a paused icon overlay.
       - lvgl.label.update:
           id:
@@ -196,8 +204,9 @@ script:
   - id: handle_media_stopped
     then:
       - lambda: |-
-          id(is_media_playing) = false;
           ESP_LOGI("actions_media", "Media stopped playing.");
+          id(is_media_playing) = false;
+          id(media_sleep_timer)->stop();
       # Display a stopped icon overlay.
       - lvgl.label.update:
           id:
@@ -214,6 +223,10 @@ script:
     then:
       - lambda: |-
           ESP_LOGI("actions_media", "Muted.");
+          if (id(is_media_audiobook)) {
+            ESP_LOGI("actions_media", "Auto-pausing audiobook on mute.");
+            id(set_media_pause)->execute();
+          }
       # TODO: Add a mute icon to the media pages?
       - lvgl.slider.update:
           id: volume_control_widget
@@ -244,12 +257,46 @@ script:
             format: "Vol: %.0f%%"
             args: [ "volume * 100" ]
 
+  - id: media_sleep_timer
+    mode: restart
+    then:
+      - delay: !lambda |-
+          int sleep_timer_mins = id(is_media_audiobook)
+            ? id(preference_sleep_timer_audiobook_mins).state
+            : id(preference_sleep_timer_music_mins).state;
+          ESP_LOGI("actions_media", "Sleep timer [re-]starting: %d minutes.", sleep_timer_mins);
+          return (uint32_t) (sleep_timer_mins * 60.0f * 1000.0f);
+      - lambda: |-
+          ESP_LOGI("actions_media", "Sleep timer expired. Pausing playback.");
+          id(set_media_pause)->execute();
+
+  - id: handle_media_sleep_timer_maybe_restart
+    then:
+      - lambda: |-
+          bool start_sleep_timer = id(is_media_playing)
+            && (
+              (id(is_media_audiobook) && id(preference_sleep_timer_audiobook_mins).state > 0)
+              || (!id(is_media_audiobook) && id(preference_sleep_timer_music_mins).state > 0)
+            );
+          if (start_sleep_timer) {
+            id(media_sleep_timer)->execute();
+          } else if (id(media_sleep_timer).is_running()) {
+            ESP_LOGI("actions_media", "Sleep timer cancelled.");
+            id(media_sleep_timer)->stop();
+          }
+
   - id: handle_media_content_id_change
     parameters:
       content_id: std::string
     then:
       - lambda: |-
           ESP_LOGD("actions_media", "Media Content Id: %s", content_id.c_str());
+          bool was_audiobook = id(is_media_audiobook);
+          id(is_media_audiobook) = content_id.find("/audiobook/") != std::string::npos;
+          if (was_audiobook != id(is_media_audiobook)) {
+            // Content type changed, reset timer.
+            id(handle_media_sleep_timer_maybe_restart)->execute();
+          }
 
   - id: handle_reset_media_metadata
     then:
