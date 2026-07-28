@@ -178,7 +178,7 @@ script:
         // This can only be called once on_boot, so this should be safe.
         static const std::string new_entity = new_media_player_id;
         ESP_LOGI("sendspin", "Updating media player entity: %s", new_entity.c_str());
-        id(media_content_id)->set_entity_id(new_entity.c_str());
+        id(ha_media_content_id)->set_entity_id(new_entity.c_str());
 
   - id: set_media_volume
     parameters:
