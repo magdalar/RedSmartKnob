@@ -7,22 +7,6 @@ globals:
     type: float
     initial_value: '0.0'
 
-esphome:
-  on_boot:
-    # HA sensors setup runs at AFTER_CONNECTION (100). So long as we run after
-    # DATA (600), we should be good.
-    - priority: 300
-      then:
-        # Media Player Entity
-        - lambda: |-
-            // Static as set_entity_id takes the c_str pointer.
-            static const std::string new_entity = id(preference_media_player_entity).state;
-            if (!new_entity.empty()) {
-              ESP_LOGI("actions_time", "Updating media player entity: %s", new_entity.c_str());
-              id(outdoor_temperature)->set_entity_id(new_entity.c_str());
-              id(preference_media_player_entity).publish_state(new_entity);
-            }
-
 # Add API connection event to initialize everything when HA is connected
 api:
   on_client_connected:
