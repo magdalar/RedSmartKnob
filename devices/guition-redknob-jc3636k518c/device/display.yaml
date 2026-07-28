@@ -79,7 +79,7 @@ light:
     icon: "mdi:television"
     entity_category: config
     id: back_light
-    restore_mode: ALWAYS_ON
+    restore_mode: RESTORE_AND_ON
     default_transition_length:
       milliseconds: 30
     initial_state:
