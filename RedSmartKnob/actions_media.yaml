@@ -122,11 +122,13 @@ script:
 
           // --- FORMAT AND UPDATE THE TEXT LABEL ---
           // Break down position into minutes and seconds
-          int pos_min = (int)position_secs / 60;
+          int pos_hours = (int)position_secs / 3600;
+          int pos_min = ((int)position_secs % 3600) / 60;
           int pos_sec = (int)position_secs % 60;
 
           // Break down duration into minutes and seconds
-          int dur_min = (int)duration_secs / 60;
+          int dur_hours = (int)duration_secs / 3600;
+          int dur_min = ((int)duration_secs % 3600) / 60;
           int dur_sec = (int)duration_secs % 60;
           if (pos_sec % 10 == 0) {
             ESP_LOGD("actions_media", "Position: %.1f/%.1f (%.1f%%)",
@@ -135,8 +137,13 @@ script:
 
           // Create a temporary buffer to hold the formatted text.
           char buffer[32];
-          snprintf(buffer, sizeof(buffer), "%02d:%02d / %02d:%02d",
-                   pos_min, pos_sec, dur_min, dur_sec);
+          if (dur_hours > 0) {
+            snprintf(buffer, sizeof(buffer), "%02d:%02d:%02d / %02d:%02d:%02d",
+                     pos_hours, pos_min, pos_sec, dur_hours, dur_min, dur_sec);
+          } else {
+            snprintf(buffer, sizeof(buffer), "%02d:%02d / %02d:%02d",
+                     pos_min, pos_sec, dur_min, dur_sec);
+          }
 
           // Push the formatted string to the LVGL label
           lv_label_set_text(id(overlay_track_time_label), buffer);
