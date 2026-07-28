@@ -244,6 +244,13 @@ script:
             format: "Vol: %.0f%%"
             args: [ "volume * 100" ]
 
+  - id: handle_media_content_id_change
+    parameters:
+      content_id: std::string
+    then:
+      - lambda: |-
+          ESP_LOGD("actions_media", "Media Content Id: %s", content_id.c_str());
+
   - id: handle_reset_media_metadata
     then:
       - script.execute:

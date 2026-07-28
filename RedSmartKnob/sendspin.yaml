@@ -33,6 +33,15 @@ sendspin:
   task_stack_in_psram: ${task_stack_in_psram}
 
 text_sensor:
+  - platform: homeassistant
+    id: ha_media_content_id
+    entity_id: $mediaplayer
+    attribute: media_content_id
+    on_value:
+      - script.execute:
+          id: handle_media_content_id_change
+          content_id: !lambda 'return x;'
+
   - platform: sendspin
     id: sendspin_title
     type: title
@@ -168,7 +177,8 @@ script:
         // We need to cache it for the lifetime of the process, as set_entity_id takes the ptr.
         // This can only be called once on_boot, so this should be safe.
         static const std::string new_entity = new_media_player_id;
-        ESP_LOGI("sendspin", "[No-op] Updating media player entity: %s", new_entity.c_str());
+        ESP_LOGI("sendspin", "Updating media player entity: %s", new_entity.c_str());
+        id(media_content_id)->set_entity_id(new_entity.c_str());
 
   - id: set_media_volume
     parameters:
