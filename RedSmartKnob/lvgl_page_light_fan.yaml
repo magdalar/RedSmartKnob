@@ -58,6 +58,7 @@ lvgl:
                   align: CENTER
                   x: -18%
                   y: 16%
+                  styles: rsk_font_color_on_accent
                   hidden: true
 
               # 2. The Light Toggle Button
@@ -78,6 +79,7 @@ lvgl:
                   widgets:
                     - label:
                         id: light_toggle_button_label
+                        styles: rsk_font_color_on_accent
                         text_font: font_icons_button
                         text: ${icon_lightbulb}
 
@@ -122,6 +124,7 @@ lvgl:
                   align: CENTER
                   x: 18%
                   y: 16%
+                  styles: rsk_font_color_on_accent
                   hidden: true
 
               # 2. The Fan Toggle Button
@@ -141,6 +144,7 @@ lvgl:
                     - script.execute: fan_toggle
                   widgets:
                     - label:
+                        styles: rsk_font_color_on_accent
                         text_font: font_icons_button
                         text: ${icon_fan}
 

@@ -63,6 +63,9 @@ lvgl:
     - id: rsk_font_color2
       text_color: ${theme_font_color2}
 
+    - id: rsk_font_color_on_accent
+      text_color: ${theme_font_color}
+
     - id: rsk_bg_accent
       bg_color: ${theme_accent_color}
       border_color: ${theme_accent_dark_color}
@@ -167,6 +170,8 @@ globals:
     type: uint32_t
   - id: palette_font2
     type: uint32_t
+  - id: palette_font_on_accent
+    type: uint32_t
   - id: palette_warning
     type: uint32_t
   - id: palette_success
@@ -242,6 +247,16 @@ script:
           // The base accent color
           id(palette_accent) = rgb(r*255, g*255, b*255);
 
+          // Calculate text color specifically for resting ON the accent color ---
+          // We use a strict 0.5 threshold here to guarantee contrast on the button itself
+          if (luminance > 0.5) {
+              // The accent is bright. Use a dark, slightly tinted font.
+              id(palette_font_on_accent) = rgb(r*20 + 20, g*20 + 20, b*20 + 20);
+          } else {
+              // The accent is dark. Use a bright, slightly tinted off-white font.
+              id(palette_font_on_accent) = rgb(r*10 + 240, g*10 + 240, b*10 + 240);
+          }
+
           // Branch based on whether the chosen color is Light or Dark
           if (luminance > 0.6) {
               // --- LIGHT THEME (White Background) ---
@@ -294,6 +309,10 @@ script:
       - lvgl.style.update:
           id: rsk_font_color2
           text_color: !lambda 'return lv_color_hex(id(palette_font2));'
+
+      - lvgl.style.update:
+          id: rsk_font_color_on_accent
+          text_color: !lambda 'return lv_color_hex(id(palette_font_on_accent));'
 
       - lvgl.style.update:
           id: rsk_bg_accent

@@ -31,6 +31,7 @@ lvgl:
               - script.execute: hide_popups
             widgets:
               - label:
+                  styles: rsk_font_color_on_accent
                   text_font: theme_font_large
                   text: "X"
 
@@ -112,6 +113,7 @@ lvgl:
                     - script.execute: set_media_previous
                   widgets:
                     - label:
+                        styles: rsk_font_color_on_accent
                         text: ${icon_previous}
                         text_font: font_icons_button
               - button:
@@ -121,6 +123,7 @@ lvgl:
                     - script.execute: hide_popups
                   widgets:
                     - label:
+                        styles: rsk_font_color_on_accent
                         text: ${icon_play_pause}
                         text_font: font_icons_button
               - button:
@@ -129,6 +132,7 @@ lvgl:
                     - script.execute: set_media_next
                   widgets:
                     - label:
+                        styles: rsk_font_color_on_accent
                         text: ${icon_next}
                         text_font: font_icons_button
 
@@ -156,6 +160,7 @@ lvgl:
             id: volume_text
             align: CENTER
             y: 32%
+            styles: rsk_font_color_on_accent
             text_font: theme_font_normal
             text: "XX%"
 

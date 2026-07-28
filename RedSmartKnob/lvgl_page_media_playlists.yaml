@@ -41,6 +41,7 @@ lvgl:
                   widgets:
                     - label:
                         id: playlist_1_label
+                        styles: rsk_font_color_on_accent
                         text: !lambda 'return "Playlist 1\nPlaceholder";'
               - button:
                   id: button_playlist2
@@ -53,6 +54,7 @@ lvgl:
                   widgets:
                     - label:
                         id: playlist_2_label
+                        styles: rsk_font_color_on_accent
                         text: !lambda 'return "Playlist 2\nPlaceholder";'
               - button:
                   id: button_playlist3
@@ -65,6 +67,7 @@ lvgl:
                   widgets:
                     - label:
                         id: playlist_3_label
+                        styles: rsk_font_color_on_accent
                         text: !lambda 'return "Playlist 3\nPlaceholder";'
 
         - button:
@@ -81,6 +84,7 @@ lvgl:
             widgets:
               - label:
                   id: label_playlist_shuffle
+                  styles: rsk_font_color_on_accent
                   text_font: font_icons_button
                   text: "${icon_shuffle_disabled}"
 
