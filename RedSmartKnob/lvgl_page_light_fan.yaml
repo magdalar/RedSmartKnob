@@ -58,7 +58,6 @@ lvgl:
                   align: CENTER
                   x: -18%
                   y: 16%
-                  styles: rsk_font_color_on_accent
                   hidden: true
 
               # 2. The Light Toggle Button
@@ -124,7 +123,6 @@ lvgl:
                   align: CENTER
                   x: 18%
                   y: 16%
-                  styles: rsk_font_color_on_accent
                   hidden: true
 
               # 2. The Fan Toggle Button

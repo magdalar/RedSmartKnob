@@ -160,7 +160,6 @@ lvgl:
             id: volume_text
             align: CENTER
             y: 32%
-            styles: rsk_font_color_on_accent
             text_font: theme_font_normal
             text: "XX%"
 
