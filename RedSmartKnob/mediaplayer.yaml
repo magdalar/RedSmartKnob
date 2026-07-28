@@ -231,6 +231,19 @@ script:
                   is_volume_muted: "false"
                   entity_id: !lambda 'return id(preference_media_player_entity).state;'
 
+  - id: set_media_pause
+    then:
+      - lambda: |-
+          ESP_LOGI("mediaplayer", "set_media_pause triggered.");
+      - if:
+          condition:
+            lambda: 'return id(api_ready);'
+          then:
+            - homeassistant.action:
+                action: media_player.media_pause
+                data:
+                  entity_id: !lambda 'return id(preference_media_player_entity).state;'
+
   - id: set_media_play_pause
     then:
       - lambda: |-

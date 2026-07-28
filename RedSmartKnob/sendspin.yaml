@@ -188,6 +188,11 @@ script:
       - media_player.unmute:
           id: sendspin_group_media_player
 
+  - id: set_media_pause
+    then:
+      - media_player.pause:
+          id: sendspin_group_media_player
+
   - id: set_media_play_pause
     then:
       - media_player.toggle:
