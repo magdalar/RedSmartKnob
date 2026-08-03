@@ -3,9 +3,9 @@
 # Script handle_media_album_url exists, but is unexpected.
 
 external_components:
-  # From https://github.com/RealDeco/xiaozhi-esphome/blob/main/devices/Under_Development/Modular/HW/sendspin-external_components.yaml
-  - source: github://pr#16057
-    components: [generic_image, sendspin, psram]
+  # https://github.com/esphome/esphome/pull/17937
+  - source: github://pr#17937
+    components: [runtime_image, sendspin]
     refresh: 1d
 
 script:
@@ -18,31 +18,39 @@ script:
       - script.execute:
           id: handle_media_album_art_display_placeholder
 
-generic_image:
+image:
   - platform: sendspin
-    id: sendspin_album_art
+    id: sendspin_album_art_slot
     format: jpeg
     type: RGB565
     resize: ${screenheight}x${screenheight}
     source: ALBUM
-    on_image_display:
-      # https://github.com/esphome/esphome/pull/16057#issuecomment-4944414858
-      # the callback is called when the image is cleared, as well as when
-      # loaded, so guard accordingly.
-      - if:
-          condition:
-            lambda: 'return id(sendspin_album_art).is_loaded();'
-          then:
-            - script.execute:
-                id: handle_media_album_art_display
-                art_source: sendspin_album_art
-          else:
-            - script.execute:
-                id: handle_media_album_art_display_placeholder
+    current_image:
+      id: sendspin_album_art_current
+    # TODO: Adopt transition_image to cross-fade the art. Adjust display_offset, and see example https://github.com/esphome/esphome/blob/191b10f5d6e8991747b7bf5f89f5b681c91a954b/tests/components/sendspin/test-image-lvgl.esp32-idf.yaml
+    #transition_image:
+    #  id: sendspin_album_art_transition
+    # Send the new imagery before the track transition.
+    display_offset: 250ms
+    on_image_clear:
+      - lambda: |-
+          ESP_LOGI("album_art_sendspin", "Album art cleared.");
+      - script.execute:
+          id: handle_media_album_art_display_placeholder
     on_image_error:
       - lambda: |-
           ESP_LOGI("album_art_sendspin", "Album art download failed!");
       - script.execute:
           id: handle_media_album_art_display_placeholder
+    on_image_display:
+      - logger.log:
+          format: "Album art displayed (late by %u ms)"
+          args: ["(unsigned) lateness_ms"]
+      - script.execute:
+          id: handle_media_album_art_display
+          art_source: sendspin_album_art_current
+      ## With a transition image, every display must end with
+      ## transition_finished so the next frame is released.
+      #- sendspin.image.transition_finished: sendspin_album_art_slot
 
 # vim: set tabstop=2 shiftwidth=2 expandtab:
