@@ -365,14 +365,6 @@ script:
               bg_color: !lambda 'return lv_color_hex(id(palette_accent_dark));'
               border_color: !lambda 'return lv_color_hex(id(palette_accent));'
 
-      # 4. Force a complete UI redraw to prevent visual artifacts
-      - lambda: |-
-          // Invalidates the active screen, forcing a full top-to-bottom repaint
-          lv_obj_invalidate(lv_scr_act());
-
-          // Optional but recommended: Tell LVGL that global styles have shifted
-          lv_obj_report_style_change(nullptr);
-
 esphome:
   on_boot:
     priority: -100 # Runs after everything else is initialized
