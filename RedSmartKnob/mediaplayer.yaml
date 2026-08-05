@@ -54,8 +54,6 @@ text_sensor:
     attribute: media_content_id
     on_value:
       - script.execute:
-          id: handle_reset_media_metadata
-      - script.execute:
           id: handle_media_content_id_change
           content_id: !lambda 'return x;'
 

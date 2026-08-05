@@ -15,15 +15,37 @@ globals:
   - id: is_media_playing
     type: bool
     initial_value: 'false'
-  - id: is_media_audiobook
-    type: bool
-    initial_value: 'false'
   - id: last_posted_position_secs
     type: int
     initial_value: '-1'
   - id: last_posted_duration_secs
     type: int
     initial_value: '-1'
+
+select:
+  - platform: template
+    id: current_media_type
+    internal: true
+    optimistic: true
+    options:
+      - "none"
+      - "music"
+      - "audiobook"
+      - "podcast"
+      - "other"
+    initial_option: "none"
+    on_value:
+      - text_sensor.template.publish:
+          id: public_current_media_type
+          state: !lambda 'return x;'
+
+text_sensor:
+  # A read-only copy of the current_media_type, published to HA.
+  - platform: template
+    id: public_current_media_type
+    name: "Current Media Type"
+    icon: "mdi:music"
+    entity_category: diagnostic
 
 text:
   - platform: template
@@ -223,7 +245,7 @@ script:
     then:
       - lambda: |-
           ESP_LOGI("actions_media", "Muted.");
-          if (id(is_media_audiobook)) {
+          if (id(current_media_type).current_option() == "audiobook") {
             ESP_LOGI("actions_media", "Auto-pausing audiobook on mute.");
             id(set_media_pause)->execute();
           }
@@ -261,7 +283,7 @@ script:
     mode: restart
     then:
       - delay: !lambda |-
-          int sleep_timer_mins = id(is_media_audiobook)
+          int sleep_timer_mins = (id(current_media_type).current_option() == "audiobook")
             ? id(preference_sleep_timer_audiobook_mins).state
             : id(preference_sleep_timer_music_mins).state;
           ESP_LOGI("actions_media", "Sleep timer [re-]starting: %d minutes.", sleep_timer_mins);
@@ -273,10 +295,11 @@ script:
   - id: handle_media_sleep_timer_maybe_restart
     then:
       - lambda: |-
+          const bool is_media_audiobook = id(current_media_type).current_option() == "audiobook";
           bool start_sleep_timer = id(is_media_playing)
             && (
-              (id(is_media_audiobook) && id(preference_sleep_timer_audiobook_mins).state > 0)
-              || (!id(is_media_audiobook) && id(preference_sleep_timer_music_mins).state > 0)
+              (is_media_audiobook && id(preference_sleep_timer_audiobook_mins).state > 0)
+              || (!is_media_audiobook && id(preference_sleep_timer_music_mins).state > 0)
             );
           if (start_sleep_timer) {
             id(media_sleep_timer)->execute();
@@ -291,12 +314,57 @@ script:
     then:
       - lambda: |-
           ESP_LOGD("actions_media", "Media Content Id: %s", content_id.c_str());
-          bool was_audiobook = id(is_media_audiobook);
-          id(is_media_audiobook) = content_id.find("/audiobook/") != std::string::npos;
-          if (was_audiobook != id(is_media_audiobook)) {
+          const std::string prev_media_type = id(current_media_type).current_option();
+          const bool was_audiobook = prev_media_type == "audiobook";
+
+          // Examples:
+          //   library://track/1234
+          //   foo-aBcDeF12://audiobook/1234
+          constexpr std::string_view delim = "://";
+          size_t start_pos = content_id.find(delim);
+          std::string_view new_media_type;
+          if (start_pos == std::string::npos) {
+            new_media_type = "none";
+          } else {
+            start_pos += delim.length();
+            size_t end_pos = content_id.find("/", start_pos);
+            std::string_view component;
+            if (end_pos == std::string::npos) {
+              component = content_id.substr(start_pos);
+            } else {
+              component = content_id.substr(start_pos, end_pos - start_pos);
+            }
+            if (component == "track" || component == "radio"
+                || component == "album" || component == "artist"
+                || component == "playlist" || component == "collection") {
+              new_media_type = "music";
+            } else if (component == "audiobook") {
+              new_media_type = "audiobook";
+            } else if (component.find("podcast") != std::string::npos) {
+              new_media_type = "podcast";
+            } else {
+              new_media_type = "other";
+            }
+          }
+          if (new_media_type != prev_media_type) {
+            id(current_media_type).make_call().with_option(
+                new_media_type.data(), new_media_type.size()).perform();
+
+            // For non-sendspin, clear stale media labels. Home Assistant
+            // should re-populate them, as they will have changed, and should
+            // be triggered following this media_content_id execution. For
+            // sendspin, they are reliably sent, and not in lock-step with the
+            // HA media_content_id, so skip it.
+            constexpr std::string_view enable_str = "${enable_sendspin}";
+            if constexpr (enable_str == "false" || enable_str == "False"
+                          || enable_str == "0") {
+              id(handle_reset_media_metadata)->execute();
+            }
+
             // Content type changed, reset timer.
             id(handle_media_sleep_timer_maybe_restart)->execute();
           }
+
 
   - id: handle_reset_media_metadata
     then:
@@ -324,7 +392,7 @@ script:
             - controls_track_name_label
             - time_track_name_label
           text: !lambda |-
-            return track_name.empty() ? "Unknown Track" : track_name.substr(0, 80);
+            return track_name.substr(0, 80);
 
   - id: handle_media_artist_changed
     parameters:
@@ -338,7 +406,7 @@ script:
             - controls_track_artist_label
             - time_track_artist_label
           text: !lambda |-
-            return artist_name.empty() ? "Unknown Artist" : artist_name.substr(0, 80);
+            return artist_name.substr(0, 80);
 
   - id: handle_media_album_changed
     parameters:
@@ -352,7 +420,7 @@ script:
             - controls_track_album_label
             - time_track_album_label
           text: !lambda |-
-            return album_name.empty() ? "Unknown Album" : album_name.substr(0, 80);
+            return album_name.substr(0, 80);
 
   - id: handle_playlist_shuffle
     parameters:
