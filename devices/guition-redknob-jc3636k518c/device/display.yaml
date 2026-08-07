@@ -83,7 +83,7 @@ light:
     default_transition_length:
       milliseconds: 30
     initial_state:
-      brightness: 50%
+      brightness: 80%
     on_turn_off:
       then:
         - lvgl.pause:
