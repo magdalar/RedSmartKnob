@@ -57,7 +57,6 @@ lvgl:
                   styles: rsk_font_color2
                   text_font: theme_font_normal
                   long_mode: SCROLL_CIRCULAR
-                  anim_duration: 8s
                   text: "Unknown Artist"
               - label:
                   id: controls_track_name_label
@@ -66,7 +65,6 @@ lvgl:
                   width: 90%
                   text_font: theme_font_large
                   long_mode: SCROLL_CIRCULAR
-                  anim_duration: 8s
                   text: "Unknown Track"
               - label:
                   id: controls_track_album_label
@@ -76,7 +74,6 @@ lvgl:
                   styles: rsk_font_color2
                   text_font: theme_font_small
                   long_mode: SCROLL_CIRCULAR
-                  anim_duration: 8s
                   text: "Unknown Album"
               - label:
                   id: controls_play_pause_indicator_label

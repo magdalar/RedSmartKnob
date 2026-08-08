@@ -393,6 +393,8 @@ script:
             - time_track_name_label
           text: !lambda |-
             return track_name.substr(0, 80);
+          anim_duration: !lambda |-
+            return std::max<int>(8000, track_name.substr(0, 80).length() * 200);
 
   - id: handle_media_artist_changed
     parameters:
@@ -407,6 +409,8 @@ script:
             - time_track_artist_label
           text: !lambda |-
             return artist_name.substr(0, 80);
+          anim_duration: !lambda |-
+            return std::max<int>(8000, artist_name.substr(0, 80).length() * 200);
 
   - id: handle_media_album_changed
     parameters:
@@ -421,6 +425,8 @@ script:
             - time_track_album_label
           text: !lambda |-
             return album_name.substr(0, 80);
+          anim_duration: !lambda |-
+            return std::max<int>(8000, album_name.substr(0, 80).length() * 200);
 
   - id: handle_playlist_shuffle
     parameters:

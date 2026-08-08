@@ -84,7 +84,6 @@ lvgl:
                   align: TOP_MID
                   width: 90%
                   long_mode: SCROLL_CIRCULAR
-                  anim_duration: 8s
                   text_align: CENTER
                   styles: rsk_font_color2
                   text_font: theme_font_normal
@@ -95,7 +94,6 @@ lvgl:
                   y: 18%
                   width: 85%
                   long_mode: SCROLL_CIRCULAR
-                  anim_duration: 8s
                   text_align: CENTER
                   styles: rsk_font_color
                   text_font: theme_font_large
@@ -106,7 +104,6 @@ lvgl:
                   y: 46%
                   width: 80%
                   long_mode: SCROLL_CIRCULAR
-                  anim_duration: 8s
                   text_align: CENTER
                   styles: rsk_font_color2
                   text_font: theme_font_small
