@@ -1,3 +1,8 @@
+external_components:
+  - source: github://pr#18786
+    components: [mipi_spi]
+    refresh: 1h
+
 display:
   - platform: mipi_spi
     id: main_display
@@ -10,9 +15,6 @@ display:
     invert_colors: true
     auto_clear_enabled: false
     update_interval: never
-    dimensions:
-        height: 360
-        width: 360
 
 binary_sensor:
   - platform: template
@@ -26,10 +28,6 @@ touchscreen:
     display: main_display
     interrupt_pin: GPIO9 # TOUCH_PIN_NUM_INT
     reset_pin: GPIO10 # TOUCH_PIN_NUM_RST
-    transform:
-      mirror_x: false
-      mirror_y: false
-      swap_xy: false
     #on_update:
     #  - script.execute: reset_idle_timer
     #  - lambda: |-
