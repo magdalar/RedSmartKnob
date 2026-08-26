@@ -2,12 +2,6 @@
 # Calls handle_media_album_art_display or handle_media_album_art_display_placeholder
 # Script handle_media_album_url exists, but is unexpected.
 
-external_components:
-  # https://github.com/esphome/esphome/pull/17937
-  - source: github://pr#17937
-    components: [runtime_image, sendspin]
-    refresh: 1d
-
 script:
   - id: handle_media_album_url
     parameters:
