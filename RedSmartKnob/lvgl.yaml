@@ -16,11 +16,6 @@ substitutions:
   ui_border: 2
   ui_border_pressed: 3
 
-external_components:
-  - source: github://pr#17678
-    components: [lvgl]
-    refresh: 1h
-
 image:
   # Local file paths are relative to the top-level yaml, not this file.
   #- platform: file
