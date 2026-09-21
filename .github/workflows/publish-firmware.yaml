@@ -64,7 +64,7 @@ jobs:
       # Installing ESPHome locally stops ewt-gen from falling back to Docker,
       # which significantly speeds up the build process.
       - name: Install ESPHome
-        run: uv tool install esphome==2026.8.1
+        run: uv tool install esphome==2026.9.0
 
       - name: Compute firmware version
         id: version
